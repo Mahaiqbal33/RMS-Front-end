@@ -6,7 +6,7 @@ function App() {
   const handleClick = () => {
     // Multiple state updates
     setCount(count=>count + 1);
-    setCount(count + 1);
+    setCount(count + 2);
     setCount(count=>count + 1);
 
   };
