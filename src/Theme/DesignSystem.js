@@ -1,23 +1,25 @@
 import styled ,{ css } from 'styled-components';
 
-
+//Global Color 
 export const colors = {
-  primary: '071026',
-  secondary: '428DFC',
-   dark: "4F4F4F",
-   highlight: "FFFFFF",
+  primary: '#071026',
+  secondary: '#428DFC',
+  highlight: "#FFFFFF",
+  dark: "red"
 };
 
 export const GlobalStyle = css`
   :root {
     --color-primary: ${colors.primary};
     --color-secondary: ${colors.secondary};
-    --color-dark: ${colors.dark};
     --color-highlight: ${colors.highlight};
+    --color-dark: ${colors.dark};
   }
 `;
 
+
 //p component with style
+
 export const subtitle = styled.p`
 font-size: 14px;
 font-weight: 400;
@@ -51,15 +53,14 @@ export const Link = styled.a`
 
 `;
 
-//Button component  with style
+// Button component  with style
 export const Button = styled.button`
-  background-color: red;
+ background-color: var(--color-highlight);
   color: #333;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-
   &:hover {
     background-color: #ddd;
   }
