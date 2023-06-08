@@ -1,30 +1,67 @@
-const colors = {
-    primary: "071026",
-    Secondary: "428DFC",
-    dark: "4F4F4F",
-    highlight: "FFFFFF",
-  };
-  const typography = {
-    subtitle: {
-      fontWeight: 400,
-      fontSize: 14,
-      lineHeight: 17
-    },
-    heading: {
-      fontWeight: "bold",
-      fontSize: 36,
-      lineHeight: 43
-    },
-    h3:{
-        fontWeight: 500,
-        fontSize: 16,
-        lineHeight: 19
-      },
-    linkText: {
-      fontSize: 20,
-      fontWeight: 500,
-      lineHeight: 24
-    },
-  };
-  
-  export { colors, typography };
+import styled ,{ css } from 'styled-components';
+
+
+export const colors = {
+  primary: '071026',
+  secondary: '428DFC',
+   dark: "4F4F4F",
+   highlight: "FFFFFF",
+};
+
+export const GlobalStyle = css`
+  :root {
+    --color-primary: ${colors.primary};
+    --color-secondary: ${colors.secondary};
+    --color-dark: ${colors.dark};
+    --color-highlight: ${colors.highlight};
+  }
+`;
+
+//p component with style
+export const subtitle = styled.p`
+font-size: 14px;
+font-weight: 400;
+line-height:17px;
+/* add more styles as needed */
+`;
+
+//h1 component with style
+export const heading = styled.h1`
+font-size: 36px;
+font-weight: 900;
+line-height:34px;
+/* add more styles as needed */
+`;
+
+//h3 component  with style
+export const heading2 = styled.h3`
+font-size: 16px;
+font-weight: 500;
+line-height:19px;
+/* add more styles as needed */
+`;
+
+//Link component  with style
+export const Link = styled.a`
+  color: ${(props) => (props.primary ? 'blue' : 'gray')};
+  text-decoration: none;
+  font-size:16px;
+  font-weight:500;
+  line-height:20px;
+
+`;
+
+//Button component  with style
+export const Button = styled.button`
+  background-color: red;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+  }
+`;
+
