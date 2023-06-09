@@ -1,34 +1,32 @@
 import React from 'react'
 import './loginform.css'
-import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput } from 'mdb-react-ui-kit';
+import { Button,Sectionstyled,Heading,Heading2,Subtitle} from '../../Theme/DesignSystem';
 const Loginform = () => {
     return (
         <div>
-            <MDBContainer fluid className="p-3 my-5 h-custom">
+            <Sectionstyled fluid className="p-3 my-5 h-custom" >
 
                 <MDBRow>
 
 
                     <MDBCol col='4' md='6'>
 
-                        <div className="d-flex flex-row align-items-center justify-content-center">
+                            <Heading >Welcome Back!</Heading>
 
-                            <p className="lead fw-normal mb-0 me-3">Sign in with</p>
-
-                        </div>
                         <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg" />
                         <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" />
                         <div className='text-center text-md-start mt-4 pt-2'>
-                            <MDBBtn className="mb-0 px-5" size='lg'>Login</MDBBtn>
+                            <Button  className='px-5'>Login</Button>
 
                         </div>
 
                     </MDBCol>
-                    <MDBCol col='10' md='6'>
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image" />
+                    <MDBCol col='6' md='6'>
+                        <img src='./loginformImg.png' class="img-fluid" alt="Sampleimage" />
                     </MDBCol>
                 </MDBRow>
-            </MDBContainer>
+            </Sectionstyled>
         </div>
 
     )

@@ -20,26 +20,28 @@ export const GlobalStyle = css`
 
 //p component with style
 
-export const subtitle = styled.p`
+export const Subtitle = styled.p`
 font-size: 14px;
 font-weight: 400;
 line-height:17px;
+color:red;
 /* add more styles as needed */
 `;
 
 //h1 component with style
-export const heading = styled.h1`
+export const Heading = styled.h1`
 font-size: 36px;
-font-weight: 900;
+font-weight: bold;
 line-height:34px;
 /* add more styles as needed */
 `;
 
 //h3 component  with style
-export const heading2 = styled.h3`
+export const Heading2 = styled.h3`
 font-size: 16px;
 font-weight: 500;
 line-height:19px;
+color:red;
 /* add more styles as needed */
 `;
 
@@ -55,14 +57,33 @@ export const Link = styled.a`
 
 // Button component  with style
 export const Button = styled.button`
- background-color: var(--color-highlight);
-  color: #333;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+ background-color: var(--color-secondary);
+ display: flex;
+flex-direction: row;
+align-items: center;
+padding: 10px 24px;
+border:none;
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+border-radius: 4px;
+color: #FFFFFF;
+flex: none;
+order: 1;
+flex-grow: 0;
+transition: transform 0.3s ease;
   &:hover {
-    background-color: #ddd;
+    transform: scale(1.1);
   }
 `;
 
+//Link component  with style
+export const Sectionstyled = styled.section`
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100vw;
+  height:80vh;
+`;
