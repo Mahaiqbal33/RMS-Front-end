@@ -21,10 +21,10 @@ export const GlobalStyle = css`
 //p component with style
 
 export const Subtitle = styled.p`
+ color: ${(props) => (props.white ? 'white' : 'gray')};
 font-size: 14px;
 font-weight: 400;
 line-height:17px;
-color:red;
 /* add more styles as needed */
 `;
 

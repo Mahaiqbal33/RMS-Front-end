@@ -102,6 +102,22 @@ margin-top: 40px;
         width: 100%;
     }
     .login-form{
-        width: 80%;
+        width: 60%;
     }
+}
+@media (max-width: 500px) {
+  .containerform{
+      flex-direction: column-reverse;
+      width: 100%;
+      padding: 0;
+  }
+  .front{
+      display: none;
+  }
+  .containerform .forms{
+      width: 100%;
+  }
+  .login-form{
+      width: 80%;
+  }
 }
