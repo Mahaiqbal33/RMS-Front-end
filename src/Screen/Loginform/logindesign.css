@@ -1,0 +1,107 @@
+.containerform{
+    background: var(--color-primary);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:100vh;
+  }
+  .front{
+    height: 100%;
+    width: 45%;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.containerform .front img{
+  width: 70%;
+}
+
+.containerform .forms{
+  height: 100%;
+  width: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input-boxes{
+margin-top: 40px;
+}
+.input-lebal{
+  margin: 0;
+  font-size: 14px;
+  padding: 20px 0 15px 0;
+  line-height: 14px;
+  color: var(--color-highlight);
+  cursor: pointer;
+}
+.forms  .input-box{
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin: 3px 0;
+}
+ .input-box input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 40px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+ .input-box .iconff{
+  position: absolute;
+  width: 25px; 
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.forms  .text a{
+  text-decoration: none;
+}
+.forms  .text a:hover{
+  text-decoration: underline;
+}
+.forms  .button{
+  color: #fff;
+  margin-top: 40px;
+}
+.forms  .button input{
+  color: #fff;
+  background: var(--color-secondary);
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.forms  .button input:hover{
+    transform: scale(1.1);
+}
+.forms  .login-text{
+  text-align: center;
+  margin-top: 25px;
+}
+@media (max-width: 700px) {
+    .containerform{
+        flex-direction: column-reverse;
+        width: 100%;
+        padding: 0;
+    }
+    .front{
+        display: none;
+    }
+    .containerform .forms{
+        width: 100%;
+    }
+    .login-form{
+        width: 80%;
+    }
+}

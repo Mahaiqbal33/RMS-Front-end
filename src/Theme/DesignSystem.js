@@ -30,6 +30,7 @@ color:red;
 
 //h1 component with style
 export const Heading = styled.h1`
+color: ${(props) => (props.white ? 'white' : 'black')};
 font-size: 36px;
 font-weight: bold;
 line-height:34px;
@@ -41,7 +42,7 @@ export const Heading2 = styled.h3`
 font-size: 16px;
 font-weight: 500;
 line-height:19px;
-color:red;
+color: var(--color-secondary);
 /* add more styles as needed */
 `;
 
@@ -82,8 +83,9 @@ transition: transform 0.3s ease;
 //Link component  with style
 export const Sectionstyled = styled.section`
   display:flex;
+  flex-direction: ${(props) => (props.row ? 'row' : 'column')};
   justify-content:center;
   align-items:center;
-  width:100vw;
-  height:80vh;
+  width:100%;
+  height:100vh;
 `;
