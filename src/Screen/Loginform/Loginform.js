@@ -5,7 +5,6 @@ import user from "../../assets/User.png"
 import passwordicom from '../../assets/Forgotpassword.png'
 import { authStore } from '../../Store/AuthStore';
 import { observer } from 'mobx-react-lite';
-// import Sidebar from '../../Component/Admin/Sidebar';
 import { useNavigate } from 'react-router-dom';
 const Loginform =observer( () => {
   const [username, setusername] = useState('');

@@ -107,7 +107,6 @@ const Sidebar =observer( () => {
           <span className="material-icons-outlined" id="header-icon">notifications</span>
           <span className="material-icons-outlined" id="header-icon">account_circle</span>
           <button id='logout-btn' onClick={handeLogout}>Logout <span className="material-icons-outlined" >logout</span></button>
-          {/* <span className="material-icons-outlined" id="header-icon">logout</span> */}
         </div>
       </header>
       {/* End Header */}
