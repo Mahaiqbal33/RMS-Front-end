@@ -3,10 +3,15 @@ import './logindesign.css'
 import { Heading, Heading2,Subtitle } from "../../Theme/DesignSystem";
 import user from "../../assets/User.png"
 import passwordicom from '../../assets/Forgotpassword.png'
-const Loginform = () => {
+import { authStore } from '../../Store/AuthStore';
+import { observer } from 'mobx-react-lite';
+// import Sidebar from '../../Component/Admin/Sidebar';
+import { useNavigate } from 'react-router-dom';
+const Loginform =observer( () => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState('');
+  const navigate = useNavigate();
   // handle function
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,8 +46,15 @@ const Loginform = () => {
         // Perform login logic here
         console.log(username,password)
         console.log('Login successful');
+
+      // Assuming login is successful, call the login action in the MobX store
+      authStore.login();
       }
     };
+  
+    if (authStore.isLoggedIn) {
+      return navigate("/sidebar");
+    }
     return (
       <div row className='containerform'  >
         <div className="forms">
@@ -92,5 +104,5 @@ const Loginform = () => {
 
     )
   }
-
+)
   export default Loginform

@@ -48,19 +48,49 @@ body {
     box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
   }
   
-  .menu-icon {
+  .header-right #header-icon{
+    margin: 0 3px ;
+    color:var(--color-dark);
+    cursor: pointer;
+  }
+  /* Responsive menu icon */
+   .menu-icon {
     display: none;
   }
+  .header-right #logout-btn{
+   background-color: transparent;
+   color:var(--color-dark) ;
+   border: none;
+   margin-left: 15px;
+   cursor: pointer;
+   padding: 0;
+  }
+
+  .dashboard-header-right #header-icon{
+    margin: 0 3px ;
+    color:var(--color-highlight) ;
+    cursor: pointer;
+  }
+  
+  .dashboard-header-right #logout-btn{
+   background-color: transparent;
+   color:var(--color-highlight) ;
+   border: none;
+   margin-left: 15px;
+   cursor: pointer;
+   padding: 0;
+  } 
+
 
   /* ---------- Searchbar ---------- */
   #animated-icon input[type=text] {
     width: 220px;
     box-sizing: border-box;
     border: 1px solid #c8c8c8;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 16px;
     background-color: white;
-    padding: 10px 18px 10px 40px;
+    padding: 8px 18px 8px 35px;
     
    
   }
@@ -76,13 +106,24 @@ body {
     padding: 5px;
     background-color: #071026;
     color: #ffffff;
-    overflow-y: auto;
+    overflow-y: scroll;
     transition: all 0.5s;
     -webkit-transition: all 0.5s;
     box-shadow: 10px 6px 7px -4px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    
+  }
+  #sidebar::-webkit-scrollbar {
+    width:1px; /* Width of the scrollbar */
   }
   
+  #sidebar::-webkit-scrollbar-track {
+    background-color: var(--color-primary); /* Color of the scrollbar track */
+  }
+  
+  #sidebar::-webkit-scrollbar-thumb {
+    background-color:var(--color-primary); /* Color of the scrollbar thumb */
+  }
   .sidebar-title {
     display: flex;
     justify-content: space-between;
@@ -102,12 +143,13 @@ body {
     padding-right: 10px;
   
   }
-  .navlink1:hover, .navlink1:active{
+  .navlink1:hover{
     background-color:#428DFC;
     border-radius: 5px;
     color: #ffffff;
-  }
 
+
+  }
   
   .link{
     list-style: none;

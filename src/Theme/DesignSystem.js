@@ -5,7 +5,7 @@ export const colors = {
   primary: '#071026',
   secondary: '#428DFC',
   highlight: "#FFFFFF",
-  dark: "red"
+  dark: "#4F4F4F"
 };
 
 export const GlobalStyle = css`
