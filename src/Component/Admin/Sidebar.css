@@ -91,8 +91,6 @@ body {
     font-size: 16px;
     background-color: white;
     padding: 8px 18px 8px 35px;
-    
-   
   }
     #animated-icon i {
     position: relative;
@@ -147,8 +145,6 @@ body {
     background-color:#428DFC;
     border-radius: 5px;
     color: #ffffff;
-
-
   }
   
   .link{
@@ -204,6 +200,9 @@ body {
       on small screens
     */
     z-index: 12 !important;
+  }
+  .menu-item-arrow{
+    margin-left: 50px;
   }
   
   

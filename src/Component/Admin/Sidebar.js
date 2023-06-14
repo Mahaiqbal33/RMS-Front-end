@@ -3,13 +3,16 @@ import './Sidebar.css';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '../../Store/AuthStore';
 import mylogo from '../../assets/Asset2.png';
-import { FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaChartBar, FaCog, FaColumns, FaCalendarAlt  } from "react-icons/fa";
+import { FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaChartBar, FaCog, FaColumns, FaCalendarAlt, FaChevronDown,
+  FaChevronUp, } from "react-icons/fa";
 import { NavLink, Outlet, useLocation, useNavigate  } from "react-router-dom";
 
 const Sidebar =observer( () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openMenus, setOpenMenus] = useState([]);
   const location = useLocation();
   const navigate1 = useNavigate();
+  const isDashboardPage = location.pathname === '/sidebar';
   const openSidebar = () => {
     if (!sidebarOpen) {
       setSidebarOpen(true);
@@ -27,6 +30,21 @@ const Sidebar =observer( () => {
       return navigate1("/");
     }
   }
+  const toggleMenu = (index) => {
+    if (openMenus.includes(index)) {
+      setOpenMenus(openMenus.filter((item) => item !== index));
+    } else {
+      setOpenMenus([...openMenus, index]);
+    }
+  };
+
+  const handleMouseEnter = (index) => {
+    setOpenMenus([...openMenus, index]);
+  };
+
+  const handleMouseLeave = () => {
+    setOpenMenus([]);
+  };
   const menuItem = [
     {
       path: ".",
@@ -64,12 +82,6 @@ const Sidebar =observer( () => {
       path: "test",
       name: "Test",
       icon: <FaCalendarAlt />,
-      subitems:[
-        {
-          path: "testlist",
-          name: "Testlist"
-        }
-      ]
     },
     {
       path: "settings",
@@ -87,7 +99,7 @@ const Sidebar =observer( () => {
       icon: <FaLayerGroup />,
     },
   ];
-  const isDashboardPage = location.pathname === '/sidebar';
+ 
   return (
     <>
     <div className="grid-container">
@@ -121,14 +133,20 @@ const Sidebar =observer( () => {
         </div>
         <ul className="link">
           {menuItem.map((item, index) => (
-            <li key={index}> 
-              <NavLink to={item.path} activeClassName="active" className="navlink">
-                <div className="navlink1">
+            <li key={index} onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={handleMouseLeave}> 
+              <NavLink to={item.path}  className="navlink">
+                <div className="navlink1" onClick={() => toggleMenu(index)}>
                   <div className="icon">{item.icon}</div>
                   {item.name}
+                  {item.subitems && (
+                    <div className="menu-item-arrow">
+                      {openMenus.includes(index) ? <FaChevronUp /> : <FaChevronDown />}
+                    </div>
+                  )}
                 </div>
               </NavLink>
-              {item.subitems && (
+              {item.subitems && openMenus.includes(index) && (
                 <ul className='sub-menu'>
                   {item.subitems.map((subitems,subIndex)=>
                     <li key={subIndex} className='navlink1'>
