@@ -2,21 +2,21 @@ import './App.css';
 import React from 'react';
 import {  Route, Routes } from 'react-router-dom';
 import './App.css'; // Create a CSS file for custom styles
-import Dashboard from './Screen/Dashboard'
-import Sidebar from './Component/Admin/Sidebar.js';
-import Teachers from './Screen/Teachers';
-import Classes from './Screen/Classes'
-import Students from './Screen/Students'
-import Settings from './Screen/Settings'
-import Features from './Screen/Features'
-import Report from './Screen/Report'
-import Teacherlist from './Screen/Teacherlist'
-import Studentlist from './Screen/Studentlist'
-import Testlist from './Screen/Testlist'
+import Dashboard from './Screen/Dashboard/Dashboard'
+import Sidebar from './Component/Sidebar/Sidebar.js';
+import Teachers from './Screen/Teachers/Teachers';
+import Classes from './Screen/Classes/Classes'
+import Students from './Screen/Students/Students'
+import Settings from './Screen/Settings/Settings'
+import Features from './Screen/Feactures/Features'
+import Report from './Screen/Resports/Report'
+import Teacherlist from './Screen/Teachers/Teacherlist'
+import Studentlist from './Screen/Students/Studentlist'
+import Testlist from './Screen/Test/Testlist'
 import { createGlobalStyle } from 'styled-components';
-import { GlobalStyle } from './Theme/DesignSystem';
+import  GlobalStyle  from './Theme/GlobalColors/Colors';
 import Loginform from './Screen/Loginform/Loginform';
-import Test from './Screen/Test';
+import Test from './Screen/Test/Test';
 const GlobalStyles = createGlobalStyle`${GlobalStyle}`;
 function App() {
   return (

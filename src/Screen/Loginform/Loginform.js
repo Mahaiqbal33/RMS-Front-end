@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './logindesign.css'
-import { Heading, Heading2,Subtitle } from "../../Theme/DesignSystem";
+import { Heading, Heading2,Subtitle } from '../../Theme/Topography/Topography'
 import user from "../../assets/User.png"
 import passwordicom from '../../assets/Forgotpassword.png'
 import { authStore } from '../../Store/AuthStore';
