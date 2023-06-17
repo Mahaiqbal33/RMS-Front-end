@@ -25,15 +25,6 @@ const notify=()=> toast("Invalid credentials. Please try again.")
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (validateForm()) {
-    //   authStore.login();
-    //   console.log(authStore.username,authStore.password)
-    //   navigate("/sidebar");
-    // }
-    // else{
-    //   notify();
-    // }
-
     if (validateForm()) {
       try {
         const response = await axios.post('/api/login', {
