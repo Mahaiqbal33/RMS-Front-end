@@ -6,9 +6,10 @@ import mylogo from '../../assets/Asset2.png';
 import {  FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { menuItem} from './Routes'
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import sidebarStore from '../../Store/SideStore';
+import {sidebarStore} from '../../Store/SideStore';
 
 const Sidebar = observer(() => {
+
   const location = useLocation();
   const logoutnavigate = useNavigate();
   const isDashboardPage = location.pathname === '/sidebar';
@@ -29,11 +30,11 @@ const Sidebar = observer(() => {
   };
     // Submenu arrow icon Mouseenter functions
   const handleMouseEnter = (index) => {
-    sidebarStore.openMenus = [...sidebarStore.openMenus, index];
+    sidebarStore.handleMouseEnter(index);
   };
   // Submenu arrow icon MouseLeave functions
   const handleMouseLeave = () => {
-    sidebarStore.openMenus = [];
+    sidebarStore.handleMouseLeave();
   };
 
  
@@ -44,7 +45,7 @@ const Sidebar = observer(() => {
         {/* Header */}
         <header className={`header ${isDashboardPage ? 'dashboard-header' : ''}`}>
           <div className="menu-icon" onClick={() => sidebarStore.setSidebarOpen(true)}>
-            <span className="material-icons-outlined">menu</span>
+            <span className="material-icons-outlined" style={{cursor:'pointer'}}>menu</span>
           </div>
           <div className="header-left">
             <form id="animated-icon">

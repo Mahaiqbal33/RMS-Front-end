@@ -11,6 +11,8 @@ class SidebarStore {
       setSidebarOpen: action,
       setOpenMenus: action,
       toggleMenu: action,
+      handleMouseEnter: action,
+      handleMouseLeave: action,
     });
   }
 
@@ -18,6 +20,9 @@ class SidebarStore {
     this.sidebarOpen = isOpen;
   }
 
+  setOpenMenus(menus) {
+    this.openMenus = menus;
+  }
 
   toggleMenu(index) {
     if (this.openMenus.includes(index)) {
@@ -26,7 +31,16 @@ class SidebarStore {
       this.openMenus = [...this.openMenus, index];
     }
   }
+  
+  handleMouseEnter(index){
+    this.openMenus= [...sidebarStore.openMenus, index]
+  }
+
+  handleMouseLeave(){
+    this.openMenus = [];
+  }
+
+  
 }
 
-const sidebarStore = new SidebarStore();
-export default sidebarStore;
+export const sidebarStore = new SidebarStore();
