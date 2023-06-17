@@ -8,9 +8,10 @@ import { authStore } from '../../Store/AuthStore';
 import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
+import axios from './ApiMock';
 const LoginForm = observer(() => {
 const navigate = useNavigate();
-const notify=()=> toast("Please Enter Corrent Username and email")
+const notify=()=> toast("Invalid credentials. Please try again.")
  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,14 +23,32 @@ const notify=()=> toast("Please Enter Corrent Username and email")
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    // if (validateForm()) {
+    //   authStore.login();
+    //   console.log(authStore.username,authStore.password)
+    //   navigate("/sidebar");
+    // }
+    // else{
+    //   notify();
+    // }
+
     if (validateForm()) {
-      authStore.login();
-      console.log(authStore.username,authStore.password)
-      navigate("/sidebar");
-    }
-    else{
+      try {
+        const response = await axios.post('/api/login', {
+          username: authStore.username,
+          password: authStore.password
+        });
+        // Handle successful login response
+        console.log(response.data);
+        navigate('/sidebar');
+      } catch (error) {
+        // Handle login error
+        authStore.errors = 'Invalid credentials. Please try again.';
+        notify();
+      }
+    } else {
       notify();
     }
   };
