@@ -27,9 +27,25 @@
   justify-content: center;
   align-items: center;
 }
+
+.containerform .forms .login-form h1{
+  font-size: 36px;
+  font-weight: bold;
+  line-height:34px;
+  color: #fff;
+}
+
+.containerform .forms .login-form h3{
+  font-size: 16px;
+  font-weight: 500;
+  line-height:19px;
+  color: var(--color-secondary);
+}
+
 .input-boxes{
 margin-top: 40px;
 }
+
 .input-lebal{
   margin: 0;
   font-size: 14px;
@@ -88,6 +104,13 @@ margin-top: 40px;
 .forms  .login-text{
   text-align: center;
   margin-top: 25px;
+}
+.errorStyle{
+  text-decoration: none;
+  font-size:16px;
+  font-weight:500;
+  line-height:20px;
+  color: red;
 }
 @media (max-width: 700px) {
     .containerform{

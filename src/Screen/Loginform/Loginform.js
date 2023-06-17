@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Heading, Heading2, Subtitle } from '../../Theme/Topography/Topography';
 import user from "../../assets/User.png";
 import passwordicom from '../../assets/Forgotpassword.png';
 import { authStore } from '../../Store/AuthStore';
@@ -10,9 +9,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
 import axios from './ApiMock';
 const LoginForm = observer(() => {
-const navigate = useNavigate();
-const notify=()=> toast("Invalid credentials. Please try again.")
- 
+  const navigate = useNavigate();
+  const notify = () => toast("Invalid credentials. Please try again.")
+
+ //Handle Form InputValues on Change 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === 'username') {
@@ -22,7 +22,7 @@ const notify=()=> toast("Invalid credentials. Please try again.")
     }
 
   };
-
+  //Handle Form InputValues on Submit Button
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -43,18 +43,18 @@ const notify=()=> toast("Invalid credentials. Please try again.")
       notify();
     }
   };
-  
-  if (authStore.isLoggedIn)  {
+  //Logout Icon Onclick Button Funtion
+  if (authStore.isLoggedIn) {
     navigate("/sidebar");
     return null; // Return null when redirecting to prevent rendering the rest of the component
   }
 
   return (
-    <div row className='containerform'>
+    <div  className='containerform'>
       <div className="forms">
         <div className="login-form">
-          <Heading white>Welcome Back!</Heading>
-          <Heading2>Start managing your result faster and better</Heading2>
+          <h1>Welcome Back!</h1>
+          <h3>Start managing your result faster and better</h3>
           <form onSubmit={handleSubmit}>
             <div className="input-boxes">
               <label htmlFor="username" className="input-lebal">Username</label>
@@ -82,7 +82,7 @@ const notify=()=> toast("Invalid credentials. Please try again.")
                   onChange={handleInputChange}
                   required />
               </div>
-              {authStore.errors && <Subtitle white>{authStore.errors}</Subtitle>}
+              {authStore.errors && <p className='errorStyle'>{authStore.errors}</p>}
               <div className="button input-box">
                 <input type="submit" value="LOGIN" />
               </div>
@@ -95,7 +95,7 @@ const notify=()=> toast("Invalid credentials. Please try again.")
       </div>
       <ToastContainer />
     </div>
-    
+
   );
 });
 
