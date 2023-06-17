@@ -3,9 +3,9 @@ import './Sidebar.css';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '../../Store/AuthStore';
 import mylogo from '../../assets/Asset2.png';
-import { FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaChartBar, FaCog, FaColumns, FaCalendarAlt, FaChevronDown,
-  FaChevronUp, } from "react-icons/fa";
+import { FaChevronDown,FaChevronUp, } from "react-icons/fa";
 import { NavLink, Outlet, useLocation, useNavigate  } from "react-router-dom";
+import { menuItem } from './Routes';
 
 const Sidebar =observer( () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -45,60 +45,7 @@ const Sidebar =observer( () => {
   const handleMouseLeave = () => {
     setOpenMenus([]);
   };
-  const menuItem = [
-    {
-      path: ".",
-      name: "Dashboard",
-      icon: <FaColumns />,
-    },
-    {
-      path: "teachers",
-      name: "Teachers",
-      icon: <FaChalkboardTeacher />,
-      subitems:[
-        {
-          path: "teacherlist",
-          name: "Teacherlist"
-        }
-      ]
-    },
-    {
-      path: "students",
-      name: "Students",
-      icon: <FaUserGraduate />,
-      subitems:[
-        {
-          path: "studentlist",
-          name: "Studentlist"
-        }
-      ]
-    },
-    {
-      path: "classes",
-      name: "Classes",
-      icon: <FaCalendarAlt />,
-    },
-    {
-      path: "test",
-      name: "Test",
-      icon: <FaCalendarAlt />,
-    },
-    {
-      path: "settings",
-      name: "Settings",
-      icon: <FaCog />,
-    },
-    {
-      path: "report",
-      name: "Report",
-      icon: <FaChartBar />,
-    },
-    {
-      path: "features",
-      name: "Features",
-      icon: <FaLayerGroup />,
-    },
-  ];
+ 
  
   return (
     <>
@@ -110,7 +57,7 @@ const Sidebar =observer( () => {
         </div>
         <div className="header-left">
         <form id="animated-icon">
-    <i class="uil uil-search" aria-hidden="true"></i>
+    <i className="uil uil-search" aria-hidden="true"></i>
     <input type="text" name="search" placeholder="Search.." />
   </form>
     
@@ -149,9 +96,11 @@ const Sidebar =observer( () => {
               {item.subitems && openMenus.includes(index) && (
                 <ul className='sub-menu'>
                   {item.subitems.map((subitems,subIndex)=>
-                    <li key={subIndex} className='navlink1'>
-                      <NavLink to={subitems.path}className="navlink">
+                    <li key={subIndex}>
+                      <NavLink to={subitems.path} className="navlink">
+                        <div className='navlink1'>
                         {subitems.name}
+                        </div>
                       </NavLink>
                     </li> )}
                 </ul>

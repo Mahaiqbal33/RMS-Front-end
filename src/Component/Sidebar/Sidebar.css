@@ -189,7 +189,9 @@ body {
     text-decoration: none;
     color: #9799ab;
   }
-  
+  .sub-menu{
+    list-style: none;
+  }
   .sidebar-responsive {
     display: inline !important;
     position: absolute;

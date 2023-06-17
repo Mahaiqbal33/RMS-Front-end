@@ -14,9 +14,10 @@ import Teacherlist from './Screen/Teachers/Teacherlist'
 import Studentlist from './Screen/Students/Studentlist'
 import Testlist from './Screen/Test/Testlist'
 import { createGlobalStyle } from 'styled-components';
-import  GlobalStyle  from './Theme/GlobalColors/Colors';
+import { GlobalStyle } from "./Theme/Topography/Topography"
 import Loginform from './Screen/Loginform/Loginform';
 import Test from './Screen/Test/Test';
+import 'react-toastify/dist/ReactToastify.css';
 const GlobalStyles = createGlobalStyle`${GlobalStyle}`;
 function App() {
   return (

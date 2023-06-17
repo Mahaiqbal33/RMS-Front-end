@@ -1,5 +1,24 @@
 import styled ,{ css } from 'styled-components';
 
+
+//Global Color 
+export const colors = {
+  primary: '#071026',
+  secondary: '#428DFC',
+  highlight: "#FFFFFF",
+  dark: "#4F4F4F"
+};
+
+export const GlobalStyle = css`
+  :root {
+    --color-primary: ${colors.primary};
+    --color-secondary: ${colors.secondary};
+    --color-highlight: ${colors.highlight};
+    --color-dark: ${colors.dark};
+  }
+`;
+
+
 //p component with style
 
 export const Subtitle = styled.p`
