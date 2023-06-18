@@ -32,7 +32,7 @@ const LoginForm = observer(() => {
           password: authStore.password
         });
         // Handle successful login response
-        console.log(response.data);
+        console.log(response.data.token);
         navigate('/sidebar');
       } catch (error) {
         // Handle login error
@@ -65,12 +65,13 @@ const LoginForm = observer(() => {
                   type="username"
                   id="username"
                   name="username"
+                  autoComplete="username"
                   value={authStore.username}
                   onChange={handleInputChange}
                   required />
               </div>
 
-              <label htmlFor="username" className="input-lebal">Password</label>
+              <label htmlFor="password" className="input-lebal">Password</label>
               <div className="input-box">
                 <img src={passwordicom} className="iconff" alt='' />
                 <input
@@ -78,6 +79,7 @@ const LoginForm = observer(() => {
                   type="password"
                   id="password"
                   name="password"
+                  autoComplete="password"
                   value={authStore.password}
                   onChange={handleInputChange}
                   required />

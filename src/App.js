@@ -8,8 +8,8 @@ import Teachers from './Screen/Teachers/Teachers';
 import Classes from './Screen/Classes/Classes'
 import Students from './Screen/Students/Students'
 import Settings from './Screen/Settings/Settings'
-import Features from './Screen/Feactures/Features'
-import Report from './Screen/Resports/Report'
+import Features from './Screen/Features/Feature'
+import Report from './Screen/Reports/Report'
 import Teacherlist from './Screen/Teachers/Teacherlist'
 import Studentlist from './Screen/Students/Studentlist'
 import Testlist from './Screen/Test/Testlist'
@@ -20,6 +20,9 @@ function App() {
   return (
     <div>
       <Routes>
+        {
+          
+        }
       <Route  path='/' element={<Loginform/>}/>
         <Route path='sidebar' element={<Sidebar />}>
           <Route index element={<Dashboard />} />
@@ -40,3 +43,5 @@ function App() {
 }
 
 export default App;
+
+
