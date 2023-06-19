@@ -87,9 +87,11 @@ const Sidebar = observer(() => {
                 {item.subitems && sidebarStore.openMenus.includes(index) && (
                   <ul className='sub-menu'>
                     {item.subitems.map((subitems, subIndex) =>
-                      <li key={subIndex} className='navlink1'>
+                      <li key={subIndex} >
                         <NavLink to={subitems.path} className="navlink">
+                          <div className='navlink1'>
                           {subitems.name}
+                          </div>
                         </NavLink>
                       </li>)}
                   </ul>

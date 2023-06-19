@@ -16,15 +16,13 @@ import Testlist from './Screen/Test/Testlist'
 import Loginform from './Screen/Loginform/Loginform';
 import Test from './Screen/Test/Test';
 import 'react-toastify/dist/ReactToastify.css';
+import PrivateRoutes from './Utlits/PrivateRoutes';
 function App() {
   return (
     <div>
-      <Routes>
-        {
-          
-        }
-      <Route  path='/' element={<Loginform/>}/>
-        <Route path='sidebar' element={<Sidebar />}>
+     <Routes>
+    <Route element= {<PrivateRoutes/>}>
+    <Route path='sidebar' element={<Sidebar />}>
           <Route index element={<Dashboard />} />
           <Route path="teachers" element={<Teachers />} ></Route>
           <Route path='teacherlist' element={<Teacherlist/>}/>
@@ -37,6 +35,8 @@ function App() {
           <Route path="Features" element={<Features />} />
           <Route path="report" element={<Report />} />
         </Route>
+    </Route>
+      <Route  path='/' element={<Loginform/>}/>
       </Routes>
     </div>
   );

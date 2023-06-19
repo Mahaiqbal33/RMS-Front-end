@@ -7,6 +7,7 @@ import { authStore } from '../../Store/AuthStore';
 import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
+import { privateRoutes } from '../../Store/PrivateRoutes';
 import axios from './ApiMock';
 const LoginForm = observer(() => {
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ const LoginForm = observer(() => {
           password: authStore.password
         });
         // Handle successful login response
+        if(response.data.token){
+          privateRoutes.token=true;
+        }
         console.log(response.data.token);
         navigate('/sidebar');
       } catch (error) {
