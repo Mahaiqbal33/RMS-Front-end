@@ -46,6 +46,8 @@ const LoginForm = observer(() => {
     } else {
       notify();
     }
+    authStore.setUsername("");
+    authStore.setPassword("");
   };
   //Logout Icon Onclick Button Funtion
   if (authStore.isLoggedIn) {

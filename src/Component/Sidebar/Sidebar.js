@@ -3,7 +3,7 @@ import './Sidebar.css';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '../../Store/AuthStore';
 import mylogo from '../../assets/Asset2.png';
-import {  FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {  FaChevronDown, FaChevronUp, FaBars,FaBell, FaUserCircle,FaSignOutAlt, FaTimes} from "react-icons/fa";
 import { menuItem} from './Routes'
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {sidebarStore} from '../../Store/SideStore';
@@ -45,7 +45,7 @@ const Sidebar = observer(() => {
         {/* Header */}
         <header className={`header ${isDashboardPage ? 'dashboard-header' : ''}`}>
           <div className="menu-icon" onClick={() => sidebarStore.setSidebarOpen(true)}>
-            <span className="material-icons-outlined" style={{cursor:'pointer'}}>menu</span>
+            <span className="material-icons-outlined" style={{cursor:'pointer'}}><FaBars/></span>
           </div>
           <div className="header-left">
             <form id="animated-icon">
@@ -54,9 +54,9 @@ const Sidebar = observer(() => {
             </form>
           </div>
           <div className={`header-right ${isDashboardPage ? 'dashboard-header-right' : ''}`}>
-            <span className="material-icons-outlined" id="header-icon">notifications</span>
-            <span className="material-icons-outlined" id="header-icon">account_circle</span>
-            <button id='logout-btn' onClick={handeLogout}>Logout <span className="material-icons-outlined">logout</span></button>
+            <span id="header-icon"><FaBell/></span>
+            <span id="header-icon"><FaUserCircle/></span>
+            <button id='logout-btn' onClick={handeLogout}>Logout <span className="material-icons-outlined"><FaSignOutAlt/></span></button>
           </div>
         </header>
         {/* End Header */}
@@ -67,7 +67,7 @@ const Sidebar = observer(() => {
             <div className="sidebar-brand">
               <img src={mylogo} alt='Logo' style={{ width: '165px' }} />
             </div>
-            <span className="material-icons-outlined" onClick={closeSidebar} style={{cursor:'pointer'}}>close</span>
+            <span className="material-icons-outlined" onClick={closeSidebar} style={{cursor:'pointer'}}><FaTimes/></span>
           </div>
           <ul className="link">
             {menuItem.map((item, index) => (
