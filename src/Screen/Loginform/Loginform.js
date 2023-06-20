@@ -8,7 +8,7 @@ import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
 import { privateRoutes } from '../../Store/PrivateRoutes';
-import axios from './ApiMock';
+import axios from 'axios';
 const LoginForm = observer(() => {
   const navigate = useNavigate();
   const notify = () => toast("Invalid credentials. Please try again.")
@@ -28,19 +28,18 @@ const LoginForm = observer(() => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post('/api/login', {
+        const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
           username: authStore.username,
           password: authStore.password
         });
         // Handle successful login response
-        if(response.data.token){
+        if(response.data){
           privateRoutes.token=true;
         }
-        console.log(response.data.token);
         navigate('/sidebar');
       } catch (error) {
         // Handle login error
-        authStore.errors = 'Invalid credentials. Please try again.';
+        authStore.setError('Invalid credentials. Please try again.');
         notify();
       }
     } else {

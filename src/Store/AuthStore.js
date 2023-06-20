@@ -4,7 +4,7 @@ class AuthStore {
   isLoggedIn = false;
   username = '';
   password = '';
-  errors ="";
+  errors = '';
 
   constructor() {
     makeObservable(this, {
@@ -16,6 +16,7 @@ class AuthStore {
       logout: action,
       setUsername: action,
       setPassword: action,
+      setError: action,
     });
   }
 
@@ -25,6 +26,10 @@ class AuthStore {
 
   setPassword(password) {
     this.password = password;
+  }
+
+  setError(errors) {
+    this.errors = errors;
   }
 
   login() {
@@ -40,7 +45,7 @@ class AuthStore {
     this.username = '';
     this.password = '';
   }
-  
 }
 
 export const authStore = new AuthStore();
+
