@@ -35,8 +35,8 @@ const LoginForm = observer(() => {
         // Handle successful login response
         if(response.data){
           privateRoutes.token=true;
+          navigate('/sidebar');
         }
-        navigate('/sidebar');
       } catch (error) {
         // Handle login error
         authStore.setError('Invalid credentials. Please try again.');
