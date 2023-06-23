@@ -3,7 +3,7 @@ import './Sidebar.css';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '../../Store/AuthStore';
 import mylogo from '../../assets/Asset2.png';
-import {  FaChevronDown, FaChevronUp, FaBars,FaBell, FaUserCircle,FaSignOutAlt, FaTimes} from "react-icons/fa";
+import {  FaChevronDown, FaChevronUp, FaBars,FaBell, FaUserCircle,FaSignOutAlt, FaTimes,FaSearch} from "react-icons/fa";
 import { menuItem} from './Routes'
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {sidebarStore} from '../../Store/SideStore';
@@ -49,7 +49,8 @@ const Sidebar = observer(() => {
           </div>
           <div className="header-left">
             <form id="animated-icon">
-              <i className="uil uil-search" aria-hidden="true"></i>
+              {/* <i className="uil uil-search" aria-hidden="true"></i> */}
+              <FaSearch className="search-icon" />
               <input type="text" name="search" placeholder="Search.." />
             </form>
           </div>
