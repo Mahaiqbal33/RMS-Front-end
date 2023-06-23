@@ -9,32 +9,27 @@ import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
 import { privateRoutes } from '../../Store/PrivateRoutes';
 import axios from 'axios';
+
 const LoginForm = observer(() => {
   const navigate = useNavigate();
-  const notify = () => toast("Invalid credentials. Please try again.")
-
- //Handle Form InputValues on Change 
+  const notify = () => toast("Invalid credentials. Please try again.");
+  // this function work to handle form data
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'username') {
-      authStore.setUsername(value);
-    } else if (name === 'password') {
-      authStore.setPassword(value);
-    }
-
+    authStore.setFormField(name, value);
   };
-  //Handle Form InputValues on Submit Button
+  // this function work to submite form data
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
         const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
-          username: authStore.username,
-          password: authStore.password
+          username: authStore.formFields.username,
+          password: authStore.formFields.password
         });
         // Handle successful login response
-        if(response.data){
-          privateRoutes.token=true;
+        if (response.data) {
+          privateRoutes.token = true;
           navigate('/sidebar');
         }
       } catch (error) {
@@ -42,20 +37,17 @@ const LoginForm = observer(() => {
         authStore.setError('Invalid credentials. Please try again.');
         notify();
       }
-    } else {
-      notify();
     }
-    authStore.setUsername("");
-    authStore.setPassword("");
+    authStore.clearFormFields();
   };
-  //Logout Icon Onclick Button Funtion
+
   if (authStore.isLoggedIn) {
     navigate("/sidebar");
     return null; // Return null when redirecting to prevent rendering the rest of the component
   }
 
   return (
-    <div  className='containerform'>
+    <div className='containerform'>
       <div className="forms">
         <div className="login-form">
           <h1>Welcome Back!</h1>
@@ -67,13 +59,14 @@ const LoginForm = observer(() => {
                 <img src={user} className="iconff" alt='' />
                 <input
                   placeholder="Enter your username"
-                  type="username"
+                  type="text"
                   id="username"
                   name="username"
                   autoComplete="username"
-                  value={authStore.username}
+                  value={authStore.formFields.username}
                   onChange={handleInputChange}
-                  required />
+                  required
+                />
               </div>
 
               <label htmlFor="password" className="input-lebal">Password</label>
@@ -84,10 +77,11 @@ const LoginForm = observer(() => {
                   type="password"
                   id="password"
                   name="password"
-                  autoComplete="password"
-                  value={authStore.password}
+                  autoComplete="current-password"
+                  value={authStore.formFields.password}
                   onChange={handleInputChange}
-                  required />
+                  required
+                />
               </div>
               {authStore.errors && <p className='errorStyle'>{authStore.errors}</p>}
               <div className="button input-box">
@@ -102,7 +96,6 @@ const LoginForm = observer(() => {
       </div>
       <ToastContainer />
     </div>
-
   );
 });
 

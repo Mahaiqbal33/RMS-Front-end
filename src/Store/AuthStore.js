@@ -2,30 +2,34 @@ import { makeObservable, observable, action } from 'mobx';
 
 class AuthStore {
   isLoggedIn = false;
-  username = '';
-  password = '';
+  formFields = {
+    username: '',
+    password: '',
+  };
   errors = '';
 
   constructor() {
     makeObservable(this, {
       isLoggedIn: observable,
-      username: observable,
-      password: observable,
+      formFields: observable,
       errors: observable,
       login: action,
       logout: action,
-      setUsername: action,
-      setPassword: action,
+      setFormField: action,
+      clearFormFields: action,
       setError: action,
     });
   }
 
-  setUsername(username) {
-    this.username = username;
+  setFormField(field, value) {
+    this.formFields[field] = value;
   }
 
-  setPassword(password) {
-    this.password = password;
+  clearFormFields() {
+    this.formFields = {
+      username: '',
+      password: '',
+    };
   }
 
   setError(errors) {
@@ -34,18 +38,14 @@ class AuthStore {
 
   login() {
     // Perform login logic here
-    console.log(this.username, this.password);
-    console.log('Login successful');
     this.isLoggedIn = true;
   }
 
   logout() {
     // Perform logout logic here
     this.isLoggedIn = false;
-    this.username = '';
-    this.password = '';
+    this.clearFormFields();
   }
 }
 
 export const authStore = new AuthStore();
-
