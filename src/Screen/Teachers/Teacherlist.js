@@ -6,6 +6,7 @@ import { toJS } from 'mobx';
 import './TeacherList.css';
 import maleImage from '../../assets/male.png';
 import femaleImage from '../../assets/female.png';
+import PopupComponent from './PopupComponent';
 
 const TeacherList = observer(() => {
   useEffect(() => {
@@ -19,6 +20,10 @@ const TeacherList = observer(() => {
 
   const getGenderImage = (gender) => {
     return gender === 'male' ? maleImage : femaleImage;
+  };
+  const handleEdit = (teacherId) => {
+    teacherStore.setCurrentTeacherId(teacherId); // Set the current teacher ID
+    teacherStore.setPopupOpen(true); // Open the popup
   };
 
   return (
@@ -73,7 +78,7 @@ const TeacherList = observer(() => {
               <td>{teacher.gender}</td>
               <td>
                 <div className="action-buttons">
-                  <button className="edit-button">
+                  <button className="edit-button" onClick={() => handleEdit(teacher.id)}>
                     <FaEdit />
                   </button>
                   <button onClick={() => handleDelete(teacher.id)} className="delete-button">
@@ -85,6 +90,15 @@ const TeacherList = observer(() => {
           ))}
         </tbody>
       </table>
+      {teacherStore.isPopupOpen && (
+        <PopupComponent
+          onSubmit={() => {
+            // Handle form submission, e.g., refreshing teacher list
+            teacherStore.fetchTeachers();
+          }}
+          teacherId={teacherStore.currentTeacherId}
+        />
+      )}
     </div>
   );
 });

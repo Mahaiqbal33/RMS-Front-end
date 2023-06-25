@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import user from "../../assets/User.png";
-import passwordicom from '../../assets/Forgotpassword.png';
+import passwordicon from '../../assets/Forgotpassword.png';
 import { authStore } from '../../Store/AuthStore';
 import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,12 +13,26 @@ import axios from 'axios';
 const LoginForm = observer(() => {
   const navigate = useNavigate();
   const notify = () => toast("Invalid credentials. Please try again.");
-  // this function work to handle form data
+
+  useEffect(() => {
+    // Check if token exists in local storage and redirect to the sidebar if it does
+    const token = localStorage.getItem('token');
+    if (token) {
+      privateRoutes.token = true;
+      navigate('/sidebar');
+    }
+  }, [navigate]);
+  //this function work when form values enter
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    authStore.setFormField(name, value);
+    const { name, value, type, checked } = e.target;
+  
+    if (type === 'checkbox') {
+      authStore.setFormField(name, checked);
+    } else {
+      authStore.setFormField(name, value);
+    }
   };
-  // this function work to submite form data
+  // this function on submit the form
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -27,8 +41,11 @@ const LoginForm = observer(() => {
           username: authStore.formFields.username,
           password: authStore.formFields.password
         });
+
         // Handle successful login response
         if (response.data) {
+          const token = response.token; // Assuming the token is returned as 'token' in the response
+          localStorage.setItem('token', token); // Save the token to local storage
           privateRoutes.token = true;
           navigate('/sidebar');
         }
@@ -71,7 +88,7 @@ const LoginForm = observer(() => {
 
               <label htmlFor="password" className="input-lebal">Password</label>
               <div className="input-box">
-                <img src={passwordicom} className="iconff" alt='' />
+                <img src={passwordicon} className="iconff" alt='' />
                 <input
                   placeholder="Enter your password"
                   type="password"
@@ -84,6 +101,18 @@ const LoginForm = observer(() => {
                 />
               </div>
               {authStore.errors && <p className='errorStyle'>{authStore.errors}</p>}
+              <div className="checkbox-container">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  name="rememberMe"
+                  defaultChecked={authStore.rememberMe}
+                  onChange={handleInputChange}
+                  className="checkbox-input small-checkbox"
+                />
+
+                <label htmlFor="rememberMe" className="checkbox-label">Remember Me</label>
+              </div>
               <div className="button input-box">
                 <input type="submit" value="LOGIN" />
               </div>

@@ -5,6 +5,7 @@ class AuthStore {
   formFields = {
     username: '',
     password: '',
+    rememberMe:false,
   };
   errors = '';
 

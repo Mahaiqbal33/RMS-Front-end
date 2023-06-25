@@ -2,61 +2,42 @@ import { makeObservable, observable, action, computed } from 'mobx';
 import axios from 'axios';
 
 class TeacherStore {
-  data = {
-    name: '',
-    email: '',
-    className: '',
-    gender: '',
-    password: '',
-    phoneNumber: '',
-    subject: '',
-  };
-
+  isPopupOpen = false;
   teachers = [];
   getTeacher = [];
-
   searchTerm = '';
   filterType = '';
+  currentTeacherId = null;
+  currentTeacherData = {};
 
   constructor() {
     makeObservable(this, {
-      data: observable,
+      isPopupOpen: observable,
       teachers: observable,
       getTeacher: observable,
       searchTerm: observable,
       filterType: observable,
+      currentTeacherId: observable,
+      currentTeacherData: observable,
+      setPopupOpen: action.bound,
       filteredTeachers: computed,
-      resetForm: action,
-      setData: action,
       addTeacher: action,
       fetchTeachers: action,
       deleteTeacher: action,
       setFilter: action,
       setSearchTerm: action,
+      setCurrentTeacherId: action,
+      setCurrentTeacherData: action, // New action to set current teacher data
+      getTeacherById: computed,
     });
   }
-
-  resetForm() {
-    this.data = {
-      name: '',
-      email: '',
-      className: '',
-      gender: '',
-      password: '',
-      phoneNumber: '',
-      subject: '',
-    };
+  addTeacher(teacherData) {
+    // Add the teacher to the teachers array
+    this.teachers.push(teacherData);
   }
-
-  setData(name, value) {
-    this.data[name] = value;
-  }
-
-  addTeacher() {
-    const newTeacher = { ...this.data }; // Create a new object with current data values
-    this.teachers.push(newTeacher);
-  }
-
+  setPopupOpen = (value) => {
+    this.isPopupOpen = value;
+  };
   async fetchTeachers() {
     await axios
       .get('https://dummyjson.com/users') // Replace with your actual API endpoint
@@ -106,6 +87,18 @@ class TeacherStore {
   
       return (teacher[filterType] && teacher[filterType].toLowerCase().includes(searchTerm.toLowerCase()));
     });
+  }
+
+  setCurrentTeacherId(teacherId) {
+    this.currentTeacherId = teacherId;
+    this.setCurrentTeacherData(teacherId); // Update current teacher data
+  }
+
+  get getTeacherById() {
+    return (id) => this.getTeacher.find((teacher) => teacher.id === id);
+  }
+  setCurrentTeacherData(teacherId) {
+    this.currentTeacherData = this.getTeacher.find((teacher) => teacher.id === teacherId) || {};
   }
   
 }
