@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import user from "../../assets/User.png";
@@ -8,49 +8,38 @@ import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
 import { privateRoutes } from '../../Store/PrivateRoutes';
-import axios from 'axios';
+import { SC } from '../../helper/serverCall';
 
 const LoginForm = observer(() => {
   const navigate = useNavigate();
   const notify = () => toast("Invalid credentials. Please try again.");
 
-  useEffect(() => {
-    // Check if token exists in local storage and redirect to the sidebar if it does
-    const token = localStorage.getItem('token');
-    if (token) {
-      privateRoutes.token = true;
-      navigate('/sidebar');
-    }
-  }, [navigate]);
-  //this function work when form values enter
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-  
+
     if (type === 'checkbox') {
       authStore.setFormField(name, checked);
     } else {
       authStore.setFormField(name, value);
     }
   };
-  // this function on submit the form
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
+        const response = await SC.postCall('/create', {
           username: authStore.formFields.username,
           password: authStore.formFields.password
         });
 
-        // Handle successful login response
         if (response.data) {
-          const token = response.token; // Assuming the token is returned as 'token' in the response
-          localStorage.setItem('token', token); // Save the token to local storage
+          const token = response.data.token;
+          localStorage.setItem('token', token);
           privateRoutes.token = true;
           navigate('/sidebar');
         }
       } catch (error) {
-        // Handle login error
         authStore.setError('Invalid credentials. Please try again.');
         notify();
       }
@@ -60,7 +49,7 @@ const LoginForm = observer(() => {
 
   if (authStore.isLoggedIn) {
     navigate("/sidebar");
-    return null; // Return null when redirecting to prevent rendering the rest of the component
+    return null;
   }
 
   return (

@@ -4,92 +4,94 @@ import { formStore } from '../../Store/FormStore';
 import { teacherStore } from '../../Store/TeacherStore';
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
+import InputMask from 'react-input-mask';
 import './PopupComponent.css';
+
+import { validateTeacherForm } from './FormTeacherValidator';
+import { toJS } from 'mobx';
 
 const PopupComponent = observer(({ onSubmit, teacherId }) => {
   const { formData } = formStore;
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     formStore.setFormData({ ...formStore.formData, [name]: value });
   };
+
   useEffect(() => {
     if (teacherId) {
       const teacher = teacherStore.getTeacherById(teacherId);
-      console.log(teacher.firstName); // Check the value of teacher
-      console.log(teacher.phoneNumber); // Check the value of teacher.phoneNumber
 
       formStore.setFormData({
         fullName: teacher.firstName,
-        email: teacher.email,
+        username: teacher.email,
         className: teacher.className,
         gender: teacher.gender,
         password: teacher.password,
-        phoneCountryCode: teacher.phoneNumber ? teacher.phoneNumber.slice(0, 3) : '',
         phoneNumber: teacher.phoneNumber ? teacher.phoneNumber.slice(3) : '',
-        subject: teacher.subject
+        subject: teacher.subject,
       });
     } else {
       formStore.resetFormData();
     }
-
-
   }, [teacherId]);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (formStore.validateForm()) {
-      const { fullName, email, className, gender, password, phoneCountryCode, phoneNumber, subject } = formData;
-      console.log(formData)
-      // Create the payload for the backend request
+    const { isValid } = validateTeacherForm(formData);
+
+    if (isValid) {
+      const { fullName, username, className, gender, password, phoneNumber, subject } = formData;
+
       const payload = {
         fullName,
-        email,
+        username,
         className,
         gender,
         password,
-        phoneNumber: phoneCountryCode + phoneNumber, // Combine the country code and phone number
-        subject
+        phoneNumber,
+        subject,
       };
 
       if (teacherId) {
-        // Update the teacher using the teacherId
-        await axios.put(`/api/teachers/${teacherId}`, payload)
+        await axios
+          .put(`/api/teachers/${teacherId}`, payload)
           .then((response) => {
-            // Handle the response from the backend if needed
             console.log(response.data);
             onSubmit();
             teacherStore.setPopupOpen(false);
           })
           .catch((error) => {
-            // Handle the error if the request fails
             console.error(error);
           });
       } else {
-        // Add a new teacher
-        await axios.post('/api/teachers', payload)
+        await axios
+          .post('/api/teachers', payload)
           .then((response) => {
-            // Handle the response from the backend if needed
             console.log(response.data);
             onSubmit();
             teacherStore.setPopupOpen(false);
           })
           .catch((error) => {
-            // Handle the error if the request fails
             console.error(error);
           });
       }
-    }
 
-    formStore.resetFormData();
-    formStore.clearErrorMessage();
+      formStore.resetFormData();
+      formStore.clearErrors();
+    }
+     else {
+      console.log(toJS(formStore.errors))
+      formStore.setError('Please fix the following errors:');
+    }
   };
 
   const handleClose = () => {
     formStore.resetFormData();
-    formStore.clearErrorMessage();
+    formStore.clearErrors();
     teacherStore.setPopupOpen(false);
   };
-
 
   return (
     <div className="popup-container">
@@ -97,29 +99,35 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
         <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <form onSubmit={handleFormSubmit} className='teacher-popup-form'>
+        <form onSubmit={handleFormSubmit} className="teacher-popup-form">
           <h1>Add Teacher</h1>
           {formStore.errorMessage && <div className="error-message">{formStore.errorMessage}</div>}
           <div className="form-row">
             <label className="form-label">
               Full Name:
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                required
-              />
+              <input type="text" 
+              name="fullName"
+               value={formData.fullName} 
+               onChange={handleInputChange}
+                required />
+              {formStore.errors.fullName && (
+                <div className="error-message">{toJS(formStore.errors).fullName}</div>
+              )}
             </label>
             <label className="form-label">
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
+              Username:
+              <InputMask
+                mask="9999-FAST-9999"
+                maskChar=" "
+                type="text"
+                name="username"
+                value={formData.username}
                 onChange={handleInputChange}
                 required
               />
+              {formStore.errors.username && (
+                <div className="error-message">{toJS(formStore.errors).username}</div>
+              )}
             </label>
           </div>
           <div className="form-row">
@@ -135,20 +143,21 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
                 <option value="1st year">1st year</option>
                 <option value="2nd year">2nd year</option>
               </select>
+              {formStore.errors.className && (
+                <div className="error-message">{toJS(formStore.errors).className}</div>
+              )}
             </label>
 
             <label className="form-label">
               Gender:
-              <select
-                name="gender"
-                className="form-input"
-                value={formData.gender}
-                onChange={handleInputChange}
-              >
+              <select name="gender" className="form-input" value={formData.gender} onChange={handleInputChange}>
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
+              {formStore.errors.gender && (
+                <div className="error-message">{toJS(formStore.errors).gender}</div>
+              )}
             </label>
           </div>
           <div className="form-row">
@@ -159,55 +168,44 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                autoComplete='password'
+                autoComplete="password"
                 required
               />
+              {formStore.errors.password && (
+                <div className="error-message">{toJS(formStore.errors).password}</div>
+              )}
             </label>
-
-            <div className="phone-field">
-              <label className="form-label">
-                Phone:
-              </label>
-              <div className="phone-input">
-                <input
-                  type="text"
-                  name="phoneCountryCode"
-                  value={formData.phoneCountryCode}
-                  placeholder="+92"
-                  maxLength="3"
-                  required
-                  className="country-code-input"
-                  readOnly
-                />
-                <input
+            <label className="form-label">
+            Phone:
+            <InputMask
+                  mask="+92 999-9999999"
+                  maskChar=" "
                   type="tel"
                   name="phoneNumber"
-                  className="phone-number-input"
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
                   placeholder="Enter phone number"
-                  maxLength="10"
                   required
                 />
-              </div>
-            </div>
+             {formStore.errors.phoneNumber && (
+                  <div className="error-message">{toJS(formStore.errors).phoneNumber}</div>
+                )}
+            </label>
           </div>
           <div className="form-row">
             <label className="form-label">
               Subject:
-              <select
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-                required
-              >
+              <select name="subject" value={formData.subject} onChange={handleInputChange} required>
                 <option value="">Select Subject</option>
                 <option value="female">Female</option>
               </select>
+              {formStore.errors.subject && (
+                <div className="error-message">{toJS(formStore.errors).subject}</div>
+              )}
             </label>
           </div>
-          <div className='teacher-btn-section'>
-            <button type="button" className='another-teacher'>
+          <div className="teacher-btn-section">
+            <button type="button" className="another-teacher">
               <RiAddCircleLine />
               Add Another
             </button>
