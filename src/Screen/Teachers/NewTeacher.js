@@ -21,7 +21,7 @@ const NewTeacher = observer(() => {
     <div className="new-teacher-container">
       <div className='newteacher-content-section'>
       <div className="left-section">
-        <h2 className="new-teacher-title">Teacher Title</h2>
+        <h2 className="new-teacher-title">Teachers</h2>
       </div>
       <div className="right-section">
         <button className="add-teacher-button" onClick={handleAddTeacher}>

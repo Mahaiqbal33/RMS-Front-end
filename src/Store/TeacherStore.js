@@ -71,23 +71,29 @@ class TeacherStore {
     this.searchTerm = term;
   }
 
+  
   get filteredTeachers() {
     const { filterType, searchTerm, getTeacher } = this;
   
     return getTeacher.filter((teacher) => {
+      if (!teacher) {
+        return false; // Skip null/undefined teacher objects
+      }
+  
       if (!filterType || filterType === 'All') {
         return (
-          teacher.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          teacher.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (teacher.firstName && teacher.firstName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (teacher.subject && teacher.subject.toLowerCase().includes(searchTerm.toLowerCase())) ||
           (teacher.class && teacher.class.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          teacher.gender.toLowerCase().includes(searchTerm.toLowerCase())
+          (teacher.email && teacher.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (teacher.gender && teacher.gender.toLowerCase().includes(searchTerm.toLowerCase()))
         );
       }
   
       return (teacher[filterType] && teacher[filterType].toLowerCase().includes(searchTerm.toLowerCase()));
     });
   }
+  
 
   setCurrentTeacherId(teacherId) {
     this.currentTeacherId = teacherId;
