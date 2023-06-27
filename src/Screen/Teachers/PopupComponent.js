@@ -6,7 +6,6 @@ import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
 import './PopupComponent.css';
-
 import { validateTeacherForm } from './FormTeacherValidator';
 import { toJS } from 'mobx';
 
@@ -25,10 +24,10 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       formStore.setFormData({
         fullName: teacher.firstName,
         username: teacher.email,
-        className: teacher.className,
+        role: teacher.role,
         gender: teacher.gender,
         password: teacher.password,
-        phoneNumber: teacher.phoneNumber ? teacher.phoneNumber.slice(3) : '',
+        phoneNumber: teacher.phoneNumber,
         subject: teacher.subject,
       });
     } else {
@@ -39,15 +38,14 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const { isValid } = validateTeacherForm(formData);
-
-    if (isValid) {
-      const { fullName, username, className, gender, password, phoneNumber, subject } = formData;
+    if (validateTeacherForm()) {
+      const { fullName, username, role, gender, password, phoneNumber, subject } = formData;
+      console.log(fullName)
 
       const payload = {
         fullName,
         username,
-        className,
+        role,
         gender,
         password,
         phoneNumber,
@@ -67,7 +65,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
           });
       } else {
         await axios
-          .post('/api/teachers', payload)
+          .post('https://dummy.restapiexample.com/api/v1/create', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -81,8 +79,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       formStore.resetFormData();
       formStore.clearErrors();
     }
-     else {
-      console.log(toJS(formStore.errors))
+    else {
       formStore.setError('Please fix the following errors:');
     }
   };
@@ -105,10 +102,10 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
           <div className="form-row">
             <label className="form-label">
               Full Name:
-              <input type="text" 
-              name="fullName"
-               value={formData.fullName} 
-               onChange={handleInputChange}
+              <input type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
                 required />
               {formStore.errors.fullName && (
                 <div className="error-message">{toJS(formStore.errors).fullName}</div>
@@ -132,19 +129,19 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
           </div>
           <div className="form-row">
             <label className="form-label">
-              Class:
+              Role:
               <select
                 name="className"
                 className="form-input"
-                value={formData.className}
+                value={formData.role}
                 onChange={handleInputChange}
               >
-                <option value="">Select Class</option>
-                <option value="1st year">1st year</option>
-                <option value="2nd year">2nd year</option>
+                <option value="">Select Role</option>
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
               </select>
-              {formStore.errors.className && (
-                <div className="error-message">{toJS(formStore.errors).className}</div>
+              {formStore.errors.role && (
+                <div className="error-message">{toJS(formStore.errors).role}</div>
               )}
             </label>
 
@@ -176,20 +173,20 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
               )}
             </label>
             <label className="form-label">
-            Phone:
-            <InputMask
-                  mask="+92 999-9999999"
-                  maskChar=" "
-                  type="tel"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  placeholder="Enter phone number"
-                  required
-                />
-             {formStore.errors.phoneNumber && (
-                  <div className="error-message">{toJS(formStore.errors).phoneNumber}</div>
-                )}
+              Phone:
+              <InputMask
+                mask="+92 999-9999999"
+                maskChar=" "
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                placeholder="Enter phone number"
+                required
+              />
+              {formStore.errors.phoneNumber && (
+                <div className="error-message">{toJS(formStore.errors).phoneNumber}</div>
+              )}
             </label>
           </div>
           <div className="form-row">
