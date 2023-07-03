@@ -4,7 +4,6 @@ import {  Route, Routes } from 'react-router-dom';
 import './App.css'; // Create a CSS file for custom styles
 import Dashboard from './Screen/Dashboard/Dashboard'
 import Sidebar from './Component/Sidebar/Sidebar.js';
-import Teachers from './Screen/Teachers/Teachers';
 import Classes from './Screen/Classes/Classes'
 import Students from './Screen/Students/Students'
 import Settings from './Screen/Settings/Settings'
