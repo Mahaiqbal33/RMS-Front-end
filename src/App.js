@@ -25,7 +25,7 @@ function App() {
     <Route element= {<PrivateRoutes/>}>
     <Route path='sidebar' element={<Sidebar />}>
           <Route index element={<Dashboard />} />
-          <Route path="teachers" element={<NewTeacher></NewTeacher>} ></Route>
+          <Route path="newteacher" element={<NewTeacher></NewTeacher>} ></Route>
           <Route path='teacherlist' element={<Teacherlist/>}/>
           <Route path='studentlist' element={<Studentlist/>}/>
           <Route path='test' element={<Test/>}/>
