@@ -8,7 +8,7 @@ import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
 import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
-import { SC } from '../../helper/serverCall';
+import { SC } from '../../Services/serverCall';
 
 const LoginForm = observer(() => {
   const navigate = useNavigate();
