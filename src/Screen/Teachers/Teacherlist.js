@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
-import { teacherStore } from '../../Store/TeacherStore';
+import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import { toJS } from 'mobx';
 import './Style/TeacherList.css';
 import loading from '../../assets/loading.png';

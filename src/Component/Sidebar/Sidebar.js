@@ -1,12 +1,12 @@
 import React from 'react';
 import './Sidebar.css';
 import { observer } from 'mobx-react-lite';
-import { authStore } from '../../Store/AuthStore';
+import { authStore } from '../../Store/LoginStore/AuthStore';
 import mylogo from '../../assets/Asset2.png';
 import {  FaChevronDown, FaChevronUp, FaBars,FaBell, FaUserCircle,FaSignOutAlt, FaTimes,FaSearch} from "react-icons/fa";
 import { menuItem} from './Routes'
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import {sidebarStore} from '../../Store/SideStore';
+import {sidebarStore} from '../../Store/Sidebarstore/SideStore';
 
 const Sidebar = observer(() => {
 

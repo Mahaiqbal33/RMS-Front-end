@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import PopupComponent from './PopupComponent';
-import { teacherStore } from '../../Store/TeacherStore';
+import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import './Style/Newteacher.css'; // Import the CSS file for styling
 import background from '../../assets/background.png'
 

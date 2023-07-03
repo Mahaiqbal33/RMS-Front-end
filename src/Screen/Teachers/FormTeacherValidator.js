@@ -1,5 +1,5 @@
 import { toJS } from 'mobx';
-import { formStore } from '../../Store/FormStore';
+import { formStore } from '../../Store/TeacherStore/FormStore';
 
 export const validateTeacherForm = () => {
   const { fullName, username, role, gender, password, phoneNumber, subject } = formStore.formData;

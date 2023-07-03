@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { formStore } from '../../Store/FormStore';
-import { teacherStore } from '../../Store/TeacherStore';
+import { formStore } from '../../Store/TeacherStore/FormStore';
+import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import InputMask from 'react-input-mask';

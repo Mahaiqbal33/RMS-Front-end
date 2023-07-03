@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import user from "../../assets/User.png";
 import passwordicon from '../../assets/Forgotpassword.png';
-import { authStore } from '../../Store/AuthStore';
+import { authStore } from '../../Store/LoginStore/AuthStore';
 import './logindesign.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
-import { privateRoutes } from '../../Store/PrivateRoutes';
+import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
 import { SC } from '../../helper/serverCall';
 
 const LoginForm = observer(() => {
