@@ -6,10 +6,13 @@ export const menuItem = [
       icon: <FaColumns />,
     },
     {
-      path: "teachers",
       name: "Teachers",
       icon: <FaChalkboardTeacher />,
       subitems:[
+        {
+          path: "newteacher",
+          name: "AddTeacher"
+        },
         {
           path: "teacherlist",
           name: "Teacherlist"

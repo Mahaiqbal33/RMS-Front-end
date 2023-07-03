@@ -1,4 +1,3 @@
-
 import { toJS } from 'mobx';
 import { formStore } from '../../Store/FormStore';
 
@@ -42,6 +41,6 @@ export const validateTeacherForm = () => {
     formStore.setError("subject",'Subject is required');
      
   }
-  
+  console.log(toJS(formStore.errors))
   return true ;
 };

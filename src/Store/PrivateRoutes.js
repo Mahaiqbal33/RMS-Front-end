@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from 'mobx';
 import { Outlet, Navigate } from 'react-router-dom';
 
 class PrivateRoutes {
-  token = true;
+  token = false;
 
   constructor() {
     makeObservable(this, {

@@ -88,11 +88,42 @@
 .action-buttons button.delete-button {
   color: #dc3545;
 }
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px; /* Adjust the height as needed */
+}
 
-@media (max-width: 768px) {
-  .filter-input input,
-  .filter-select select {
+.loading-indicator img {
+  width: 100px; /* Adjust the image size as needed */
+  height: 100px;
+}
+
+
+@media (max-width: 690px) {
+  .filter-input {
     flex: none;
+    width: 60%;
+  }
+  .filter-select{
+    flex: none;
+    width: 20%;
+  }
+  .filter-section{
+    width: 80%;
+  }
+}
+@media (max-width: 500px) {
+  .filter-input {
+    flex: none;
+    width: 60%;
+  }
+  .filter-select{
+    flex: none;
+    width: 25%;
+  }
+  .filter-section{
     width: 100%;
   }
 }

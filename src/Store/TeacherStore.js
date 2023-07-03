@@ -3,7 +3,6 @@ import axios from 'axios';
 
 class TeacherStore {
   isPopupOpen = false;
-  teachers = [];
   getTeacher = [];
   searchTerm = '';
   filterType = '';
@@ -13,7 +12,6 @@ class TeacherStore {
   constructor() {
     makeObservable(this, {
       isPopupOpen: observable,
-      teachers: observable,
       getTeacher: observable,
       searchTerm: observable,
       filterType: observable,
@@ -21,7 +19,6 @@ class TeacherStore {
       currentTeacherData: observable,
       setPopupOpen: action.bound,
       filteredTeachers: computed,
-      addTeacher: action,
       fetchTeachers: action,
       deleteTeacher: action,
       setFilter: action,
@@ -30,10 +27,6 @@ class TeacherStore {
       setCurrentTeacherData: action, // New action to set current teacher data
       getTeacherById: computed,
     });
-  }
-  addTeacher(teacherData) {
-    // Add the teacher to the teachers array
-    this.teachers.push(teacherData);
   }
   setPopupOpen = (value) => {
     this.isPopupOpen = value;

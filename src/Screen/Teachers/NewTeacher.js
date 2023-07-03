@@ -2,18 +2,17 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import PopupComponent from './PopupComponent';
 import { teacherStore } from '../../Store/TeacherStore';
-import './Newteacher.css'; // Import the CSS file for styling
+import './Style/Newteacher.css'; // Import the CSS file for styling
 import background from '../../assets/background.png'
 
 const NewTeacher = observer(() => {
-  const { isPopupOpen, setPopupOpen, addTeacher } = teacherStore;
+  const { isPopupOpen, setPopupOpen } = teacherStore;
 
   const handleAddTeacher = () => {
     setPopupOpen(true);
   };
 
-  const handleFormSubmit = (teacherData) => {
-    addTeacher(teacherData);
+  const handleFormSubmit =() => {
     setPopupOpen(false);
   };
 
@@ -28,7 +27,6 @@ const NewTeacher = observer(() => {
           Add Teacher
         </button>
       </div>
-      
       </div>
       <div className="image-section">
         <img src={background} alt=''></img>
