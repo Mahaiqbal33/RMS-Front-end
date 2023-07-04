@@ -3,7 +3,7 @@ import React from 'react'
 const Studentlist = () => {
   return (
     <div>
-      studentlist
+      Studentlist 
     </div>
   )
 }

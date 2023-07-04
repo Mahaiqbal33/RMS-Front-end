@@ -8,7 +8,7 @@ import loading from '../../assets/loading.png';
 import maleImage from '../../assets/male.png';
 import femaleImage from '../../assets/female.png';
 
-const PopupComponent = lazy(() => import('./PopupComponent'));
+const PopupComponent = lazy(() => import('../../Component/TeacherComponent/PopupComponent'));
 
 const TeacherList = observer(() => {
   const [isLoading, setIsLoading] = useState(true);

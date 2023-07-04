@@ -1,15 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import PopupComponent from './PopupComponent';
+import PopupComponent from '../../Component/TeacherComponent/PopupComponent';
 import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import './Style/Newteacher.css'; // Import the CSS file for styling
 import background from '../../assets/background.png'
+import { sidebarStore } from '../../Store/Sidebarstore/SideStore';
 
 const NewTeacher = observer(() => {
   const { isPopupOpen, setPopupOpen } = teacherStore;
 
   const handleAddTeacher = () => {
     setPopupOpen(true);
+    sidebarStore.setSidebarOpen(false);
   };
 
   const handleFormSubmit =() => {

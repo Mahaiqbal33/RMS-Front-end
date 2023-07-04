@@ -5,8 +5,8 @@ import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
-import './Style/PopupComponent.css';
-import { validateTeacherForm } from './FormTeacherValidator';
+import "../../Component/TeacherComponent/PopupStyle.css"
+import { validateTeacherForm } from '../../Screen/Teachers/FormTeacherValidator';
 import { toJS } from 'mobx';
 
 const PopupComponent = observer(
@@ -129,35 +129,6 @@ const PopupComponent = observer(
             </label>
           </div>
           <div className="form-row">
-          <label className="form-label">
-              role:
-              <select name="role" className="form-input" value={formData.role} onChange={handleInputChange}>
-                <option value="">Select role</option>
-                <option value="teacher">Teacher</option>
-                <option value="student">Student</option>
-              </select>
-              {formStore.errors.role && (
-                <div className="error-message">{toJS(formStore.errors).role}</div>
-              )}
-            
-              {formStore.errors.role && (
-                <div className="error-message">{toJS(formStore.errors).role}</div>
-              )}
-            </label>
-
-            <label className="form-label">
-              Gender:
-              <select name="gender" className="form-input" value={formData.gender} onChange={handleInputChange}>
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-              {formStore.errors.gender && (
-                <div className="error-message">{toJS(formStore.errors).gender}</div>
-              )}
-            </label>
-          </div>
-          <div className="form-row">
             <label className="form-label">
               Password:
               <input
@@ -190,6 +161,17 @@ const PopupComponent = observer(
             </label>
           </div>
           <div className="form-row">
+          <label className="form-label">
+              Gender:
+              <select name="gender" className="form-input" value={formData.gender} onChange={handleInputChange}>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              {formStore.errors.gender && (
+                <div className="error-message">{toJS(formStore.errors).gender}</div>
+              )}
+            </label>
             <label className="form-label">
               Subject:
               <select name="subject" value={formData.subject} onChange={handleInputChange} required>
