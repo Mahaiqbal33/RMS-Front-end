@@ -12,8 +12,16 @@ import { SC } from '../../Services/serverCall';
 
 const LoginForm = observer(() => {
   const navigate = useNavigate();
-  const notify = () => toast("Invalid credentials. Please try again.");
+  // const notify = () => toast("Invalid credentials. Please try again.");
 
+  // Function to show notification with custom background color
+  const notify = () => {
+    toast.error("Invalid credentials. Please try again.", {
+      className: 'custom-toast', // Add the custom CSS class here
+    });
+  };
+
+//HandleChange function
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -23,7 +31,8 @@ const LoginForm = observer(() => {
       authStore.setFormField(name, value);
     }
   };
-
+  
+ //HandleSubmit function
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -112,7 +121,7 @@ const LoginForm = observer(() => {
       <div className="front">
         <img src="./loginformImg.png" alt="" />
       </div>
-      <ToastContainer />
+      <ToastContainer  />
     </div>
   );
 });

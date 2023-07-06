@@ -3,7 +3,7 @@ import { makeObservable, observable, action } from 'mobx';
 class SidebarStore {
   sidebarOpen = false;
   openMenus = [];
-
+   
   constructor() {
     makeObservable(this, {
       sidebarOpen: observable,

@@ -1,0 +1,113 @@
+.material-icons-outlined {
+  vertical-align: middle;
+  line-height: 1px;
+}
+/* ---------- HEADER ---------- */
+
+.header {
+  grid-area: header;
+  height: 70px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 0 6px 7px -5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.dashboard-header{
+  grid-area: header;
+  height: 70px;
+  background-color:var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 30 6px 7px -4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.header-right #header-icon{
+  margin: 0 3px ;
+  color:var(--color-dark);
+  cursor: pointer;
+}
+/* Responsive menu icon */
+ .menu-icon {
+  display: none;
+}
+.header-right #logout-btn{
+ background-color: transparent;
+ color:var(--color-dark) ;
+ border: none;
+ margin-left: 15px;
+ cursor: pointer;
+ padding: 0;
+}
+
+.dashboard-header-right #header-icon{
+  margin: 0 3px ;
+  color:var(--color-highlight) ;
+  cursor: pointer;
+}
+
+.dashboard-header-right #logout-btn{
+ background-color: transparent;
+ color:var(--color-highlight) ;
+ border: none;
+ margin-left: 15px;
+ cursor: pointer;
+ padding: 0;
+} 
+
+
+/* ---------- Searchbar ---------- */
+#animated-icon input[type=text] {
+  width: 220px;
+  box-sizing: border-box;
+  border: 1px solid #c8c8c8;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: white;
+  padding: 8px 18px 8px 35px;
+}
+  #animated-icon .search-icon {
+  position: relative;
+  left: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+/* ---------- MEDIA QUERIES ---------- */
+
+
+/* Medium <= 992px */
+@media screen and (max-width: 992px) {
+
+  #sidebar {
+    display: none;
+  }
+
+  .menu-icon {
+    display: inline;
+  }
+
+  .sidebar-title > span {
+    display: inline;
+  }
+}
+
+
+/* Extra Small <= 576px */
+@media screen and (max-width: 576px) {
+.header-left {
+  display: none;
+}
+}

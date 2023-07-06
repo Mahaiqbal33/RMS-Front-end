@@ -2,7 +2,7 @@ import { toJS } from 'mobx';
 import { formStore } from '../../Store/TeacherStore/FormStore';
 
 export const validateTeacherForm = () => {
-  const { fullName, username, role, gender, password, phoneNumber, subject } = formStore.formData;
+  const { fullName, username, gender, password, phoneNumber, subject } = formStore.formData;
 
   // Reset errors
   formStore.clearErrors();
@@ -17,10 +17,7 @@ export const validateTeacherForm = () => {
     return false;
   }
 
-  if (role.trim() === '') {
-    formStore.setError('className','Class is required');
-    return false;
-  }
+ 
 
   if (gender.trim() === '') {
     formStore.setError("gender",'Gender is required');

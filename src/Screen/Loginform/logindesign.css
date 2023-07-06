@@ -153,6 +153,29 @@ margin-top: 40px;
   cursor: pointer;
  
 }
+/* Custom styles for toast notifications */
+.custom-toast {
+  background-color: #ff0000 !important; /* Replace with your desired background color */
+  color: #ffffff !important; /* Replace with your desired text color */
+}
+
+/* Custom styles for toast content */
+.custom-toast .Toastify__toast-body {
+  color: #ffffff !important; /* Replace with your desired text color */
+}
+
+/* Custom styles for the progress bar */
+.custom-progress-bar {
+  background-color: #ffffff !important; /* Replace with your desired color for the progress bar */
+}
+
+/* Custom styles for the close button icon */
+.custom-toast .Toastify__close-button svg,
+.custom-toast .Toastify__close-button path {
+  fill: #ffffff !important; /* Replace with your desired icon color */
+}
+
+
 
 
 @media (max-width: 700px) {
