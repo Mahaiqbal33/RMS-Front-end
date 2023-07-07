@@ -3,7 +3,7 @@ import './Sidebar.css';
 import { observer } from 'mobx-react-lite';
 import mylogo from '../../assets/Asset2.png';
 import { FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
-import { menuItem } from '../../Navigation/Routes';
+import { menuItem } from '../../Navigations/Routes';
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { sidebarStore } from '../../Store/Sidebarstore/SideStore';
 import Header from '../Header/Header';

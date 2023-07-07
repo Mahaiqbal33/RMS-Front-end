@@ -1,4 +1,6 @@
 import { makeObservable, observable, action, computed } from 'mobx';
+import sweetAlertConfig from '../../Component/Alerts/alertConfig';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 class TeacherStore {
@@ -42,18 +44,47 @@ class TeacherStore {
       });
   }
 
+  //pagination functionality
+  // async fetchTeachers(page, pageSize) {
+  //   const url = `https://dummyjson.com/users?page=${page}&limit=${pageSize}`;
+  
+  //   try {
+  //     const response = await axios.get(url);
+  //     this.getTeacher = response.data.users;
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // }
+
+
   deleteTeacher(teacherId) {
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Are you sure you want to delete this record?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
     axios
       .delete(`https://dummyjson.com/users/${teacherId}`) // Replace with your actual API endpoint
       .then(() => {
         console.log(teacherId)
         // Remove the deleted teacher from the local array
         this.getTeacher = this.getTeacher.filter((teacher) => teacher.id !== teacherId);
+        sweetAlertConfig.successAlert("Teacher is deleted successfully!")
       })
       .catch((error) => {
         console.error('Error:', error);
+        sweetAlertConfig.errorAlert("An error occurred while deleting the teacher.")
       });
-  }
+    }
+  })
+}
+
   
 
   setFilter(filter) {

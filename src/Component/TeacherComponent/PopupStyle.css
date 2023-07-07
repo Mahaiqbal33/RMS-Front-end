@@ -34,7 +34,7 @@
     margin: 30px;
   }
   
- .teacher-popup-form h1 {
+  .popup-content h1 {
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 24px;
@@ -50,7 +50,7 @@
   
   .form-label {
     flex-basis: 48%;
-   
+    position: relative;
   }
   
   .form-label label {
@@ -69,7 +69,9 @@
     font-size: 16px;
    
   }
-  
+  .select-input{
+    padding-right: 10px;
+  }
   .add-teacher {
     margin-top: 20px;
     padding: 8px 16px;
@@ -102,26 +104,8 @@
     display: flex;
     flex-direction: row;
   }
-  .phone-input {
-    /* Styles for the phone input */
-    display: flex;
-   margin-top: -9px;
-  }
- .phone-field{
-  width: 48%;
-  margin-left: 10px;
- }
-.country-code-input {
-  /* Styles for the country code input */
-  width: 50px;
-  padding: 11px;
-  border: 1px solid #ccc;
-  border-right: none;
-  border-radius: 4px 0 0 4px;
-  font-size: 14px;
-  background-color: #f5f5f5;
-  color: #555;
-}
+  
+
 
 .phone-number-input {
   /* Styles for the phone number input and password input */
@@ -145,6 +129,105 @@
 .another-teacher svg {
   margin-right: 5px;
 }
+
+.another-teacher:hover {
+  transform: scale(1.1);
+  color: var(--color-secondary)
+
+  
+}
+
+.another-teacher:focus {
+  outline: none;
+}
+
+.teacher-popup-form .form-label .required-field , .form-file-label .required-field  {
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 18px;
+  color: red;
+}
+
+
+.error-message{
+  color: red;
+  line-height: 14px;
+  font-size: 14px;
+}
+
+
+
+
+.popup-header {
+  display: flex;
+  justify-content:flex-start;
+  align-items: center;
+
+}
+
+.popup-header-button {
+  border: none;
+  margin: 0 18px 15px 0px;
+  padding: 0;
+  background-color: transparent;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-header-button.active {
+  color: #428DFC;
+  
+}
+
+.popup-header-button:hover {
+  color: #428DFC;
+  text-decoration: underline;
+}
+
+
+
+/* CSS for the file input field */
+.form-file-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-file-label {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.custom-file-input {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 8px 25px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  margin-right: 16px;
+  transition: background-color 200ms;
+}
+
+.custom-file-input:hover {
+  background-color: #f3f4f6;
+}
+
+.custom-file-input:active {
+  background-color: #e5e7eb;
+}
+
+.file-input {
+  display: none;
+}
+
+
 /* Media Queries */
 @media screen and (max-width: 1100px) {
   .popup-content {
@@ -174,73 +257,4 @@
     margin:0 5%;
   }
  
-}
-
-.error-message{
-  color: red;
-}
-
-
-
-
-
-.success-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #4caf50;
-  color: #ffffff;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.success-icon,
-.error-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
-  font-size: 24px;
-  color: #ffffff;
-  animation: rotate 1s infinite;
-}
-
-.error-message-popup {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: red;
-  color: #ffffff;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }

@@ -15,7 +15,7 @@ import Testlist from './Screen/Test/Testlist'
 import Loginform from './Screen/Loginform/Loginform';
 import Test from './Screen/Test/Test';
 import 'react-toastify/dist/ReactToastify.css';
-import PrivateRoutes from './Utlits/PrivateRoutes';
+import PrivateRoutes from './Utilits/PrivateRoutes';
 import NewTeacher from './Screen/Teachers/NewTeacher';
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
     <Route element= {<PrivateRoutes/>}>
     <Route path='sidebar' element={<Sidebar />}>
           <Route index element={<Dashboard />} />
-          <Route path="newteacher" element={<NewTeacher></NewTeacher>} ></Route>
+          <Route path="teacher" element={<NewTeacher></NewTeacher>} ></Route>
           <Route path='teacherlist' element={<Teacherlist/>}/>
           <Route path='studentlist' element={<Studentlist/>}/>
           <Route path='test' element={<Test/>}/>
