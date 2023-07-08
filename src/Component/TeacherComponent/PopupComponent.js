@@ -6,7 +6,7 @@ import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
 import '../../Component/TeacherComponent/PopupStyle.css';
-import { validateTeacherForm } from '../../Screen/Teachers/FormTeacherValidator';
+import { validateTeacherForm } from '../../helper.js/FormTeacherValidator';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 
@@ -126,6 +126,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
   };
 
   const handleClose = () => {
+    formStore.setShowManuallyForm(true);
     formStore.resetFormData();
     formStore.clearErrors();
     formStore.resetCSVFile();

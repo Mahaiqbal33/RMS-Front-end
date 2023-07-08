@@ -4,7 +4,6 @@ import {  Route, Routes } from 'react-router-dom';
 import './App.css'; // Create a CSS file for custom styles
 import Dashboard from './Screen/Dashboard/Dashboard'
 import Sidebar from './Component/Sidebar/Sidebar.js';
-import Classes from './Screen/Classes/Classes'
 import Students from './Screen/Students/Students'
 import Settings from './Screen/Settings/Settings'
 import Features from './Screen/Features/Feature'
@@ -17,6 +16,8 @@ import Test from './Screen/Test/Test';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoutes from './Utilits/PrivateRoutes';
 import NewTeacher from './Screen/Teachers/NewTeacher';
+import Subjects from './Screen/Subjects/Subjects';
+import SubjectsList from './Screen/Subjects/SubjectsList';
 function App() {
   return (
     <div>
@@ -29,7 +30,8 @@ function App() {
           <Route path='studentlist' element={<Studentlist/>}/>
           <Route path='test' element={<Test/>}/>
           <Route path='testlist' element={<Testlist/>}/>
-          <Route path="classes" element={<Classes />} />
+          <Route path="Subjects" element={<Subjects/>} />
+          <Route path='subjectsList' element={<SubjectsList/>}/>
           <Route path="students" element={<Students />} />
           <Route path="settings" element={<Settings />} />
           <Route path="Features" element={<Features />} />

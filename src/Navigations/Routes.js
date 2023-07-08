@@ -12,7 +12,7 @@ export const menuItem = [
       subitems:[
         {
           path: "teacherlist",
-          name: "Teacherlist"
+          name: "TeacherList"
         }
       ]
     },
@@ -23,14 +23,20 @@ export const menuItem = [
       subitems:[
         {
           path: "studentlist",
-          name: "Studentlist"
+          name: "StudentList"
         }
       ]
     },
     {
-      path: "classes",
-      name: "Classes",
+      path: "Subjects",
+      name: "Subjects",
       icon: <FaCalendarAlt />,
+      subitems:[
+        {
+          path: "subjectsList",
+          name: "SubjectsList"
+        }
+      ]
     },
     {
       path: "test",
