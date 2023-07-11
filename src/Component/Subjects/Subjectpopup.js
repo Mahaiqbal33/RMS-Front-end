@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { subjectsStore } from '../../Store/SubjectsStore/SubjectsStore';
 import "./SubjectPopupStyle.css"
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
+import { validateSubjectForm } from '../../helper.js/FormSubjectValidator';
 import InputMask from 'react-input-mask';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
-import { subjectformStore } from '../../Store/SubjectsStore/SubjecsFormStore';
+import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
+import SubjectCombination from './SubjectCombinationForm';
 
 const Subjectpopup = observer(({ onSubmit, subjectId }) => {
   const { formData } = subjectformStore;
@@ -16,7 +18,8 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
     const { name, value } = e.target;
     subjectformStore.setFormData({ ...subjectformStore.formData, [name]: value });
   };
-   // Call fetchUserList when the component is mounted
+  // Call fetchUserList when the component is mounted
+
 
   useEffect(() => {
     if (subjectId) {
@@ -36,11 +39,19 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
     subjectformStore.fetchUserList();
   }, []);
 
+  const handleSubjectCobinationFormClick = () => {
+    subjectformStore.setShowSubjectsCombinationForm(true);
+  };
+
+  const handleCSVFormClick = () => {
+    subjectformStore.setShowSubjectsCombinationForm(false);
+  };
+
   const handleFormSubmit = async (e) => {
     subjectformStore.filterUserId();
     e.preventDefault();
-    let arr = true;
-    if (arr) {
+
+    if (validateSubjectForm()) {
       const { username, userId, subject } = formData;
 
       const payload = {
@@ -102,49 +113,64 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
         </span>
         <div className="subject-popup-form">
           <h1>Add subject</h1>
+          <div className="popup-header">
+            <button className={`popup-header-button ${subjectformStore.showSubjectsCombinationForm ? 'active' : ''}`} onClick={handleSubjectCobinationFormClick}>
+            Add Subjects
+            </button>
+            <button className={`popup-header-button ${!subjectformStore.showSubjectsCombinationForm ? 'active' : ''}`} onClick={handleCSVFormClick}>
+            Student Subjects
+            </button>
+          </div>
+          {
+            subjectformStore.showSubjectsCombinationForm ? (<SubjectCombination/> ) : (
+              <form onSubmit={handleFormSubmit}>
+              <div className="form-row">
+                <label className="form-label">
+                  Username<span className="required-field">*</span>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  {subjectformStore.errors.username && (
+                    <div className="error-message">{toJS(subjectformStore.errors).username}</div>
+                  )}
+                </label>
+                <label className="form-label">
+                  Subject<span className="required-field">*</span>
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    required
+                    className='select-input'
+                  >
+                    <option value="">Select Subject</option>
+                    <option value="Math">Math</option>
+                  </select>
+                  {subjectformStore.errors.subject && (
+                    <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
+                  )}
+                </label>
+                {subjectformStore.errors.userId && (
+                  <div className="error-message">{toJS(subjectformStore.errors).userId}</div>
+                )}
+              </div>
+              <div className="subject-btn-section">
+                <button type="button" className="another-subject" onClick={handleAnothersubject}>
+                  <RiAddCircleLine />
+                  Add Another
+                </button>
+                <button type="submit" className="add-subject">
+                  Add subject
+                </button>
+              </div>
+            </form>
+            )
+          }
 
-          <form onSubmit={handleFormSubmit}>
-            <div className="form-row">
-              <label className="form-label">
-                Username<span className="required-field">*</span>
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  required
-                />
-                {subjectformStore.errors.username && (
-                  <div className="error-message">{toJS(subjectformStore.errors).username}</div>
-                )}
-              </label>
-              <label className="form-label">
-                Subject<span className="required-field">*</span>
-                <select
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                  className='select-input'
-                >
-                  <option value="">Select Subject</option>
-                  <option value="Math">Math</option>
-                </select>
-                {subjectformStore.errors.subject && (
-                  <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
-                )}
-              </label>
-            </div>
-            <div className="subject-btn-section">
-              <button type="button" className="another-subject" onClick={handleAnothersubject}>
-                <RiAddCircleLine />
-                Add Another
-              </button>
-              <button type="submit" className="add-subject">
-                Add subject
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </div>

@@ -11,15 +11,16 @@ class SubjectFormStore {
     username: '',
     subject: '',
     userId: '',
-    file:'',
   };
- 
+  showSubjectsCombinationForm=true;
 
   constructor() {
     makeObservable(this, {
       formData: observable,
       errors: observable,
       userList:observable,
+      showSubjectsCombinationForm:observable,
+      setShowSubjectsCombinationForm:action,
       setFormData: action,
       resetFormData: action,
       setError: action,
@@ -44,7 +45,7 @@ class SubjectFormStore {
     if (filteredUser && filteredUser.id) {
       this.formData.userId = toJS(filteredUser.id);
     } else {
-      this.formData.userId = null;
+      this.formData.userId ='';
     }
     console.log(this.formData.userId);
   }
@@ -61,7 +62,6 @@ class SubjectFormStore {
       username: '',
       subject: '',
       userId: '',
-      file:''
     };
   }
 
@@ -75,6 +75,9 @@ class SubjectFormStore {
       subject: '',
       userId: '',
     };
+  }
+  setShowSubjectsCombinationForm(value){
+    this.showSubjectsCombinationForm= value;
   }
 }
 
