@@ -42,6 +42,12 @@ export const menuItem = [
       path: "test",
       name: "Test",
       icon: <FaCalendarAlt />,
+      subitems:[
+        {
+          path: "testlist",
+          name: "TestList"
+        }
+      ]
     },
     {
       path: "settings",

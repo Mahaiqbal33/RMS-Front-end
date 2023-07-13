@@ -9,6 +9,7 @@ import { validateSubjectCombinatinForm } from '../../helper.js/SubjectCombinatio
 import InputMask from 'react-input-mask';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
+import { SC } from '../../Services/serverCall';
 
 const SubjectCombination = observer(() => {
   const { formData } = subjectCombinationStore;
@@ -31,7 +32,7 @@ const SubjectCombination = observer(() => {
       };
 
       try {
-        await axios.post('http://127.0.0.1:3333/api/v1/subject', payload);
+        await SC.postCall('/subject', payload);
         sweetAlertConfig.successAlert("Successfully submitted the form data");
         subjectsStore.setPopupOpen(false);
       } catch (error) {

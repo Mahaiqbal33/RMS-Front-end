@@ -1,0 +1,52 @@
+.new-student-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .newstudent-content-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .left-section {
+    flex-grow: 1;
+  }
+  
+  .new-student-title {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .right-section {
+    margin-left: 20px;
+  }
+  
+  .add-student-button {
+    padding: 8px 16px;
+    background-color: var(--color-secondary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-student-button:hover {
+    background-color: var(--color-secondary);
+  }
+  
+  .image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+  }
+  .image-section img{
+    max-width: 100%;
+    height: auto;
+  }

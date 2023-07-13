@@ -12,7 +12,7 @@ import Teacherlist from './Screen/Teachers/Teacherlist'
 import Studentlist from './Screen/Students/Studentlist'
 import Testlist from './Screen/Test/Testlist'
 import Loginform from './Screen/Loginform/Loginform';
-import Test from './Screen/Test/Test';
+import NewTest from './Screen/Test/NewTest';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoutes from './Utilits/PrivateRoutes';
 import NewTeacher from './Screen/Teachers/NewTeacher';
@@ -28,7 +28,7 @@ function App() {
           <Route path="teacher" element={<NewTeacher></NewTeacher>} ></Route>
           <Route path='teacherlist' element={<Teacherlist/>}/>
           <Route path='studentlist' element={<Studentlist/>}/>
-          <Route path='test' element={<Test/>}/>
+          <Route path='test' element={<NewTest/>}/>
           <Route path='testlist' element={<Testlist/>}/>
           <Route path="Subjects" element={<Subjects/>} />
           <Route path='subjectsList' element={<SubjectsList/>}/>
