@@ -1,261 +1,260 @@
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #e6e8ed;
-    color: #666666;
-    font-family: "Montserrat", sans-serif;
-  }
-  
-  .material-icons-outlined {
-    vertical-align: middle;
-    line-height: 1px;
-  }
-  
-  
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #e6e8ed;
+  color: #666666;
+  font-family: "Montserrat", sans-serif;
+}
+
+.material-icons-outlined {
+  vertical-align: middle;
+  line-height: 1px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 260px 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    "sidebar header header header"
+    "sidebar main main main";
+  height: 100vh;
+}
+
+/* ---------- HEADER ---------- */
+
+.header {
+  grid-area: header;
+  height: 70px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 0 6px 7px -5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dashboard-header {
+  grid-area: header;
+  height: 70px;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 30 6px 7px -4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.header-right #header-icon,
+.dashboard-header-right #header-icon {
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+.header-right #logout-btn,
+.dashboard-header-right #logout-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--color-dark);
+  margin-left: 15px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dashboard-header-right #header-icon {
+  color: var(--color-highlight);
+}
+
+.dashboard-header-right #logout-btn {
+  color: var(--color-highlight);
+}
+
+/* Responsive menu icon */
+.menu-icon {
+  display: none;
+}
+
+/* ---------- Searchbar ---------- */
+#animated-icon input[type=text] {
+  width: 220px;
+  box-sizing: border-box;
+  border: 1px solid #c8c8c8;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: white;
+  padding: 8px 18px 8px 35px;
+}
+
+#animated-icon .search-icon {
+  position: relative;
+  left: 30px;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+#sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  padding: 5px;
+  background-color: #071026;
+  color: #ffffff;
+  overflow-y: scroll;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  box-shadow: 10px 6px 7px -4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+#sidebar::-webkit-scrollbar {
+  width: 1px; /* Width of the scrollbar */
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background-color: var(--color-primary); /* Color of the scrollbar track */
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary); /* Color of the scrollbar thumb */
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 20px 20px;
+  margin-bottom: 30px;
+}
+
+.navlink {
+  text-decoration: none;
+  color: #ffffff;
+  width: 100%; /* Adjust the width as needed */
+}
+
+.icon {
+  padding-right: 10px;
+}
+
+.navlink1:hover,
+.navlink1:active,
+.navlink1:focus {
+  background-color: #428DFC;
+  border-radius: 5px;
+  color: #ffffff;
+}
+
+.link {
+  list-style: none;
+  margin: 0;
+}
+
+.navlink1 {
+  display: flex;
+  padding: 10px;
+  flex-direction: row;
+  margin-right: 20px;
+  margin-left: -10px;
+  margin-bottom: 10px;
+  justify-content: space-between; /* Add this line to achieve equal spacing */
+  align-items: center; /* Add this line to vertically center the content */
+}
+
+.sidebar-title > span {
+  display: none;
+}
+
+.sidebar-brand {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sidebar-list {
+  padding: 0;
+  margin-top: 15px;
+  list-style-type: none;
+}
+
+.sidebar-list-item {
+  padding: 20px 20px 20px 20px;
+}
+
+.sidebar-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.sidebar-list-item > a {
+  text-decoration: none;
+  color: #9799ab;
+}
+
+.sub-menu {
+  list-style: none;
+}
+.main-icon-name{
+  display: flex;
+  flex-direction: row;
+}
+.sidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  /*
+    the z-index of the ApexCharts is 11
+    we want the z-index of the sidebar higher so that
+    the charts are not showing over the sidebar 
+    on small screens
+  */
+  z-index: 12 !important;
+}
+
+.main-menu-item-arrow {
+  display: flex;
+  justify-content: flex-end; /* Adjust the alignment as needed */
+}
+
+/* ---------- MAIN ---------- */
+
+.main-container {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 20px 20px;
+  background-color: #ffffff;
+}
+
+.dashboard-content {
+  background-color: var(--color-primary);
+}
+
+/* ---------- MEDIA QUERIES ---------- */
+
+/* Medium <= 992px */
+@media screen and (max-width: 992px) {
   .grid-container {
-    display: grid;
-    grid-template-columns: 260px 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: 0.2fr 3fr;
     grid-template-areas:
-      "sidebar header header header"
-      "sidebar main main main";
-    height: 100vh;
-  }
-  
-  
-  /* ---------- HEADER ---------- */
-  
-  .header {
-    grid-area: header;
-    height: 70px;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px 0 30px;
-    box-shadow: 0 6px 7px -5px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-  }
-  .dashboard-header{
-    grid-area: header;
-    height: 70px;
-    background-color:var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px 0 30px;
-    box-shadow: 30 6px 7px -4px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-  }
-  
-  .header-right #header-icon{
-    margin: 0 3px ;
-    color:var(--color-dark);
-    cursor: pointer;
-  }
-  /* Responsive menu icon */
-   .menu-icon {
-    display: none;
-  }
-  .header-right #logout-btn{
-   background-color: transparent;
-   color:var(--color-dark) ;
-   border: none;
-   margin-left: 15px;
-   cursor: pointer;
-   padding: 0;
+      "header"
+      "main";
   }
 
-  .dashboard-header-right #header-icon{
-    margin: 0 3px ;
-    color:var(--color-highlight) ;
-    cursor: pointer;
-  }
-  
-  .dashboard-header-right #logout-btn{
-   background-color: transparent;
-   color:var(--color-highlight) ;
-   border: none;
-   margin-left: 15px;
-   cursor: pointer;
-   padding: 0;
-  } 
-
-
-  /* ---------- Searchbar ---------- */
-  #animated-icon input[type=text] {
-    width: 220px;
-    box-sizing: border-box;
-    border: 1px solid #c8c8c8;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: white;
-    padding: 8px 18px 8px 35px;
-  }
-    #animated-icon .search-icon {
-    position: relative;
-    left: 30px;
-  }
-  /* ---------- SIDEBAR ---------- */
-  
   #sidebar {
-    grid-area: sidebar;
-    height: 100%;
-    padding: 5px;
-    background-color: #071026;
-    color: #ffffff;
-    overflow-y: scroll;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    box-shadow: 10px 6px 7px -4px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    
-  }
-  #sidebar::-webkit-scrollbar {
-    width:1px; /* Width of the scrollbar */
-  }
-  
-  #sidebar::-webkit-scrollbar-track {
-    background-color: var(--color-primary); /* Color of the scrollbar track */
-  }
-  
-  #sidebar::-webkit-scrollbar-thumb {
-    background-color:var(--color-primary); /* Color of the scrollbar thumb */
-  }
-  .sidebar-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 20px 20px 20px;
-    margin-bottom: 30px;
-  }
-  /* .icon{
-    margin-right: 10px;
-    margin-top: -2px;
-  } */
-  .navlink{
-    text-decoration: none;
-    color: #ffffff;
-  }
-  .icon{
-    padding-right: 10px;
-  
-  }
-  .navlink1:hover{
-    background-color:#428DFC;
-    border-radius: 5px;
-    color: #ffffff;
-  }
-  
-  .link{
-    list-style: none;
-    margin: 0;
-    
-  }
-  .navlink1{
-    display: flex;
-    padding: 10px;
-    flex-direction: row;
-    margin-right: 20px;
-    margin-left: -10px;
-    margin-bottom: 10px;
-  }
-  .sidebar-title > span {
     display: none;
   }
-  
-  .sidebar-brand {
-    margin-top: 15px;
-    font-size: 20px;
-    font-weight: 700;
+
+  .menu-icon {
+    display: inline;
   }
-  
-  .sidebar-list {
-    padding: 0;
-    margin-top: 15px;
-    list-style-type: none;
+
+  .sidebar-title > span {
+    display: inline;
   }
-  
-  .sidebar-list-item {
-    padding: 20px 20px 20px 20px;
-  }
-  
-  .sidebar-list-item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-  }
-  
-  .sidebar-list-item > a {
-    text-decoration: none;
-    color: #9799ab;
-  }
-  .sub-menu{
-    list-style: none;
-  }
-  .sidebar-responsive {
-    display: inline !important;
-    position: absolute;
-    /*
-      the z-index of the ApexCharts is 11
-      we want the z-index of the sidebar higher so that
-      the charts are not showing over the sidebar 
-      on small screens
-    */
-    z-index: 12 !important;
-  }
-  .menu-item-arrow{
-    margin-left: 50px;
-  }
-  
-  
-  /* ---------- MAIN ---------- */
-  
-  .main-container {
-    grid-area: main;
-    overflow-y: auto;
-    padding: 20px 20px;
-    background-color: #ffffff;
-  }
-  .dashboard-content{
-    background-color:var(--color-primary);
-  }
-  
-  
-  
-  
-  
-  
-  
-  /* ---------- MEDIA QUERIES ---------- */
-  
-  
-  /* Medium <= 992px */
-  @media screen and (max-width: 992px) {
-    .grid-container {
-      grid-template-columns: 1fr;
-      grid-template-rows: 0.2fr 3fr;
-      grid-template-areas:
-        "header"
-        "main";
-    }
-  
-    #sidebar {
-      display: none;
-    }
-  
-    .menu-icon {
-      display: inline;
-    }
-  
-    .sidebar-title > span {
-      display: inline;
-    }
-  }
-  
- 
- /* Extra Small <= 576px */
+}
+
+/* Extra Small <= 576px */
 @media screen and (max-width: 576px) {
   .header-left {
     display: none;

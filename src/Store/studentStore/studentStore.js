@@ -1,8 +1,7 @@
 import { makeObservable, observable, action, computed } from 'mobx';
 import sweetAlertConfig from '../../Component/Alerts/alertConfig';
 import Swal from 'sweetalert2';
-import axios from 'axios';
-
+import { SC } from '../../Services/serverCall';
 class studentStore {
   isPopupOpen = false;
   getStudent = [];
@@ -33,30 +32,18 @@ class studentStore {
   setPopupOpen = (value) => {
     this.isPopupOpen = value;
   };
-  async fetchStudents() {
-    await axios
-      .get('https://dummyjson.com/users') // Replace with your actual API endpoint
-      .then((response) => {
-        this.getStudent = response.data.users;
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }
-
-  //pagination functionality
-  // async fetchTeachers(page, pageSize) {
-  //   const url = `https://dummyjson.com/users?page=${page}&limit=${pageSize}`;
   
-  //   try {
-  //     const response = await axios.get(url);
-  //     this.getTeacher = response.data.users;
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }
-
-
+  async fetchStudents(page, pageSize) {
+    try {
+      const response = await SC.getCall(`/student?page=${page}&limit=${pageSize}`);
+      this.getStudent = response.data.data;
+      this.pageCount = Math.ceil(response.data.meta.total / pageSize);
+      this.currentPage = page;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
   deleteStudent(studentId) {
     Swal.fire({
       title: 'Confirmation',
@@ -69,8 +56,7 @@ class studentStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-    axios
-      .delete(`https://dummyjson.com/users/${studentId}`) // Replace with your actual API endpoint
+      SC.deleteCall(`/student/${studentId}`) // Replace with your actual API endpoint
       .then(() => {
         console.log(studentId)
         // Remove the deleted teacher from the local array
@@ -95,27 +81,29 @@ class studentStore {
     this.searchTerm = term;
   }
 
-  
   get filteredStudents() {
     const { filterType, searchTerm, getStudent } = this;
   
+    if (!getStudent) {
+      return []; // Return an empty array if getStudent is undefined or null
+    }
+  
     return getStudent.filter((student) => {
       if (!student) {
-        return false; // Skip null/undefined teacher objects
+        return false; // Skip null/undefined student objects
       }
   
       if (!filterType || filterType === 'All') {
         return (
-          (student.firstName && student.firstName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (student.subject && student.subject.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (student.class && student.class.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (student.email && student.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (student.gender && student.gender.toLowerCase().includes(searchTerm.toLowerCase()))||
-          (student.class && student.class.toLowerCase().includes(searchTerm.toLowerCase()))
+          (student.name && student.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (student.batch && student.batch.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (student.class_name && student.class_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (student.user_name && student.user_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (student.gender && student.gender.toLowerCase().includes(searchTerm.toLowerCase()))
         );
       }
   
-      return (student[filterType] && student[filterType].toLowerCase().includes(searchTerm.toLowerCase()));
+      return student[filterType] && student[filterType].toLowerCase().includes(searchTerm.toLowerCase());
     });
   }
   
@@ -123,6 +111,7 @@ class studentStore {
   setCurrentStudentId(StudentId) {
     this.currentStudentId = StudentId;
     this.setCurrentStudentData(StudentId); // Update current Student data
+    // console.log(StudentId)
   }
 
   get getStudentById() {

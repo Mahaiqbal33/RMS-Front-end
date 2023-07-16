@@ -4,8 +4,10 @@ import { subjectsStore } from '../../Store/SubjectsStore/SubjectsStore';
 import "./SubjectPopupStyle.css"
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
+import { SC } from '../../Services/serverCall';
 import { validateSubjectForm } from '../../helper.js/FormSubjectValidator';
 import InputMask from 'react-input-mask';
+import { StudentStore } from '../../Store/studentStore/studentStore';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
@@ -17,18 +19,16 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     subjectformStore.setFormData({ ...subjectformStore.formData, [name]: value });
+  
   };
-  // Call fetchUserList when the component is mounted
-
+  // Call fetchSubjectList when the component is mounted
 
   useEffect(() => {
     if (subjectId) {
-      const subject = subjectsStore.getsubjectById(subjectId);
-
+      const student = subjectsStore.filterstudent_id(subjectId);
+      const subject = subjectsStore.filtersubject_id(subjectId);
       subjectformStore.setFormData({
         username: subject.username,
-        userId: subject.userId,
-        subject: subject.subject,
       });
     } else {
       subjectformStore.resetFormData();
@@ -36,9 +36,10 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
   }, [subjectId]);
 
   useEffect(() => {
-    subjectformStore.fetchUserList();
+    subjectformStore.fetchSubjectList();
+    StudentStore.fetchStudents();
   }, []);
-
+  
   const handleSubjectCobinationFormClick = () => {
     subjectformStore.setShowSubjectsCombinationForm(true);
   };
@@ -48,16 +49,16 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
   };
 
   const handleFormSubmit = async (e) => {
-    subjectformStore.filterUserId();
+    subjectformStore.filterstudent_id();
+    subjectformStore.filtersubject_id();
     e.preventDefault();
 
     if (validateSubjectForm()) {
-      const { username, userId, subject } = formData;
+      const {  student_id, subject_id } = formData;
 
       const payload = {
-        userId,
-        username,
-        subject,
+        student_id,
+        subject_id,
       };
 
       if (subjectId) {
@@ -74,8 +75,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
             console.error(error);
           });
       } else {
-        await axios
-          .post('https://dummy.restapiexample.com/api/v1/create', payload)
+        await SC.postCall('/student_subjects', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -115,59 +115,67 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
           <h1>Add subject</h1>
           <div className="popup-header">
             <button className={`popup-header-button ${subjectformStore.showSubjectsCombinationForm ? 'active' : ''}`} onClick={handleSubjectCobinationFormClick}>
-            Add Subjects
+              Add Subjects
             </button>
             <button className={`popup-header-button ${!subjectformStore.showSubjectsCombinationForm ? 'active' : ''}`} onClick={handleCSVFormClick}>
-            Student Subjects
+              Student Subjects
             </button>
           </div>
           {
-            subjectformStore.showSubjectsCombinationForm ? (<SubjectCombination/> ) : (
+            subjectformStore.showSubjectsCombinationForm ? (<SubjectCombination />) : (
               <form onSubmit={handleFormSubmit}>
-              <div className="form-row">
-                <label className="form-label">
-                  Username<span className="required-field">*</span>
-                  <input
+                <div className="form-row">
+                  <label className="form-label">
+                    Username<span className="required-field">*</span>
+                     <InputMask
+                    mask="9999-FAST-9999"
+                    maskChar=" "
                     type="text"
                     name="username"
                     value={formData.username}
                     onChange={handleInputChange}
                     required
                   />
-                  {subjectformStore.errors.username && (
-                    <div className="error-message">{toJS(subjectformStore.errors).username}</div>
+                    {subjectformStore.errors.username && (
+                      <div className="error-message">{toJS(subjectformStore.errors).username}</div>
+                    )}
+                  </label>
+                  <label className="form-label">
+                    Subject<span className="required-field">*</span>
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="select-input"
+                    >
+                      <option value="">Select Subject</option>
+                      {subjectformStore.subjectList.map((subject) => (
+                        <option key={subject.id} value={subject.name}>
+                          {subject.name}
+                        </option>
+                      ))}
+                    </select>
+
+
+                    {subjectformStore.errors.subject && (
+                      <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
+                    )}
+                  </label>
+                  {subjectformStore.errors.student_id && (
+                    <div className="error-message">{toJS(subjectformStore.errors).student_id}</div>
                   )}
-                </label>
-                <label className="form-label">
-                  Subject<span className="required-field">*</span>
-                  <select
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                    className='select-input'
-                  >
-                    <option value="">Select Subject</option>
-                    <option value="Math">Math</option>
-                  </select>
-                  {subjectformStore.errors.subject && (
-                    <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
-                  )}
-                </label>
-                {subjectformStore.errors.userId && (
-                  <div className="error-message">{toJS(subjectformStore.errors).userId}</div>
-                )}
-              </div>
-              <div className="subject-btn-section">
-                <button type="button" className="another-subject" onClick={handleAnothersubject}>
-                  <RiAddCircleLine />
-                  Add Another
-                </button>
-                <button type="submit" className="add-subject">
-                  Add subject
-                </button>
-              </div>
-            </form>
+                </div>
+                <div className="subject-btn-section">
+                  <button type="button" className="another-subject" onClick={handleAnothersubject}>
+                    <RiAddCircleLine />
+                    Add Another
+                  </button>
+                  <button type="submit" className="add-subject">
+                    Add subject
+                  </button>
+                </div>
+              </form>
             )
           }
 

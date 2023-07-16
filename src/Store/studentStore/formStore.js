@@ -2,25 +2,25 @@ import { makeObservable, observable, action } from 'mobx';
 
 class formStore {
   formData = {
-    fullName: '',
+    name: '',
     username: '',
     role: 'student',
     gender: '',
     password: '',
-    phoneNumber: '',
-    Class:'',
+    phone_number: '',
+    class_name:'',
     batch:''
   };
 
   errors = {
-    fullName: '',
+    name: '',
     username: '',
     role: 'student',
     gender: '',
     password: '',
-    phoneNumber: '',
+    phone_number: '',
     file:'',
-    Class:'',
+    class_name:'',
     batch:''
   };
   showManuallyForm= true;
@@ -51,13 +51,14 @@ class formStore {
 
   resetFormData() {
     this.formData = {
-      fullName: '',
+      name: '',
       username: '',
+      role:'student',
       gender: '',
       password: '',
-      phoneNumber: '',
+      phone_number: '',
       file:'',
-      Class:'',
+      class_name:'',
       batch:''
     };
   }
@@ -68,13 +69,13 @@ class formStore {
 
   clearErrors() {
     this.errors = {
-      fullName: '',
+      name: '',
       username: '',
-      role: '',
+      role: 'student',
       gender: '',
       password: '',
-      phoneNumber: '',
-      Class:'',
+      phone_number: '',
+      class_name:'',
       batch:''
     };
   }

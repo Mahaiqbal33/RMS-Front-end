@@ -1,58 +1,98 @@
 import { makeObservable, observable, action, toJS } from 'mobx';
-import axios from 'axios';
+import { SC } from '../../Services/serverCall';
+import { StudentStore } from '../studentStore/studentStore';
+
 class SubjectFormStore {
   formData = {
     username: '',
     subject: '',
-    userId: '',
+    student_id: '',
+    subject_id: '',
   };
-  userList = [];
+  subjectList = [];
+  studentList = StudentStore.getStudent;
   errors = {
     username: '',
     subject: '',
-    userId: '',
+    student_id: '',
+    subject_id: '',
   };
-  showSubjectsCombinationForm=true;
+  showSubjectsCombinationForm = true;
 
   constructor() {
     makeObservable(this, {
       formData: observable,
       errors: observable,
-      userList:observable,
-      showSubjectsCombinationForm:observable,
-      setShowSubjectsCombinationForm:action,
+      subjectList: observable,
+      studentList: observable,
+      showSubjectsCombinationForm: observable,
+      setShowSubjectsCombinationForm: action,
       setFormData: action,
       resetFormData: action,
       setError: action,
       clearErrors: action,
-      fetchUserList:action,
-      filterUserId:action,
+      fetchSubjectList: action,
+      filterstudent_id: action,
+      filtersubject_id: action,
     });
   }
 
- async fetchUserList() {
+  async fetchSubjectList() {
     try {
-      const response = await axios.get('https://dummyjson.com/users');
-      this.userList = response.data.users;
+      const response = await SC.getCall('/subject');
+      console.log('API Response:', response.data); // Log the entire response to check its format
+      this.subjectList = response.data;
     } catch (error) {
-      console.error('Failed to fetch user list:', error);
+      console.error('Failed to fetch subject list:', error);
     }
   }
+  
+  
 
-  filterUserId() {
-    const userListArray = Array.from(this.userList);
-    const filteredUser = userListArray.find((user) => user.firstName === this.formData.username);
-    if (filteredUser && filteredUser.id) {
-      this.formData.userId = toJS(filteredUser.id);
+  filterstudent_id() {
+    const studentListArray = this.studentList.slice();
+    console.log("Student List Array:", studentListArray);
+    console.log("Search for Username:", this.formData.username);
+  
+    const filteredStudent = studentListArray.find((user) => user.username === this.formData.username);
+    console.log("Filtered Student:", filteredStudent);
+  
+    if (filteredStudent) {
+      const studentData = toJS(filteredStudent);
+      if (studentData.id) {
+        this.formData.student_id = studentData.id;
+      } else {
+        this.formData.student_id = '';
+      }
     } else {
-      this.formData.userId ='';
+      this.formData.student_id = '';
     }
-    console.log(this.formData.userId);
+  }
+
+  
+  filtersubject_id() {
+    const subjectListArray = Array.from(this.subjectList);
+    console.log("Subject List Array:", subjectListArray);
+    console.log("Search for Subject:", this.formData.subject);
+  
+    const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
+    console.log("Filtered Subject:", filteredSubject);
+  
+    if (filteredSubject) {
+      const subjectData = toJS(filteredSubject);
+      if (subjectData.id) {
+        this.formData.student_id = subjectData.id;
+      } else {
+        this.formData.subject_id = '';
+      }
+    } else {
+      this.formData.subject_id = '';
+    }
   }
   
   
   
-
+  
   setFormData(data) {
     this.formData = data;
   }
@@ -61,7 +101,8 @@ class SubjectFormStore {
     this.formData = {
       username: '',
       subject: '',
-      userId: '',
+      student_id: '',
+      subject_id: '',
     };
   }
 
@@ -73,11 +114,13 @@ class SubjectFormStore {
     this.errors = {
       username: '',
       subject: '',
-      userId: '',
+      student_id: '',
+      subject_id: '',
     };
   }
-  setShowSubjectsCombinationForm(value){
-    this.showSubjectsCombinationForm= value;
+
+  setShowSubjectsCombinationForm(value) {
+    this.showSubjectsCombinationForm = value;
   }
 }
 

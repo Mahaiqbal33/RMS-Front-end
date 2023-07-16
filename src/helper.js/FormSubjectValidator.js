@@ -1,6 +1,6 @@
 import { subjectformStore } from '../Store/SubjectsStore/SubjectsFormStore';
 export const validateSubjectForm = () => {
-  const {userId, username, subject } = subjectformStore.formData;
+  const {student_id,subject_id, username, subject } = subjectformStore.formData;
   
   // Reset errors
   subjectformStore.clearErrors();
@@ -8,11 +8,10 @@ export const validateSubjectForm = () => {
   // Check if it's a manually filled form
  
   
-    if (userId === '') {
+    if( (student_id=== '')&&(subject_id==='') ){
       subjectformStore.setError('userId', 'Fields is required');
       return false;
     }
-
     if (username.trim() === '') {
       subjectformStore.setError('username', 'Username is required');
       return false;

@@ -1,0 +1,98 @@
+/* Dashboard.css */
+
+.box {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.rectangle-wrapper {
+  border: 0 none;
+  height: 150px;
+  width: 290px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 15px;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
+.rectangle {
+  background-color: #428dfc;
+  box-shadow: 0px 2px 2px #86b4f7;
+  height: 150px;
+  width: 100%;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  text-decoration: none;
+  text-transform: none;
+  line-height: 27px;
+  font-weight: 600;
+}
+
+.more-info {
+  background-color: #86b4f7;
+  color: #3e3e3e;
+  height: 20px;
+  padding: 0 25px;
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+   align-items: center;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  .rectangle-wrapper {
+    width: 90%; /* Reduce width on smaller screens */
+    margin: 5px; /* Center the boxes on smaller screens */
+  }
+  .rectangle{
+    font-size: 20px;
+  }
+}
+@media (max-width: 500px) {
+  .box {
+    flex-direction: column; /* Change direction to vertical on mobile */
+    align-items: center; /* Center items vertically on mobile */
+  }
+  .rectangle-wrapper {
+    width: 90%; /* Reduce width on smaller screens */
+    margin: 10px auto; /* Center the boxes on smaller screens */
+  }
+  .rectangle{
+    font-size: 27px;
+  }
+}
+
+.container {
+  width: 80%;
+  margin: 20px auto;
+}
+
+.p {
+  text-align: center;
+  font-size: 14px;
+  padding-top: 140px;
+}
+.app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+
+.select {
+  margin-right: 10px;
+  padding: 5px;
+  font-size: 16px;
+}

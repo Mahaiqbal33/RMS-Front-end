@@ -12,7 +12,8 @@ class PrivateRoutes {
   }
 
   renderProtectedRoutes() {
-    return this.token ? <Outlet /> : <Navigate to="/" />;
+    // return this.token ? <Outlet /> : <Navigate to="/" />;
+    return this.token ? <Outlet /> :<Outlet />;
   }
 }
 

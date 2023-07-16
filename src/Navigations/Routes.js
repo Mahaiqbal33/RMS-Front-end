@@ -50,6 +50,17 @@ export const menuItem = [
       ]
     },
     {
+      path: "Result",
+      name: "Result",
+      icon: <FaCalendarAlt />,
+      // subitems:[
+      //   {
+      //     path: "ResultList",
+      //     name: "ResultList"
+      //   }
+      // ]
+    },
+    {
       path: "settings",
       name: "Settings",
       icon: <FaCog />,

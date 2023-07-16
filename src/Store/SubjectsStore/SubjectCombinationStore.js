@@ -23,8 +23,6 @@ class SubjectCombinationStore {
     });
   }
 
- 
-  
 
   setFormData(data) {
     this.formData = data;

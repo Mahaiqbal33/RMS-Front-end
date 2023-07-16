@@ -3,6 +3,9 @@ import { observer } from 'mobx-react';
 import { formStore } from "../../Store/TestStore/TestFormStore";
 import { testStore } from '../../Store/TestStore/TestStore';
 import { RiAddCircleLine } from 'react-icons/ri';
+import InputMask from 'react-input-mask';
+import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
+import { SC } from '../../Services/serverCall';
 import axios from 'axios';
 import "./PopupStyle.css"
 import { toJS } from 'mobx';
@@ -19,10 +22,10 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
   useEffect(() => {
     if (testId) {
       const test = testStore.gettestById(testId);
-
+      subjectformStore.fetchSubjectList();
       formStore.setFormData({
         subject: test.subject,
-        testDate: test.testDate,
+        name: test.name,
         totalMarks: test.totalMarks,
         courseCode: test.courseCode,
         className: test.className,
@@ -34,16 +37,16 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  let arr=true;
+    formStore.filtersubject_id()
+    let arr = true;
     if (arr) {
-      const { subject, testDate, totalMarks, courseCode, className } = formData;
+      const { subject_id, name, totalMarks, className } = formData;
 
       const payload = {
-        subject,
-        testDate,
-        totalMarks,
-        courseCode,
-        className,
+        subject_id,
+        name,
+        marks: totalMarks,
+        class: className,
       };
 
       if (testId) {
@@ -60,8 +63,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             console.error(error);
           });
       } else {
-        await axios
-          .post('https://dummy.restapiexample.com/api/v1/create', payload)
+        await SC.postCall('/attempt', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -87,6 +89,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
   };
 
   const handleAnothertest = () => {
+
     formStore.resetFormData();
     formStore.clearErrors();
   };
@@ -104,88 +107,79 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             <div className="form-row">
               <label className="form-label">
                 Subject Name<span className="required-field">*</span>
-                <input
-                  type="text"
+                <select
                   name="subject"
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
-                />
+                  className="select-input"
+                >
+                  <option value="">Select Subject</option>
+                  {subjectformStore.subjectList.map((subject) => (
+                    <option key={subject.id} value={subject.name}>
+                      {subject.name}
+                    </option>
+                  ))}
+                </select>
                 {formStore.errors.subject && (
                   <div className="error-message">{toJS(formStore.errors).subject}</div>
                 )}
               </label>
               <label className="form-label">
-                  Test Date<span className="required-field">*</span>
-                  <input
-                    type="text"
-                    name="testDate"
-                    value={formData.testDate}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formStore.errors.testDate && (
-                    <div className="error-message">{toJS(formStore.errors).testDate}</div>
-                  )}
-                </label>
-            </div>
-            <div className="form-row">
-              <label className="form-label">
-                  Total Marks<span className="required-field">*</span>
-                  <input
-                    type="text"
-                    name="totalMarks"
-                    value={formData.totalMarks}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formStore.errors.totalMarks && (
-                    <div className="error-message">{toJS(formStore.errors).totalMarks}</div>
-                  )}
-                </label>
-                <label className="form-label">
-                  Course Code<span className="required-field">*</span>
-                  <input
-                    type="text"
-                    name="courseCode"
-                    value={formData.courseCode}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formStore.errors.courseCode && (
-                    <div className="error-message">{toJS(formStore.errors).courseCode}</div>
-                  )}
-                </label>
-            </div>
-            <div className="form-row">
-            
-                <label className="form-label">
-                  Class Name<span className="required-field">*</span>
-                  <input
-                    type="text"
-                    name="className"
-                    value={formData.className}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formStore.errors.className && (
-                    <div className="error-message">{toJS(formStore.errors).className}</div>
-                  )}
-                </label>
-            </div>
-            <div className="test-btn-section">
-              <button type="button" className="another-test" onClick={handleAnothertest}>
-                <RiAddCircleLine />
-                Add Another
-              </button>
-              <button type="submit" className="add-test">
-                Add Test
-              </button>
-            </div>
-          </form>
+                Test name<span className="required-field">*</span>
+
+                <InputMask
+                  mask="99-aaaa-T9"
+                  maskChar="_"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+              {formStore.errors.name && (
+                <div className="error-message">{toJS(formStore.errors).name}</div>
+              )}
+            </label>
         </div>
-      </div>
+        <div className="form-row">
+          <label className="form-label">
+            Total Marks<span className="required-field">*</span>
+            <input
+              type="text"
+              name="totalMarks"
+              value={formData.totalMarks}
+              onChange={handleInputChange}
+              required
+            />
+            {formStore.errors.totalMarks && (
+              <div className="error-message">{toJS(formStore.errors).totalMarks}</div>
+            )}
+          </label>
+          <label className="form-label">
+            Class Name<span className="required-field">*</span>
+            <select name="class" value={formData.class} onChange={handleInputChange} required className='select-input'>
+              <option value="">Select Class</option>
+              <option value="1st-Year">1st-Year</option>
+              <option value="2nd-Year">2nd-Year</option>
+            </select>
+            {formStore.errors.className && (
+              <div className="error-message">{toJS(formStore.errors).className}</div>
+            )}
+          </label>
+        </div>
+        <div className="test-btn-section">
+          <button type="button" className="another-test" onClick={handleAnothertest}>
+            <RiAddCircleLine />
+            Add Another
+          </button>
+          <button type="submit" className="add-test">
+            Add Test
+          </button>
+        </div>
+      </form>
     </div>
+      </div >
+    </div >
   );
 });
 

@@ -1,14 +1,15 @@
+
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { StudentStore } from '../../Store/studentStore/studentStore';
 import { RiAddCircleLine } from 'react-icons/ri';
-import axios from 'axios';
 import InputMask from 'react-input-mask';
 import '../../Component/Students/studentPopup.css';
 import { validateStudentForm } from '../../helper.js/formStudentValidator';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { FormStore } from '../../Store/studentStore/formStore';
+import { SC } from '../../Services/serverCall';
 
 const StudentPopup = observer(({ onSubmit, studentId }) => {
   const { formData, csvFile, showCSVForm } = FormStore;
@@ -25,23 +26,23 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
     const { name, value } = e.target;
     FormStore.setFormData({ ...FormStore.formData, [name]: value });
   };
-
+  
   useEffect(() => {
     if (studentId) {
       const student = StudentStore.getStudentById(studentId);
-
+      console.log(student.gender);
       FormStore.setFormData({
-        fullName: student.firstName,
-        username: student.email,
+        name: student.name,
+        username: student.username,
         role: student.role,
         gender: student.gender,
         password: student.password,
-        phoneNumber: student.phoneNumber,
-        Class:student.Class,
-        batch:student.batch
+        phone_number: student.phone_number,
+        class_name: student.class_name,
+        batch: student.batch
       });
     } else {
-      FormStore.resetFormData();
+      FormStore.resetFormData(); 
     }
   }, [studentId]);
 
@@ -49,9 +50,9 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
     e.preventDefault();
     console.log("hello")
     console.log(csvFile)
-    console.log(validateStudentForm())
+    console.log("validatore",validateStudentForm())
     if (validateStudentForm()) {
-      const { fullName, username, role, gender, password, phoneNumber,Class,batch } = formData;
+      const { name, username, role, gender, password, phone_number, class_name, batch } = formData;
 
       let payload;
       if (toJS(csvFile)) {
@@ -60,44 +61,47 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
         console.log(payload)
       } else {
         // Send form data as payload
+       
         payload = {
-          fullName,
+          name,
           username,
           role,
           gender,
           password,
-          phoneNumber,
-          Class,
+          phone_number,
+          class_name,
           batch
         };
       }
 
       if (studentId) {
-        await axios
-          .put(`/api/teachers/${studentId}`, payload)
-          .then((response) => {
-            console.log(response.data);
-            onSubmit();
-            sweetAlertConfig.successAlert("Submit Successfully Form data")
-            StudentStore.setPopupOpen(false);
-          })
-          .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
-            console.error(error);
-          });
+        await
+          SC.putCall(`/student/${studentId}`, payload)
+            .then((response) => {
+              console.log(response.data.data);
+              onSubmit();
+              sweetAlertConfig.successAlert("Submit Successfully Form data")
+              StudentStore.setPopupOpen(false);
+            })
+            .catch((error) => {
+              sweetAlertConfig.errorAlert(error)
+              console.error(error);
+              console.log(studentId)
+            });
+
       } else {
-        await axios
-          .post('https://dummy.restapiexample.com/api/v1/create', payload)
-          .then((response) => {
-            console.log(response.data);
-            onSubmit();
-            sweetAlertConfig.successAlert("Submit Successfully Form data")
-            StudentStore.setPopupOpen(false);
-          })
-          .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
-            console.error(error);
-          });
+        await
+          SC.postCall('/student', payload)
+            .then((response) => {
+              console.log("response.data");
+              onSubmit();
+              sweetAlertConfig.successAlert("Submit Successfully Form data")
+              StudentStore.setPopupOpen(false);
+            })
+            .catch((error) => {
+              sweetAlertConfig.errorAlert(error)
+              console.error(error);
+            });
       }
       FormStore.resetCSVFile();
       FormStore.resetFormData();
@@ -164,12 +168,12 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 <label className="form-label">
                   Full Name<span className="required-field">*</span>
                   <input type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleInputChange}
                     required />
-                  {FormStore.errors.fullName && (
-                    <div className="error-message">{toJS(FormStore.errors).fullName}</div>
+                  {FormStore.errors.name && (
+                    <div className="error-message">{toJS(FormStore.errors).name}</div>
                   )}
 
                 </label>
@@ -191,35 +195,36 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
               </div>
               <div className="form-row">
-                <label className="form-label">
-                  Password<span className="required-field">*</span>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    autoComplete="password"
-                    required
-                  />
-                  {FormStore.errors.password && (
-                    <div className="error-message">{toJS(FormStore.errors).password}</div>
-                  )}
-
-                </label>
+                  <label className="form-label">
+                    Password<span className="required-field">*</span>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      autoComplete="password"
+                      required
+                    />
+                    {FormStore.errors.password && (
+                      <div className="error-message">
+                        {toJS(FormStore.errors).password}
+                      </div>
+                    )}
+                  </label>
                 <label className="form-label">
                   Phone<span className="required-field">*</span>
                   <InputMask
-                    mask="+92 999-9999999"
+                    mask="+929999999999"
                     maskChar=" "
                     type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
+                    name="phone_number"
+                    value={formData.phone_number}
                     onChange={handleInputChange}
                     placeholder="Enter phone number"
                     required
                   />
-                  {FormStore.errors.phoneNumber && (
-                    <div className="error-message">{toJS(FormStore.errors).phoneNumber}</div>
+                  {FormStore.errors.phone_number && (
+                    <div className="error-message">{toJS(FormStore.errors).phone_number}</div>
                   )}
 
                 </label>
@@ -229,8 +234,8 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                   Gender<span className="required-field">*</span>
                   <select name="gender" className="form-input" value={formData.gender} onChange={handleInputChange}>
                     <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                   </select>
                   {FormStore.errors.gender && (
                     <div className="error-message">{toJS(FormStore.errors).gender}</div>
@@ -239,13 +244,13 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
                 <label className="form-label">
                   Class<span className="required-field">*</span>
-                  <select name="Class" value={formData.Class} onChange={handleInputChange} required className='select-input'>
+                  <select name="class_name" value={formData.class_name} onChange={handleInputChange} required className='select-input'>
                     <option value="">Select Class</option>
-                    <option value="1st-year">1st Year</option>
-                    <option value="2nd-year">2nd Year</option>
+                    <option value="1st-Year">1st-Year</option>
+                    <option value="2nd-Year">2nd-Year</option>
                   </select>
-                  {FormStore.errors.Class && (
-                    <div className="error-message">{toJS(FormStore.errors).Class}</div>
+                  {FormStore.errors.class_name && (
+                    <div className="error-message">{toJS(FormStore.errors).class_name}</div>
                   )}
                 </label>
               </div>
@@ -264,7 +269,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                   )}
 
                 </label>
-                </div>
+              </div>
 
               <div className="student-btn-section">
                 <button type="button" className="another-student" onClick={handleAnotherStudent}>

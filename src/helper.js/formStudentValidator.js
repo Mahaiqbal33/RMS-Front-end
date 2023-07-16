@@ -1,7 +1,7 @@
 import { toJS } from 'mobx';
 import { FormStore } from '../Store/studentStore/formStore';
 export const validateStudentForm = () => {
-  const { fullName, username, gender, password, phoneNumber,Class,batch} = FormStore.formData;
+  const { name, username, gender, password, phone_number,class_name,batch} = FormStore.formData;
   
   // Reset errors
   FormStore.clearErrors();
@@ -9,7 +9,7 @@ export const validateStudentForm = () => {
   // Check if it's a manually filled form
   if (FormStore.showManuallyForm) {
   
-    if (fullName.trim() === '') {
+    if (name.trim() === '') {
       FormStore.setError('fullName', 'Full Name is required');
       return false;
     }
@@ -37,11 +37,11 @@ export const validateStudentForm = () => {
       return false;
     }
 
-    if (phoneNumber.trim() === '') {
+    if (phone_number.trim() === '') {
       FormStore.setError('phoneNumber', 'Phone Number is required');
       return false;
     }
-    if (Class.trim() === '') {
+    if (class_name.trim() === '') {
       FormStore.setError('class', 'Class is required');
       return false;
     }

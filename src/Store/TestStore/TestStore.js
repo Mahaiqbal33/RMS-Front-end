@@ -17,7 +17,7 @@ class TestStore {
       getTest: observable,
       searchTerm: observable,
       filterType: observable,
-       currentTestId: observable,
+      currentTestId: observable,
       currenttestData: observable,
       setPopupOpen: action.bound,
       filteredtests: computed,

@@ -50,14 +50,18 @@ const Sidebar = observer(() => {
                 onMouseLeave={handleMouseLeave}>
                 <NavLink to={item.path} className="navlink">
                   <div className="navlink1" onClick={() => toggleMenu(index)}>
+                    <div className='main-icon-name'>
                     <div className="icon">{item.icon}</div>
                     {item.name}
-                    {item.subitems && (
-                      <div className="menu-item-arrow">
+                    </div>
+                    
+                    <div className='main-menu-item-arrow'>
+                    {item.subitems && (                    
+                     <div className="menu-item-arrow">
                         {sidebarStore.openMenus.includes(index) ? <FaChevronUp /> : <FaChevronDown />}
+                      </div>)}
                       </div>
-                    )}
-                  </div>
+                      </div>
                 </NavLink>
                 {item.subitems && sidebarStore.openMenus.includes(index) && (
                   <ul className='sub-menu'>
