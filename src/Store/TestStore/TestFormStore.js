@@ -20,6 +20,7 @@ class FormStore {
 
   constructor() {
     makeObservable(this, {
+      subjectList:observable,
       formData: observable,
       errors: observable,
       setFormData: action,
@@ -57,28 +58,33 @@ class FormStore {
   }
 
   async filtersubject_id() {
-    await subjectformStore.fetchSubjectList(); // Wait for subjectList to be populated
-     
-    const subjectListArray = Array.from(this.subjectList);
-    console.log("Subject List Array:", subjectListArray);
-    console.log("Search for Subject:", this.formData.subject);
-
-    const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
-    console.log("Filtered Subject:", filteredSubject);
-
-    if (filteredSubject) {
-      const subjectData = toJS(filteredSubject);
-      if (subjectData.id) {
-        console.log(subjectData);
-        this.formData.subject_id = subjectData.id;
+    try {
+      // Make sure subjectList is fetched before proceeding
+      await subjectformStore.fetchSubjectList();
+  
+      const subjectListArray = Array.from(subjectformStore.subjectList);
+      console.log("Subject List Array:", subjectListArray);
+      console.log("Search for Subject:", this.formData.subject);
+  
+      const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
+      console.log("Filtered Subject:", filteredSubject);
+  
+      if (filteredSubject) {
+        const subjectData = toJS(filteredSubject);
+        if (subjectData.id) {
+          console.log("hello id", subjectData.id);
+          this.formData.subject_id = subjectData.id;
+        }
       } else {
-        this.formData.subject_id = '';
+        // If subject not found, reset subject_id
+        this.formData.subject_id = "";
       }
-    } else {
-      this.formData.subject_id = '';
+    } catch (error) {
+      // Handle any errors that may occur during the fetchSubjectList() operation
+      console.error("Error fetching subject list:", error);
     }
   }
-
+  
 }
 
 export const formStore = new FormStore();

@@ -8,15 +8,6 @@ export const validateSubjectForm = () => {
   // Check if it's a manually filled form
  
   
-    if(student_id=== ''){
-      subjectformStore.setError('student_id', 'Fields is required');
-      return false;
-    }
-
-    if( subject_id===''){
-      subjectformStore.setError('subject_id', 'Fields is required');
-      return false;
-    }
     
     if (username.trim() === '') {
       subjectformStore.setError('username', 'Username is required');

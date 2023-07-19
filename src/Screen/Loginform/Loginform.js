@@ -5,31 +5,17 @@ import user from "../../assets/User.png";
 import passwordicon from '../../assets/Forgotpassword.png';
 import { authStore } from '../../Store/LoginStore/AuthStore';
 import './logindesign.css'
-import { ToastContainer, toast } from 'react-toastify';
 import { validateForm } from './Validation'
 import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
 import { SC } from '../../Services/serverCall';
 
 const LoginForm = observer(() => {
   const navigate = useNavigate();
-  // const notify = () => toast("Invalid credentials. Please try again.");
-
-  // Function to show notification with custom background color
-  const notify = () => {
-    toast.error("Invalid credentials. Please try again.", {
-      className: 'custom-toast', // Add the custom CSS class here
-    });
-  };
 
 //HandleChange function
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (type === 'checkbox') {
-      authStore.setFormField(name, checked);
-    } else {
+    const { name, value } = e.target;
       authStore.setFormField(name, value);
-    }
   };
   
  //HandleSubmit function
@@ -50,7 +36,6 @@ const LoginForm = observer(() => {
         }
       } catch (error) {
         authStore.setError('Invalid credentials. Please try again.');
-        notify();
       }
     }
     authStore.clearFormFields();
@@ -99,18 +84,6 @@ const LoginForm = observer(() => {
                 />
               </div>
               {authStore.errors && <p className='errorStyle'>{authStore.errors}</p>}
-              <div className="checkbox-container">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  name="rememberMe"
-                  defaultChecked={authStore.rememberMe}
-                  onChange={handleInputChange}
-                  className="checkbox-input small-checkbox"
-                />
-
-                <label htmlFor="rememberMe" className="checkbox-label">Remember Me</label>
-              </div>
               <div className="button input-box">
                 <input type="submit" value="LOGIN" />
               </div>
@@ -121,7 +94,6 @@ const LoginForm = observer(() => {
       <div className="front">
         <img src="./loginformImg.png" alt="" />
       </div>
-      <ToastContainer  />
     </div>
   );
 });

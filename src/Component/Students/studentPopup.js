@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { StudentStore } from '../../Store/studentStore/studentStore';
 import { RiAddCircleLine } from 'react-icons/ri';
 import InputMask from 'react-input-mask';
-import '../../Component/Students/studentPopup.css';
+import '../Style/PopupStyle.css';
 import { validateStudentForm } from '../../helper.js/formStudentValidator';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
@@ -271,12 +271,12 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
               </div>
 
-              <div className="student-btn-section">
-                <button type="button" className="another-student" onClick={handleAnotherStudent}>
+              <div className="popup-btn-section">
+                <button type="button" className="another-popup" onClick={handleAnotherStudent}>
                   <RiAddCircleLine />
                   Add Another
                 </button>
-                <button type="submit" className="add-student">
+                <button type="submit" className="add-popup">
                   Add Student
                 </button>
               </div>
@@ -306,12 +306,12 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
 
                 </label>
                 <div className="form-row">
-                  <div className="student-btn-section">
-                    <button type="button" className="another-student" onClick={handleAnotherStudent}>
+                  <div className="popup-btn-section">
+                    <button type="button" className="another-popup" onClick={handleAnotherStudent}>
                       <RiAddCircleLine />
                       Add Another
                     </button>
-                    <button type="submit" className="add-student">
+                    <button type="submit" className="add-popup">
                       Add Student
                     </button>
                   </div>

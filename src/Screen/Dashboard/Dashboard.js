@@ -1,8 +1,11 @@
 import React from 'react'
 import { IoIosInformationCircle } from 'react-icons/io'; // Import the icon component from react-icons
 import "./Style/Dashboard.css"
+import PieChartDemo from "./PieChartDemo"; // Import the PieChartDemo component
 import LineChartDemo from './LineChartDemo';
+import PassFailChart from './PassFailChart';
 const Dashboard = () => {
+  const overallPercentage = 80; // You can replace this with your calculated value
   return (
     <>
     <div className="box">
@@ -34,7 +37,14 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-   <LineChartDemo/>
+    <div className='Chart-main'>
+    <LineChartDemo/>
+    <div className='pie-main'>
+    <PieChartDemo overallPercentage={overallPercentage} />
+    <PassFailChart/>
+    </div>
+   
+    </div>
     </>
    
   )

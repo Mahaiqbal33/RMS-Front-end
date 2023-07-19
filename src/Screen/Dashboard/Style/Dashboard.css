@@ -1,5 +1,4 @@
 /* Dashboard.css */
-
 .box {
   display: flex;
   justify-content: center;
@@ -76,23 +75,76 @@
   margin: 20px auto;
 }
 
-.p {
-  text-align: center;
-  font-size: 14px;
-  padding-top: 140px;
-}
 .app {
   font-family: Arial, sans-serif;
-  padding: 20px;
-  
 }
 
-.controls {
-  margin-bottom: 20px;
-}
 
-.select {
+.controls .select {
   margin-right: 10px;
-  padding: 5px;
   font-size: 16px;
+}
+
+.percentage-text{
+  color: #fff;
+  font-size: larger;
+  text-align: left;
+}
+.Chart-main{
+  display: flex;
+  flex-direction: column;
+  margin: 50px 20px;
+}
+.pie-chart{
+  margin-top: 30px;
+}
+.pie-main{
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+/* PassFailChart.css */
+.pass-fail-chart {
+  display: flex;
+  margin-left: 50px;
+  flex-direction: column;
+  width: 40%;
+}
+
+.bar {
+  display: flex;
+  width: 100%;
+  height: 15px; /* Reduce the height of the bars */
+  border-radius: 7.5px; /* Apply a radius to create rounded rectangles */
+  overflow: hidden; /* Hide overflow to prevent border radius from being cut off */
+  transition: width 0.5s ease; /* Add transition for the width property */
+}
+
+.pass-bar {
+  background-color: #0066cc;
+}
+
+.fail-bar {
+  background-color: #0066cc0e;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 5px; /* Add some spacing between the bars and labels */
+}
+
+.label {
+  margin-top: 15px;
+  font-size: 15px; /* Reduce the font size of the labels */
+}
+
+.pass-label {
+  color: #0066cc;
+}
+
+.fail-label {
+  color: #d3d3d3;
 }

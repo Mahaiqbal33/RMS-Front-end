@@ -37,6 +37,7 @@ class studentStore {
     try {
       const response = await SC.getCall(`/student?page=${page}&limit=${pageSize}`);
       this.getStudent = response.data.data;
+      console.log('API Response:', response.data.data); // Log the entire response to check its format
       this.pageCount = Math.ceil(response.data.meta.total / pageSize);
       this.currentPage = page;
     } catch (error) {

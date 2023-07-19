@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { resultStore } from '../../Store/ResultStore/ResultStore';
-import './ResultPopup.css'
+import '../Style/PopupStyle.css';
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import { FormResultValidator } from '../../helper.js/FormResultValidators';
@@ -9,6 +9,7 @@ import InputMask from 'react-input-mask';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { resultformStore } from '../../Store/ResultStore/ResultFormStore';
+import { SC } from '../../Services/serverCall';
 
 const Resultpopup = observer(({ resultId }) => {
   const { formData } = resultformStore;
@@ -21,10 +22,9 @@ const Resultpopup = observer(({ resultId }) => {
   useEffect(() => {
     if (resultId) {
       const result = resultStore.getresultById(resultId);
-
       resultformStore.setFormData({
         username: result.username,
-         testname: result.testname,
+        testname: result.testname,
         obtainMarks: result.obtainMarks,
       });
     } else {
@@ -32,21 +32,21 @@ const Resultpopup = observer(({ resultId }) => {
     }
   }, [resultId]);
 
-  useEffect(() => {
-    resultformStore.fetchUserList();
-  }, []);
+
 
   const handleFormSubmit = async (e) => {
-    resultformStore.filterUserId();
     e.preventDefault();
+    await resultformStore.filterstudent_id();
+    await resultformStore.filtertest_id();
 
-    if (FormResultValidator()) {
-      const { username,  testname, obtainMarks } = formData;
+     let arr=true
+    if (arr) {
+      const { student_id, attempt_id, obtainMarks } = formData;
 
       const payload = {
-        username,
-         testname,
-        obtainMarks,
+        student_id,
+        attempt_id,
+        obt_marks:obtainMarks,
       };
 
       if (resultId) {
@@ -62,16 +62,15 @@ const Resultpopup = observer(({ resultId }) => {
             console.error(error);
           });
       } else {
-        await axios
-          .post('https://dummy.restapiexample.com/api/v1/create', payload)
+        await SC.postCall('/assessment', payload)
           .then((response) => {
             console.log(response.data);
             sweetAlertConfig.successAlert("Submit Successfully Form data")
             resultStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
-            console.error(error);
+            sweetAlertConfig.errorAlert(error.message)
+            console.error(error.message);
           });
       }
       resultformStore.resetFormData();
@@ -98,60 +97,62 @@ const Resultpopup = observer(({ resultId }) => {
         <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <div className="result-popup-form">
+        <div className="popup-form">
           <h1>Add result</h1>
-              <form onSubmit={handleFormSubmit}>
-                <div className="form-row">
-                  <label className="form-label">
-                    Username<span className="required-field">*</span>
-                    <input
-                      type="text"
-                      name="username"
-                      value={formData.username}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    {resultformStore.errors.username && (
-                      <div className="error-message">{toJS(resultformStore.errors).username}</div>
-                    )}
-                  </label>
-                  <label className="form-label">
-                    result Name<span className="required-field">*</span>
-                    <input
-                      type="text"
-                      name="testname"
-                      value={formData.testname}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    {resultformStore.errors.testname && (
-                      <div className="error-message">{toJS(resultformStore.errors).testname}</div>
-                    )}
-                  </label>
-                  <label className="form-label">
-                    Obtain Marks<span className="required-field">*</span>
-                    <input
-                      type="text"
-                      name="obtainMarks"
-                      value={formData.obtainMarks}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    {resultformStore.errors.obtainMarks && (
-                      <div className="error-message">{toJS(resultformStore.errors).obtainMarks}</div>
-                    )}
-                  </label>
-                </div>
-                <div className="result-btn-section">
-                  <button type="button" className="another-result" onClick={handleAnotherresult}>
-                    <RiAddCircleLine />
-                    Add Another
-                  </button>
-                  <button type="submit" className="add-result">
-                    Add result
-                  </button>
-                </div>
-              </form>
+          <form onSubmit={handleFormSubmit}>
+            <div className="form-row">
+              <label className="form-label">
+                Username<span className="required-field">*</span>
+                <InputMask
+                  mask="9999-FAST-9999"
+                  maskChar=" "
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  required
+                />
+                {resultformStore.errors.username && (
+                  <div className="error-message">{toJS(resultformStore.errors).username}</div>
+                )}
+              </label>
+              <label className="form-label">
+                Test Name<span className="required-field">*</span>
+                 <InputMask
+                  mask="99-aaaa-T9"
+                  maskChar="_"
+                  name="testname"
+                  value={formData.testname}
+                  onChange={handleInputChange}
+                />
+                {resultformStore.errors.testname && (
+                  <div className="error-message">{toJS(resultformStore.errors).testname}</div>
+                )}
+              </label>
+              <label className="form-label">
+                Obtain Marks<span className="required-field">*</span>
+                <input
+                  type="text"
+                  name="obtainMarks"
+                  value={formData.obtainMarks}
+                  onChange={handleInputChange}
+                  required
+                />
+                {resultformStore.errors.obtainMarks && (
+                  <div className="error-message">{toJS(resultformStore.errors).obtainMarks}</div>
+                )}
+              </label>
+            </div>
+            <div className="popup-btn-section">
+              <button type="button" className="another-popup" onClick={handleAnotherresult}>
+                <RiAddCircleLine />
+                Add Another
+              </button>
+              <button type="submit" className="add-popup">
+                Add result
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

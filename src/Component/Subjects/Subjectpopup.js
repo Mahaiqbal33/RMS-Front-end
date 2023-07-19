@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { subjectsStore } from '../../Store/SubjectsStore/SubjectsStore';
-import "./SubjectPopupStyle.css"
+import '../Style/PopupStyle.css';
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import { SC } from '../../Services/serverCall';
 import { validateSubjectForm } from '../../helper.js/FormSubjectValidator';
 import InputMask from 'react-input-mask';
-import { StudentStore } from '../../Store/studentStore/studentStore';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
@@ -25,10 +24,8 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
 
   useEffect(() => {
     if (subjectId) {
-      const student = subjectsStore.filterstudent_id(subjectId);
-      const subject = subjectsStore.filtersubject_id(subjectId);
       subjectformStore.setFormData({
-        username: subject.username,
+        username: subjectId.username,
       });
     } else {
       subjectformStore.resetFormData();
@@ -37,7 +34,6 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
 
   useEffect(() => {
     subjectformStore.fetchSubjectList();
-    StudentStore.fetchStudents();
   }, []);
   
   const handleSubjectCobinationFormClick = () => {
@@ -49,13 +45,12 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
   };
 
   const handleFormSubmit = async (e) => {
-    subjectformStore.filterstudent_id();
-    subjectformStore.filtersubject_id();
     e.preventDefault();
-
+  await  subjectformStore.filtersubject_id();
+  await  subjectformStore.filterstudent_id();
+    console.log("Search for Username1:", formData.username);
     if (validateSubjectForm()) {
       const {  student_id, subject_id } = formData;
-
       const payload = {
         student_id,
         subject_id,
@@ -75,7 +70,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
             console.error(error);
           });
       } else {
-        await SC.postCall('/student_subjects', payload)
+        await SC.postCall('/student/subjects', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -111,7 +106,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
         <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <div className="subject-popup-form">
+        <div className="popup-form">
           <h1>Add subject</h1>
           <div className="popup-header">
             <button className={`popup-header-button ${subjectformStore.showSubjectsCombinationForm ? 'active' : ''}`} onClick={handleSubjectCobinationFormClick}>
@@ -161,17 +156,20 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
                     {subjectformStore.errors.subject && (
                       <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
                     )}
-                  </label>
-                  {subjectformStore.errors.student_id && (
+                     {subjectformStore.errors.student_id && (
                     <div className="error-message">{toJS(subjectformStore.errors).student_id}</div>
                   )}
+                   {subjectformStore.errors.subject_id && (
+                    <div className="error-message">{toJS(subjectformStore.errors).subject_id}</div>
+                  )}
+                  </label>
                 </div>
-                <div className="subject-btn-section">
-                  <button type="button" className="another-subject" onClick={handleAnothersubject}>
+                <div className="popup-btn-section">
+                  <button type="button" className="another-popup" onClick={handleAnothersubject}>
                     <RiAddCircleLine />
                     Add Another
                   </button>
-                  <button type="submit" className="add-subject">
+                  <button type="submit" className="add-popup">
                     Add subject
                   </button>
                 </div>

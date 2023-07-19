@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
 import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import { toJS } from 'mobx';
-import './Style/TeacherList.css';
+import '../Style/TableStyle.css'
 import loading from '../../assets/loading.png';
 import maleImage from '../../assets/male.png';
 import femaleImage from '../../assets/female.png';
@@ -49,7 +49,7 @@ const TeacherList = observer(() => {
   };
 
   return (
-    <div className="teacher-list-container">
+    <div className="list-container">
       <div className="filter-section">
         <div className="filter-select">
           <select
@@ -80,7 +80,7 @@ const TeacherList = observer(() => {
         </div>
       ) : (
         <React.Fragment>
-          <table className="teacher-table">
+          <table className="content-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -95,7 +95,7 @@ const TeacherList = observer(() => {
               {currentTeachers.map((teacher, index) => (
                 <tr key={index} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
                   <td>
-                    <div className="teacher-info">
+                    <div className="table-info">
                       <img src={getGenderImage(teacher.gender)} alt={teacher.gender} className="gender-image" />
                       {teacher.firstName}
                     </div>

@@ -13,13 +13,12 @@ import Studentlist from './Screen/Students/Studentlist'
 import Testlist from './Screen/Test/Testlist'
 import Loginform from './Screen/Loginform/Loginform';
 import NewTest from './Screen/Test/NewTest';
-import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoutes from './Utilits/PrivateRoutes';
 import NewTeacher from './Screen/Teachers/NewTeacher';
 import Subjects from './Screen/Subjects/Subjects';
 import SubjectsList from './Screen/Subjects/SubjectsList';
 import AddResult from './Screen/Result/AddResult';
-// import ResultList from './Screen/Result/ResultList';
+import ResultList from './Screen/Result/ResultList';
 function App() {
   return (
     <div>
@@ -36,7 +35,7 @@ function App() {
           <Route path='subjectsList' element={<SubjectsList/>}/>
           <Route path="students" element={<Students />} />
           <Route path='Result'   element={<AddResult/>}/>
-          {/* <Route path='ResultList'   element={<ResultList/>}/> */}
+          <Route path='ResultList'   element={<ResultList/>}/>
           <Route path="settings" element={<Settings />} />
           <Route path="Features" element={<Features />} />
           <Route path="report" element={<Report />} />

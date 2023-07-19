@@ -9,8 +9,9 @@ class SubjectFormStore {
     student_id: '',
     subject_id: '',
   };
+
   subjectList = [];
-  studentList = StudentStore.getStudent;
+  studentList = [];
   errors = {
     username: '',
     subject: '',
@@ -25,6 +26,7 @@ class SubjectFormStore {
       errors: observable,
       subjectList: observable,
       studentList: observable,
+      fetchStudents:action,
       showSubjectsCombinationForm: observable,
       setShowSubjectsCombinationForm: action,
       setFormData: action,
@@ -48,46 +50,51 @@ class SubjectFormStore {
   }
   
   
-
-  filterstudent_id() {
-    const studentListArray = this.studentList.slice();
-    console.log("Student List Array:", studentListArray);
-    console.log("Search for Username:", this.formData.username);
-  
-    const filteredStudent = studentListArray.find((user) => user.username === this.formData.username);
-    console.log("Filtered Student:", filteredStudent);
-  
-    if (filteredStudent) {
-      const studentData = toJS(filteredStudent);
-      if (studentData.id) {
-        this.formData.student_id = studentData.id;
-      } else {
-        this.formData.student_id = '';
-      }
-    } else {
-      this.formData.student_id = '';
+  async fetchStudents() {
+    try {
+      const response = await SC.getCall('/student');
+      console.log('API Response:', response.data.data); // Log the entire response to check its format
+      this.studentList = response.data.data;
+    } catch (error) {
+      console.error('Failed to fetch student list:', error);
     }
   }
 
+  async filterstudent_id() {
+    await this.fetchStudents();
+    console.log("Student List Array:", toJS(this.studentList));
+    console.log("Search for Username:", this.formData.username);
+
+    const filteredStudent = this.studentList.find((student) => student.username === this.formData.username);
+    console.log("Filtered Student:", toJS(filteredStudent));
+
+    if (filteredStudent && filteredStudent.id) {
+      console.log("Filtered Student ID:", filteredStudent.id);
+      this.formData.student_id = filteredStudent.id;
+    } else {
+      console.log("Student not found with the provided username.");
+      this.formData.student_id = "";
+    }
+  }
   
-  filtersubject_id() {
-    const subjectListArray = Array.from(this.subjectList);
+ 
+  
+
+  
+async  filtersubject_id() {
+    const subjectListArray = await Array.from(this.subjectList);
     console.log("Subject List Array:", subjectListArray);
     console.log("Search for Subject:", this.formData.subject);
   
     const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
-    console.log("Filtered Subject:", filteredSubject);
-  
+    console.log("Filtered Subject:", filteredSubject); 
     if (filteredSubject) {
       const subjectData = toJS(filteredSubject);
       if (subjectData.id) {
-        this.formData.student_id = subjectData.id;
-      } else {
-        this.formData.subject_id = '';
+        console.log("hello id",subjectData.id)
+        this.formData.subject_id = subjectData.id;
       }
-    } else {
-      this.formData.subject_id = '';
-    }
+    } 
   }
   
   

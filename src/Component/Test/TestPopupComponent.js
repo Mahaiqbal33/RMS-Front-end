@@ -6,8 +6,7 @@ import { RiAddCircleLine } from 'react-icons/ri';
 import InputMask from 'react-input-mask';
 import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
 import { SC } from '../../Services/serverCall';
-import axios from 'axios';
-import "./PopupStyle.css"
+import '../Style/PopupStyle.css';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 
@@ -20,15 +19,14 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
   };
 
   useEffect(() => {
+    subjectformStore.fetchSubjectList();
     if (testId) {
       const test = testStore.gettestById(testId);
-      subjectformStore.fetchSubjectList();
       formStore.setFormData({
-        subject: test.subject,
-        name: test.name,
-        totalMarks: test.totalMarks,
-        courseCode: test.courseCode,
-        className: test.className,
+        subject:test.subject,
+        name:test.name,
+        totalMarks:test.marks,
+        className:test.class,
       });
     } else {
       formStore.resetFormData();
@@ -37,7 +35,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    formStore.filtersubject_id()
+    await  formStore.filtersubject_id()
     let arr = true;
     if (arr) {
       const { subject_id, name, totalMarks, className } = formData;
@@ -46,12 +44,11 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
         subject_id,
         name,
         marks: totalMarks,
-        class: className,
+        class_name: className,
       };
 
       if (testId) {
-        await axios
-          .put(`/api/tests/${testId}`, payload)
+        await SC.putCall(`/attempt/${testId}`, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -157,7 +154,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
           </label>
           <label className="form-label">
             Class Name<span className="required-field">*</span>
-            <select name="class" value={formData.class} onChange={handleInputChange} required className='select-input'>
+            <select name="className" value={formData.className} onChange={handleInputChange} required className='select-input'>
               <option value="">Select Class</option>
               <option value="1st-Year">1st-Year</option>
               <option value="2nd-Year">2nd-Year</option>
@@ -167,12 +164,12 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             )}
           </label>
         </div>
-        <div className="test-btn-section">
-          <button type="button" className="another-test" onClick={handleAnothertest}>
+        <div className="popup-btn-section">
+          <button type="button" className="another-popup" onClick={handleAnothertest}>
             <RiAddCircleLine />
             Add Another
           </button>
-          <button type="submit" className="add-test">
+          <button type="submit" className="add-popup">
             Add Test
           </button>
         </div>

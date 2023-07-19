@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
 import { subjectsStore } from '../../Store/SubjectsStore/SubjectsStore';
 import { toJS } from 'mobx';
-import './Style/SubjectsList.css';
+import '../Style/TableStyle.css'
 import loading from '../../assets/loading.png';
 
 const Subjectpopup = lazy(() => import('../../Component/Subjects/Subjectpopup'));
@@ -43,7 +43,7 @@ const SubjectsList = observer(() => {
   };
 
   return (
-    <div className="subject-list-container">
+    <div className="list-container">
       <div className="filter-section">
         <div className="filter-select">
           <select
@@ -72,7 +72,7 @@ const SubjectsList = observer(() => {
         </div>
       ) : (
         <React.Fragment>
-          <table className="subject-table">
+          <table className="content-table">
             <thead>
               <tr>
                 <th>Username</th>

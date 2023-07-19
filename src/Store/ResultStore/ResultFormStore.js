@@ -1,13 +1,17 @@
 import { makeObservable, observable, action, toJS } from 'mobx';
-import axios from 'axios';
+import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
+import { SC } from '../../Services/serverCall';
 
 class ResultFormStore {
   formData = {
     username: '',
     testname: '',
     obtainMarks: '',
+    student_id: '',
+    attempt_id: '',
   };
-  userList = [];
+  getTest=[]
+  studentList = subjectformStore.studentList;
   errors = {
     username: '',
     testname: '',
@@ -19,36 +23,62 @@ class ResultFormStore {
     makeObservable(this, {
       formData: observable,
       errors: observable,
-      userList: observable,
+      studentList: observable,
+      fetchtests:action,
       setFormData: action,
       resetFormData: action,
       setError: action,
       clearErrors: action,
-      fetchUserList: action,
-      filterUserId: action,
+      filterstudent_id: action,
+      filtertest_id: action,
     });
   }
 
-  async fetchUserList() {
+  
+  async fetchtests() {
     try {
-      const response = await axios.get('https://dummyjson.com/users');
-      this.userList = response.data.users;
+      const response = await SC.getCall(`/attempt`);
+      this.getTest = response.data.data;
     } catch (error) {
-      console.error('Failed to fetch user list:', error);
+      console.error('Error:', error);
     }
   }
 
-  filterUserId() {
-    const userListArray = Array.from(this.userList);
-    const filteredUser = userListArray.find((user) => user.firstName === this.formData.username);
-    if (filteredUser && filteredUser.id) {
-      this.formData.userId = toJS(filteredUser.id);
+async  filtertest_id() {
+    await this.fetchtests();
+    console.log("Search for Testname:", this.formData.testname);
+
+    const filteredTest = await this.getTest.find((test) => test.name === this.formData.testname);
+    console.log("Filtered Test:", toJS(filteredTest));
+
+    if (filteredTest && filteredTest.id) {
+      console.log("Filtered Test ID:", filteredTest.id);
+      this.formData.attempt_id = filteredTest.id;
     } else {
-      this.formData.userId = '';
+      console.log("Test not found with the provided testname.");
+      this.formData.attempt_id = "";
     }
-    console.log(this.formData.userId);
   }
 
+
+  async filterstudent_id() {
+    await subjectformStore.fetchStudents();
+    console.log("Student List Array:", toJS(this.studentList));
+    console.log("Search for Username:", this.formData.username);
+
+    const filteredStudent = this.studentList.find((student) => student.username === this.formData.username);
+    console.log("Filtered Student:", toJS(filteredStudent));
+
+    if (filteredStudent && filteredStudent.id) {
+      console.log("Filtered Student ID:", filteredStudent.id);
+      this.formData.student_id = filteredStudent.id;
+    } else {
+      console.log("Student not found with the provided username.");
+      this.formData.student_id = "";
+    }
+  }
+  
+ 
   setFormData(data) {
     this.formData = data;
   }

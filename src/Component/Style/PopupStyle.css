@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    padding-top: 50px;
+    padding-top: 30px;
     width: 100%;
     height: 100%;
     display: flex;
@@ -11,12 +11,17 @@
     background-color: rgba(0, 0, 0, 0.205);
     z-index: 10;
   }
-  
+ 
+  .student-popup-form{
+    margin: 20px 50px;
+  }
+  .popup-form{
+    padding: 30px;
+  }
   .popup-content {
     position: relative;
     width: 90%;
     max-width: 600px;
-    padding: 10px;
     margin-left: 15%;
     background-color: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -30,8 +35,8 @@
     cursor: pointer;
   }
   
-  .student-popup-form {
-    margin: 30px;
+  .popup-form {
+    margin: 10px 25px;
   }
   
   .popup-content h1 {
@@ -70,9 +75,9 @@
    
   }
   .select-input{
-    padding-right: 10px;
+    padding-right: 50px 30px;
   }
-  .add-student {
+  .add-popup {
     margin-top: 20px;
     padding: 8px 16px;
     background-color: var(--color-secondary);
@@ -84,11 +89,11 @@
     transition: background-color 0.3s ease;
   }
   
-  .add-student:hover {
+  .add-popup:hover {
     background-color: var(--color-secondary);
   }
   
-   .another-student {
+   .another-popup {
     margin-top: 20px;
     display: flex;
     align-items: center;
@@ -97,10 +102,10 @@
     border: none;
     cursor: pointer;
   }
-  .another-student svg {
+  .another-popup svg {
     margin-right: 5px;
   }
-  .student-btn-section{
+  .popup-btn-section{
     display: flex;
     flex-direction: row;
   }
@@ -116,7 +121,7 @@
   font-size: 16px;
 }
 
-.another-student {
+.another-popup {
   margin-top: 20px;
   display: flex;
   align-items: center;
@@ -126,22 +131,22 @@
   cursor: pointer;
 }
 
-.another-student svg {
+.another-popup svg {
   margin-right: 5px;
 }
 
-.another-student:hover {
+.another-popup:hover {
   transform: scale(1.1);
   color: var(--color-secondary)
 
   
 }
 
-.another-student:focus {
+.another-popup:focus {
   outline: none;
 }
 
-.student-popup-form .form-label .required-field , .form-file-label .required-field  {
+ .required-field  {
   display: inline-block;
   margin-left: 2px;
   font-size: 18px;

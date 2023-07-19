@@ -1,180 +1,6 @@
-// // import { makeObservable, observable, action } from 'mobx';
-
-// // class FormStore {
-// //   formData = {
-// //     fullName: '',
-// //     username: '',
-// //     role: 'teacher',
-// //     gender: '',
-// //     password: '',
-// //     subject: '',
-// //     phoneNumber: '',
-// //   };
-
-// //   errors = {
-// //     fullName: '',
-// //     username: '',
-// //     role: 'teacher',
-// //     gender: '',
-// //     password: '',
-// //     subject: '',
-// //     phoneNumber: '',
-// //   };
-// //  showSuccessMessage= false;
-// //  showErrorMessage= false;
-// //   constructor() {
-// //     makeObservable(this, {
-// //       formData: observable,
-// //       errors: observable,
-// //       showSuccessMessage:observable,
-// //       showErrorMessage:observable,
-// //       setFormData: action,
-// //       resetFormData: action,
-// //       setError: action,
-// //       clearErrors: action,
-// //       setShowSuccessMessage:action,
-// //       setShowErrorMessage:action
-// //     });
-// //   }
-
-// //   setFormData(data) {
-// //     this.formData = data;
-// //   }
-
-// //   resetFormData() {
-// //     this.formData = {
-// //       fullName: '',
-// //       username: '',
-// //       gender: '',
-// //       password: '',
-// //       subject: '',
-// //       phoneNumber: '',
-// //     };
-// //   }
-// //   setError(fieldName, errorMessage) {
-// //     this.errors[fieldName] = errorMessage;
-// //   }
-
-// //   clearErrors() {
-// //     this.errors = {
-// //       fullName: '',
-// //       username: '',
-// //       role: '',
-// //       gender: '',
-// //       password: '',
-// //       subject: '',
-// //       phoneNumber: '',
-// //     };
-// //   }
-
-// //   setShowSuccessMessage(value){
-// //     this.showSuccessMessage= value;
-// //   }
-// //   setShowErrorMessage(value){
-// //     this.showErrorMessage= value;
-// //   }
-
- 
-// // }
-
-// // export const formStore = new FormStore();
-// import { makeObservable, observable, action } from 'mobx';
-
-// class FormStore {
-//   formData = {
-//     fullName: '',
-//     username: '',
-//     role: 'teacher',
-//     gender: '',
-//     password: '',
-//     subject: '',
-//     phoneNumber: '',
-//   };
-
-//   errors = {
-//     fullName: '',
-//     username: '',
-//     role: 'teacher',
-//     gender: '',
-//     password: '',
-//     subject: '',
-//     phoneNumber: '',
-//   };
-
-//   showSuccessMessage = false;
-//   showErrorMessage = false;
-//   csvFile = null;
-
-//   constructor() {
-//     makeObservable(this, {
-//       formData: observable,
-//       errors: observable,
-//       showSuccessMessage: observable,
-//       showErrorMessage: observable,
-//       csvFile: observable,
-//       setFormData: action,
-//       resetFormData: action,
-//       setError: action,
-//       clearErrors: action,
-//       setShowSuccessMessage: action,
-//       setShowErrorMessage: action,
-//       setCSVFile: action,
-//       resetCSVFile: action,
-//     });
-//   }
-
-//   setFormData(data) {
-//     this.formData = data;
-//   }
-
-//   resetFormData() {
-//     this.formData = {
-//       fullName: '',
-//       username: '',
-//       gender: '',
-//       password: '',
-//       subject: '',
-//       phoneNumber: '',
-//     };
-//   }
-
-//   setError(fieldName, errorMessage) {
-//     this.errors[fieldName] = errorMessage;
-//   }
-
-//   clearErrors() {
-//     this.errors = {
-//       fullName: '',
-//       username: '',
-//       role: '',
-//       gender: '',
-//       password: '',
-//       subject: '',
-//       phoneNumber: '',
-//     };
-//   }
-
-//   setShowSuccessMessage(value) {
-//     this.showSuccessMessage = value;
-//   }
-
-//   setShowErrorMessage(value) {
-//     this.showErrorMessage = value;
-//   }
-
-//   setCSVFile(file) {
-//     this.csvFile = file;
-//   }
-
-//   resetCSVFile() {
-//     this.csvFile = null;
-//   }
-// }
-
-// export const formStore = new FormStore();
-
 import { makeObservable, observable, action } from 'mobx';
-
+import { subjectformStore } from '../SubjectsStore/SubjectsFormStore';
+import { toJS } from 'mobx';
 class FormStore {
   formData = {
     fullName: '',
@@ -184,8 +10,9 @@ class FormStore {
     password: '',
     subject: '',
     phoneNumber: '',
+    subject_id:"",
   };
-
+  subjectList=subjectformStore.subjectList;
   errors = {
     fullName: '',
     username: '',
@@ -195,6 +22,7 @@ class FormStore {
     subject: '',
     phoneNumber: '',
     file:'',
+    subject_id:"",
   };
   showManuallyForm= true;
   csvFile = null;
@@ -206,6 +34,7 @@ class FormStore {
       errors: observable,
       csvFile: observable,
       showCSVForm: observable,
+      subjectList:observable,
       setFormData: action,
       resetFormData: action,
       setError: action,
@@ -215,6 +44,7 @@ class FormStore {
       setCSVFile: action,
       resetCSVFile: action,
       setShowCSVForm: action,
+      filtersubject_id:action,
     });
   }
 
@@ -230,13 +60,44 @@ class FormStore {
       password: '',
       subject: '',
       phoneNumber: '',
-      file:''
+      file:'',
+      subject_id:""
     };
   }
 
   setError(fieldName, errorMessage) {
     this.errors[fieldName] = errorMessage;
   }
+
+
+  async filtersubject_id() {
+    try {
+      // Make sure subjectList is fetched before proceeding
+      await subjectformStore.fetchSubjectList();
+  
+      const subjectListArray = Array.from(subjectformStore.subjectList);
+      console.log("Subject List Array:", subjectListArray);
+      console.log("Search for Subject:", this.formData.subject);
+  
+      const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
+      console.log("Filtered Subject:", filteredSubject);
+  
+      if (filteredSubject) {
+        const subjectData = toJS(filteredSubject);
+        if (subjectData.id) {
+          console.log("hello id", subjectData.id);
+          this.formData.subject_id = subjectData.id;
+        }
+      } else {
+        // If subject not found, reset subject_id
+        this.formData.subject_id = "";
+      }
+    } catch (error) {
+      // Handle any errors that may occur during the fetchSubjectList() operation
+      console.error("Error fetching subject list:", error);
+    }
+  }
+
 
   clearErrors() {
     this.errors = {
@@ -247,6 +108,7 @@ class FormStore {
       password: '',
       subject: '',
       phoneNumber: '',
+      subject_id:"",
     };
   }
 

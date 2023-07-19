@@ -1,32 +1,32 @@
-import React, { useEffect, useState,Suspense,lazy } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { observer } from 'mobx-react-lite';
 import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
 import { resultStore } from '../../Store/ResultStore/ResultStore';
-import './Style/Result.css'
+import '../Style/TableStyle.css'
 import loading from '../../assets/loading.png';
-import maleImage from '../../assets/male.png';
-import femaleImage from '../../assets/female.png';
-const Resultpopup= lazy(() => import('../../Component/Result/Resultpopup'));
+
+const ResultPopupComponent = lazy(() => import('../../Component/Result/Resultpopup'));
+
 const ResultList = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 10;
 
   useEffect(() => {
-    const fetchresultData = async () => {
-      await resultStore.fetchresult();
+    const fetchResultData = async () => {
+      await resultStore.fetchresult(currentPage, entriesPerPage);
       setIsLoading(false);
     };
 
-    fetchresultData();
-  }, []);
+    fetchResultData();
+  }, [currentPage, entriesPerPage]);
 
   const handleDelete = (resultId) => {
-    resultStore.deleteresult(resultId);
+    resultStore.deleteResult(resultId);
   };
 
   const handleEdit = (resultId) => {
-    resultStore.setCurrentresultId(resultId);
+    resultStore.setCurrentResultId(resultId);
     resultStore.setPopupOpen(true);
   };
 
@@ -79,15 +79,8 @@ const ResultList = observer(() => {
     return paginationButtons;
   };
 
-  const getRangeDisplay = () => {
-    const startRange = (currentPage - 1) * entriesPerPage + 1;
-    const endRange = Math.min(startRange + entriesPerPage - 1, resultStore.totalresult);
-
-    return `${startRange} to ${endRange}`;
-  };
-
   return (
-    <div className="result-list-container">
+    <div className="list-container">
       <div className="filter-section">
         <div className="filter-select">
           <select
@@ -96,17 +89,15 @@ const ResultList = observer(() => {
           >
             <option value="All">All</option>
             <option value="name">Name</option>
-            <option value="username">Uername</option>
+            <option value="subject">Subject</option>
             <option value="class">Class</option>
-            <option value="batch">Batch</option>
-            <option value="gender">Gender</option>
           </select>
         </div>
         <div className="filter-input">
           <FaSearch className="search-icon" />
           <input
             type="text"
-            placeholder="Search for a result..."
+            placeholder="Search for a student by name or email....."
             value={resultStore.searchTerm}
             onChange={(e) => resultStore.setSearchTerm(e.target.value)}
           />
@@ -114,42 +105,41 @@ const ResultList = observer(() => {
       </div>
       {isLoading ? (
         <div className="loading-indicator">
-          <img src={loading} alt="Loading..." />
+          <div>
+            <img src={loading} alt="Loading..." />
+          </div>
         </div>
+      ) : !resultStore.filteredResults?.length ?(
+        <div className="no-results-message">No Result  found at that time.</div>
       ) : (
         <React.Fragment>
-          <table className="result-table">
+          <table className="content-table">
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Subject</th>
                 <th>Class</th>
-                <th>Username</th>
-                <th>Gender</th>
-                <th>Batch</th>
-                <th>Phone Number</th>
+                <th>Marks</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {resultStore.filteredresult.map((result, index) => (
+              {resultStore.filteredResults.map((result, index) => (
                 <tr key={result.id} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
                   <td>
-                    <div className="result-info">
-                      <img src={result.gender === 'male' ? maleImage : femaleImage} alt={result.gender} className="gender-image" />
+                    <div className="table-info">
                       {result.name}
                     </div>
                   </td>
-                  <td>{result.class_name}</td>
-                  <td>{result.username}</td>
-                  <td>{result.gender}</td>
-                  <td>{result.batch}</td>
-                  <td>{result.phone_number}</td>
+                  <td>{result.subject}</td>
+                  <td>{result.class}</td>
+                  <td>{result.marks}</td>
                   <td>
                     <div className="action-buttons">
                       <button className="edit-button" onClick={() => handleEdit(result.id)}>
                         <FaEdit />
                       </button>
-                      <button className="delete-button" onClick={() => handleDelete(result.id)}>
+                      <button onClick={() => handleDelete(result.id)} className="delete-button">
                         <FaTrash />
                       </button>
                     </div>
@@ -160,7 +150,6 @@ const ResultList = observer(() => {
           </table>
           <div className="pagination-container">
             <div className="pagination">
-              <div className="range-display">Showing {getRangeDisplay()} of {resultStore.totalresult} entries</div>
               {renderPaginationButtons()}
             </div>
           </div>
@@ -168,16 +157,16 @@ const ResultList = observer(() => {
       )}
       {resultStore.isPopupOpen && (
         <Suspense fallback={<div><img src={loading} alt='Loading...'/></div>}>
-          <Resultpopup
+          <ResultPopupComponent
             onSubmit={() => {
-              resultStore.fetchresult();
+              resultStore.fetchresult(currentPage, entriesPerPage);
             }}
-            resultId={resultStore.currentresultId}
+            resultId={resultStore.currentResultId}
           />
         </Suspense>
-      )}
+      )}
     </div>
   );
 });
 
-export default ResultList;
+export default ResultList;

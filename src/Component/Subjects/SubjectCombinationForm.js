@@ -2,11 +2,9 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { subjectCombinationStore } from '../../Store/SubjectsStore/SubjectCombinationStore';
 import { subjectsStore } from '../../Store/SubjectsStore/SubjectsStore';
-import "./SubjectPopupStyle.css"
+import '../Style/PopupStyle.css';
 import { RiAddCircleLine } from 'react-icons/ri';
-import axios from 'axios';
 import { validateSubjectCombinatinForm } from '../../helper.js/SubjectCombinationValidators';
-import InputMask from 'react-input-mask';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { SC } from '../../Services/serverCall';
@@ -82,12 +80,12 @@ const SubjectCombination = observer(() => {
           )}
         </label>
       </div>
-      <div className="subject-btn-section">
-        <button type="button" className="another-subject" onClick={handleAnotherSubject}>
+      <div className="popup-btn-section">
+        <button type="button" className="another-popup" onClick={handleAnotherSubject}>
           <RiAddCircleLine />
           Add Another
         </button>
-        <button type="submit" className="add-subject">
+        <button type="submit" className="add-popup">
           Add subject
         </button>
       </div>

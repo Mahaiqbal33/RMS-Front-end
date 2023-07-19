@@ -1,35 +1,29 @@
-import React, { useEffect, lazy, Suspense, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { observer } from 'mobx-react-lite';
 import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
 import { testStore } from '../../Store/TestStore/TestStore';
-import { toJS } from 'mobx';
-import './Style/TestList.css' 
+import '../Style/TableStyle.css'
 import loading from '../../assets/loading.png';
-import maleImage from '../../assets/male.png';
-import femaleImage from '../../assets/female.png';
+
 
 const TestPopupComponent = lazy(() => import('../../Component/Test/TestPopupComponent'));
 
 const TestList = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 10;
 
   useEffect(() => {
-    const fetchtestData = async () => {
-      await testStore.fetchtests();
+    const fetchTestData = async () => {
+      await testStore.fetchtests(currentPage, entriesPerPage);
       setIsLoading(false);
     };
 
-    fetchtestData();
-  }, []);
+    fetchTestData();
+  }, [currentPage, entriesPerPage]);
 
   const handleDelete = (testId) => {
     testStore.deletetest(testId);
-  };
-
-  const getGenderImage = (gender) => {
-    return gender === 'male' ? maleImage : femaleImage;
   };
 
   const handleEdit = (testId) => {
@@ -37,19 +31,57 @@ const TestList = observer(() => {
     testStore.setPopupOpen(true);
   };
 
-  const currenttests = toJS(testStore.filteredtests).slice(
-    currentPage * entriesPerPage,
-    (currentPage + 1) * entriesPerPage
-  );
-
-  const pageCount = Math.ceil(toJS(testStore.filteredtests).length / entriesPerPage);
-
   const goToPage = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  const renderPaginationButtons = () => {
+    const pageCount = testStore.pageCount;
+
+    const paginationButtons = [];
+
+    // Add Previous button
+    paginationButtons.push(
+      <button
+        key="prev"
+        className="pagination-button"
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        Previous
+      </button>
+    );
+
+    // Add numbered buttons
+    for (let i = 1; i <= pageCount; i++) {
+      paginationButtons.push(
+        <button
+          key={i}
+          className={`pagination-button ${currentPage === i ? 'active' : ''}`}
+          onClick={() => goToPage(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // Add Next button
+    paginationButtons.push(
+      <button
+        key="next"
+        className="pagination-button"
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage === pageCount}
+      >
+        Next
+      </button>
+    );
+
+    return paginationButtons;
+  };
+
   return (
-    <div className="test-list-container">
+    <div className="list-container">
       <div className="filter-section">
         <div className="filter-select">
           <select
@@ -57,11 +89,9 @@ const TestList = observer(() => {
             onChange={(e) => testStore.setFilter(e.target.value)}
           >
             <option value="All">All</option>
-            <option value="firstName">Name</option>
+            <option value="name">Name</option>
             <option value="subject">Subject</option>
             <option value="class">Class</option>
-            <option value="email">Username</option>
-            <option value="gender">Gender</option>
           </select>
         </div>
         <div className="filter-input">
@@ -76,34 +106,33 @@ const TestList = observer(() => {
       </div>
       {isLoading ? (
         <div className="loading-indicator">
-          <div><img src={loading} alt='Loading...'/></div>
+          <div>
+            <img src={loading} alt="Loading..." />
+          </div>
         </div>
       ) : (
         <React.Fragment>
-          <table className="test-table">
+          <table className="content-table">
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Subject</th>
                 <th>Class</th>
-                <th>Username</th>
-                <th>Gender</th>
+                <th>Marks</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {currenttests.map((test, index) => (
-                <tr key={index} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
+              {testStore.filteredtests.map((test, index) => (
+                <tr key={test.id} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
                   <td>
-                    <div className="test-info">
-                      <img src={getGenderImage(test.gender)} alt={test.gender} className="gender-image" />
-                      {test.firstName}
+                    <div className="table-info">
+                      {test.name}
                     </div>
                   </td>
                   <td>{test.subject}</td>
                   <td>{test.class}</td>
-                  <td>{test.email}</td>
-                  <td>{test.gender}</td>
+                  <td>{test.marks}</td>
                   <td>
                     <div className="action-buttons">
                       <button className="edit-button" onClick={() => handleEdit(test.id)}>
@@ -120,29 +149,7 @@ const TestList = observer(() => {
           </table>
           <div className="pagination-container">
             <div className="pagination">
-              <button
-                className="pagination-button"
-                onClick={() => goToPage(currentPage - 1)}
-                disabled={currentPage === 0}
-              >
-                Previous
-              </button>
-              {Array.from({ length: pageCount }).map((_, index) => (
-                <button
-                  key={index}
-                  className={`pagination-button ${currentPage === index ? 'active' : ''}`}
-                  onClick={() => goToPage(index)}
-                >
-                  {index + 1}
-                </button>
-              ))}
-              <button
-                className="pagination-button"
-                onClick={() => goToPage(currentPage + 1)}
-                disabled={currentPage === pageCount - 1}
-              >
-                Next
-              </button>
+              {renderPaginationButtons()}
             </div>
           </div>
         </React.Fragment>
@@ -151,9 +158,9 @@ const TestList = observer(() => {
         <Suspense fallback={<div><img src={loading} alt='Loading...'/></div>}>
           <TestPopupComponent
             onSubmit={() => {
-              testStore.fetchtests();
+              testStore.fetchtests(currentPage, entriesPerPage);
             }}
-            testId={testStore.currenttestId}
+            testId={testStore.currentTestId}
           />
         </Suspense>
       )}
@@ -162,5 +169,3 @@ const TestList = observer(() => {
 });
 
 export default TestList;
-
-

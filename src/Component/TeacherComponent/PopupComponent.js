@@ -5,11 +5,12 @@ import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import { RiAddCircleLine } from 'react-icons/ri';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
-import '../../Component/TeacherComponent/PopupStyle.css';
+import '../Style/PopupStyle.css';
 import { validateTeacherForm } from '../../helper.js/FormTeacherValidator';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
-
+import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
+import { SC } from '../../Services/serverCall';
 const PopupComponent = observer(({ onSubmit, teacherId }) => {
   const { formData, csvFile, showCSVForm } = formStore;
 
@@ -27,13 +28,13 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
   };
 
   useEffect(() => {
+    subjectformStore.fetchSubjectList();
     if (teacherId) {
       const teacher = teacherStore.getTeacherById(teacherId);
-
       formStore.setFormData({
-        fullName: teacher.firstName,
+        fullName: teacher.name,
         username: teacher.email,
-        role: teacher.role,
+        role: 'teacher',
         gender: teacher.gender,
         password: teacher.password,
         phoneNumber: teacher.phoneNumber,
@@ -46,11 +47,10 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("hello")
-    console.log(csvFile)
-    console.log(validateTeacherForm())
+    await  formStore.filtersubject_id()
+    console.log("Form validtions",validateTeacherForm())
     if (validateTeacherForm()) {
-      const { fullName, username, role, gender, password, phoneNumber, subject } = formData;
+      const { fullName, username, role, gender, password, phoneNumber, subject_id} = formData;
 
       let payload;
       if (toJS(csvFile)) {
@@ -60,13 +60,13 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       } else {
         // Send form data as payload
         payload = {
-          fullName,
-          username,
-          role,
-          gender,
-          password,
-          phoneNumber,
-          subject,
+          name:fullName,
+          gender:gender,
+          role:'teacher',
+          username:username,
+          password:password,
+          phone_number:phoneNumber,
+          subject_id:subject_id,
         };
       }
 
@@ -84,8 +84,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             console.error(error);
           });
       } else {
-        await axios
-          .post('https://dummy.restapiexample.com/api/v1/create', payload)
+        await SC.postCall('/teacher', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -144,7 +143,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
         <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <div className="teacher-popup-form">
+        <div className="popup-form">
           <h1>Add Teacher</h1>
 
           <div className="popup-header">
@@ -236,23 +235,32 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
 
                 </label>
                 <label className="form-label">
-                  Subject<span className="required-field">*</span>
-                  <select name="subject" value={formData.subject} onChange={handleInputChange} required className='select-input'>
-                    <option value="">Select Subject</option>
-                    <option value="female">Math</option>
-                  </select>
-                  {formStore.errors.subject && (
-                    <div className="error-message">{toJS(formStore.errors).subject}</div>
-                  )}
-
-                </label>
+                    Subject<span className="required-field">*</span>
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="select-input"
+                    >
+                      <option value="">Select Subject</option>
+                      {subjectformStore.subjectList.map((subject) => (
+                        <option key={subject.id} value={subject.name}>
+                          {subject.name}
+                        </option>
+                      ))}
+                    </select>
+                    {subjectformStore.errors.subject && (
+                      <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
+                    )}
+                  </label>
               </div>
-              <div className="teacher-btn-section">
-                <button type="button" className="another-teacher" onClick={handleAnotherTeacher}>
+              <div className="popup-btn-section">
+                <button type="button" className="another-popup" onClick={handleAnotherTeacher}>
                   <RiAddCircleLine />
                   Add Another
                 </button>
-                <button type="submit" className="add-teacher">
+                <button type="submit" className="add-popup">
                   Add Teacher
                 </button>
               </div>
@@ -282,12 +290,12 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
                 
          </label>
                 <div className="form-row">
-                  <div className="teacher-btn-section">
-                    <button type="button" className="another-teacher" onClick={handleAnotherTeacher}>
+                  <div className="popup-btn-section">
+                    <button type="button" className="another-popup" onClick={handleAnotherTeacher}>
                       <RiAddCircleLine />
                       Add Another
                     </button>
-                    <button type="submit" className="add-teacher">
+                    <button type="submit" className="add-popup">
                       Add Teacher
                     </button>
                   </div>

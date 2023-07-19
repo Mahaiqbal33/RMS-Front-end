@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import Resultpopup from '../../Component/Result/Resultpopup';
 import { resultStore } from '../../Store/ResultStore/ResultStore';
-import './Style/Result.css'; // Import the CSS file for styling
+import "../Style/ScreenStyle.css" // Import the CSS file for styling
 import background from '../../assets/background.png'
 import { sidebarStore } from '../../Store/Sidebarstore/SideStore';
 
@@ -20,13 +20,13 @@ const AddResult =observer( () => {
   };
 
   return (
-    <div className="new-result-container">
-    <div className='newresult-content-section'>
+    <div className="new-container">
+    <div className='new-content-section'>
     <div className="left-section">
-      <h2 className="new-result-title">Results</h2>
+      <h2 className="new-title">Results</h2>
     </div>
     <div className="right-section">
-      <button className="add-result-button" onClick={handleAddresult}>
+      <button className="add-button" onClick={handleAddresult}>
         Add Result
       </button>
     </div>

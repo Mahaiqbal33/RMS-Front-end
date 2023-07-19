@@ -1,6 +1,7 @@
 import { makeObservable, observable, action, computed } from 'mobx';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { SC } from '../../Services/serverCall';
 
 class ResultStore {
   isPopupOpen = false;
@@ -34,10 +35,12 @@ class ResultStore {
     this.isPopupOpen = value;
   }
 
-  async fetchresult() {
+  async fetchresult(page,pageSize) {
     try {
-      const response = await axios.get('https://dummyjson.com/users');
-      this.result = response.data.users;
+      const response = await SC.getCall(`/assessment?page=${page}&limit=${pageSize}`);
+      this.result = response.data.data;
+      this.pageCount = Math.ceil(response.data.meta.total / pageSize);
+      this.currentPage = page;
     } catch (error) {
       console.error('Error:', error);
     }

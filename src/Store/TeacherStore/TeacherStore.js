@@ -2,7 +2,6 @@ import { makeObservable, observable, action, computed } from 'mobx';
 import sweetAlertConfig from '../../Component/Alerts/alertConfig';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-
 class TeacherStore {
   isPopupOpen = false;
   getTeacher = [];
@@ -10,7 +9,6 @@ class TeacherStore {
   filterType = '';
   currentTeacherId = null;
   currentTeacherData = {};
-
   constructor() {
     makeObservable(this, {
       isPopupOpen: observable,
@@ -44,18 +42,7 @@ class TeacherStore {
       });
   }
 
-  //pagination functionality
-  // async fetchTeachers(page, pageSize) {
-  //   const url = `https://dummyjson.com/users?page=${page}&limit=${pageSize}`;
   
-  //   try {
-  //     const response = await axios.get(url);
-  //     this.getTeacher = response.data.users;
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }
-
 
   deleteTeacher(teacherId) {
     Swal.fire({
@@ -85,7 +72,7 @@ class TeacherStore {
   })
 }
 
-  
+
 
   setFilter(filter) {
     this.filterType = filter;
