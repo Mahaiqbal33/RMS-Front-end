@@ -2,30 +2,34 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import user from "../../assets/User.png";
+import role from "../../assets/role.png";
 import passwordicon from '../../assets/Forgotpassword.png';
 import { authStore } from '../../Store/LoginStore/AuthStore';
 import './logindesign.css'
 import { validateForm } from './Validation'
+import InputMask from 'react-input-mask';
 import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
 import { SC } from '../../Services/serverCall';
+import { toJS } from 'mobx';
 
 const LoginForm = observer(() => {
   const navigate = useNavigate();
-
-//HandleChange function
+  const {formFields} = authStore;
+  //HandleChange function
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-      authStore.setFormField(name, value);
+    authStore.setFormField(name, value);
   };
-  
- //HandleSubmit function
+
+  //HandleSubmit function
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
         const response = await SC.postCall('/create', {
-          username: authStore.formFields.username,
-          password: authStore.formFields.password
+          username:formFields.username,
+          password:formFields.password,
+          role:formFields.role
         });
 
         if (response.data) {
@@ -35,7 +39,7 @@ const LoginForm = observer(() => {
           navigate('/sidebar');
         }
       } catch (error) {
-        authStore.setError('Invalid credentials. Please try again.');
+       alert(error)
       }
     }
     authStore.clearFormFields();
@@ -57,18 +61,19 @@ const LoginForm = observer(() => {
               <label htmlFor="username" className="input-lebal">Username</label>
               <div className="input-box">
                 <img src={user} className="iconff" alt='' />
-                <input
-                  placeholder="Enter your username"
-                  type="text"
-                  id="username"
-                  name="username"
-                  autoComplete="username"
-                  value={authStore.formFields.username}
-                  onChange={handleInputChange}
-                  required
-                />
+                 <InputMask
+                    mask="9999-FAST-9999"
+                    placeholder="Enter your username"
+                    maskChar=" "
+                    type="text"
+                    name="username"
+                    autoComplete="username"
+                    value={formFields.username}
+                    onChange={handleInputChange}
+                    required
+                  />
               </div>
-
+              {authStore.errors.username && <p className='errorStyle'>{toJS(authStore.errors).username}</p>}
               <label htmlFor="password" className="input-lebal">Password</label>
               <div className="input-box">
                 <img src={passwordicon} className="iconff" alt='' />
@@ -77,13 +82,35 @@ const LoginForm = observer(() => {
                   type="password"
                   id="password"
                   name="password"
-                  autoComplete="current-password"
-                  value={authStore.formFields.password}
                   onChange={handleInputChange}
+                  autoComplete="current-password"
+                  value={formFields.password}
                   required
                 />
               </div>
-              {authStore.errors && <p className='errorStyle'>{authStore.errors}</p>}
+              {authStore.errors.password&& <p className='errorStyle'>{authStore.errors.password}</p>}
+              <label htmlFor="role" className="input-lebal">
+                 What is your Role?
+                </label>
+                <div className="input-box">
+                <img src={role} className="iconff" alt='' />
+                <select
+                  id="role"
+                  name="role"
+                  onChange={handleInputChange}
+                  value={formFields.role}
+                  autoComplete='role'
+                  required
+                >
+                  <option value="" disabled>
+                    Select Role
+                  </option>
+                  <option value="student">Student</option>
+                  <option value="admin">Admin</option>
+                  <option value="teacher">Teacher</option>
+                </select>
+              </div>
+              {authStore.errors.role && <p className='errorStyle'>{toJS(authStore.errors).role}</p>}
               <div className="button input-box">
                 <input type="submit" value="LOGIN" />
               </div>

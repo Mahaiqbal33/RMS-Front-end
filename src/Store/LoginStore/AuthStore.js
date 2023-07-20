@@ -5,14 +5,18 @@ class AuthStore {
   formFields = {
     username: '',
     password: '',
-    rememberMe:false,
+    role: '', // Add role field to the formFields object
   };
-  errors = '';
+  errors = {
+    username: '',
+    password: '',
+    role: '', // Add role field to the errors object
+  };
 
   constructor() {
     makeObservable(this, {
-      isLoggedIn: observable,
-      formFields: observable,
+      formFields:observable,
+      isLoggedIn:observable,
       errors: observable,
       login: action,
       logout: action,
@@ -30,11 +34,12 @@ class AuthStore {
     this.formFields = {
       username: '',
       password: '',
+      role: '', // Clear role field as well
     };
   }
 
-  setError(errors) {
-    this.errors = errors;
+  setError(field, error) {
+    this.errors[field] = error;
   }
 
   login() {

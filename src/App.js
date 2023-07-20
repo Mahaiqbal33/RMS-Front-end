@@ -19,6 +19,7 @@ import Subjects from './Screen/Subjects/Subjects';
 import SubjectsList from './Screen/Subjects/SubjectsList';
 import AddResult from './Screen/Result/AddResult';
 import ResultList from './Screen/Result/ResultList';
+import Admin from './Screen/Admin/Admin';
 function App() {
   return (
     <div>
@@ -39,6 +40,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="Features" element={<Features />} />
           <Route path="report" element={<Report />} />
+          <Route path='admin'  element={<Admin/>}/>
         </Route>
     </Route>
       <Route  path='/' element={<Loginform/>}/>
