@@ -11,6 +11,8 @@ import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { subjectformStore } from '../../Store/SubjectsStore/SubjectsFormStore';
 import { SC } from '../../Services/serverCall';
+
+
 const PopupComponent = observer(({ onSubmit, teacherId }) => {
   const { formData, csvFile, showCSVForm } = formStore;
 
@@ -34,7 +36,6 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       formStore.setFormData({
         fullName: teacher.name,
         username: teacher.email,
-        role: 'teacher',
         gender: teacher.gender,
         password: teacher.password,
         phoneNumber: teacher.phoneNumber,
@@ -50,7 +51,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
     await  formStore.filtersubject_id()
     console.log("Form validtions",validateTeacherForm())
     if (validateTeacherForm()) {
-      const { fullName, username, role, gender, password, phoneNumber, subject_id} = formData;
+      const { fullName, username, gender, password, phoneNumber, subject_id} = formData;
 
       let payload;
       if (toJS(csvFile)) {
@@ -62,7 +63,6 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
         payload = {
           name:fullName,
           gender:gender,
-          role:'teacher',
           username:username,
           password:password,
           phone_number:phoneNumber,
@@ -92,7 +92,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             teacherStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
+            sweetAlertConfig.errorAlert(error.message)
             console.error(error);
           });
       }

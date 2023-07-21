@@ -8,6 +8,7 @@ import { authStore } from '../../Store/LoginStore/AuthStore';
 import './logindesign.css'
 import { validateForm } from './Validation'
 import InputMask from 'react-input-mask';
+import sweetAlertConfig from '../../Component/Alerts/alertConfig'
 import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
 import { SC } from '../../Services/serverCall';
 import { toJS } from 'mobx';
@@ -34,12 +35,15 @@ const LoginForm = observer(() => {
 
         if (response.data) {
           const token = response.data.token;
+          const expiresAt = response.data.expires_at;
+          // Store the token and expiration date in localStorage
           localStorage.setItem('token', token);
+          localStorage.setItem('expiresAt', expiresAt);
           privateRoutes.token = true;
           navigate('/sidebar');
         }
       } catch (error) {
-       alert(error)
+        sweetAlertConfig.errorAlert(error.message)
       }
     }
     authStore.clearFormFields();

@@ -93,7 +93,7 @@
 .Chart-main{
   display: flex;
   flex-direction: column;
-  margin: 50px 20px;
+  margin: 50px 20px 0 20px;
 }
 .pie-chart{
   margin-top: 30px;
@@ -104,12 +104,27 @@
   flex-direction: row;
   align-items: center;
 }
+
+/* Media query for larger screens (adjust the breakpoint as per your design) */
+@media screen and (max-width: 650px) {
+  .pie-main {
+    flex-direction: column;
+    width: 100%;
+
+  }
+}
+@media screen and (max-width: 650px) {
+  .pass-fail-chart {
+    margin-left: 0;
+    width: 90% !important;
+  }
+}
 /* PassFailChart.css */
 .pass-fail-chart {
   display: flex;
   margin-left: 50px;
   flex-direction: column;
-  width: 40%;
+  width: 50%;
 }
 
 .bar {
@@ -147,4 +162,24 @@
 
 .fail-label {
   color: #d3d3d3;
+}
+
+/* Styles for the chart inside the container */
+.mixed-chart {
+  width: 100%; /* The chart will occupy the full width of the container */
+  height: 350px; /* Fixed height for the chart (adjust as needed) */
+}
+
+/* Media query for larger screens (adjust the breakpoint as per your design) */
+@media screen and (max-width: 768px) {
+  .mixed-chart {
+    width: 100%; /* Reduce the chart width to 80% of the container */
+  }
+}
+
+/* Media query for extra-large screens (adjust the breakpoint as per your design) */
+@media screen and (min-width: 1200px) {
+  .mixed-chart {
+    width: 95%; /* Reduce the chart width to 60% of the container */
+  }
 }

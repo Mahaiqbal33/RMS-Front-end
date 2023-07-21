@@ -3,20 +3,38 @@ import { observer } from 'mobx-react-lite';
 import { FaBars, FaBell, FaUserCircle, FaSignOutAlt, FaSearch } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sidebarStore } from '../../Store/Sidebarstore/SideStore';
-import { authStore } from '../../Store/LoginStore/AuthStore';
 import '../Header/Header.css'
+import { SC } from '../../Services/serverCall';
 
 const Header = observer(() => {
   const location = useLocation();
   const isDashboardPage = location.pathname === '/sidebar';
   const logoutnavigate = useNavigate();
   const adminNavigate = useNavigate();
-  const handeLogout = () => {
-    authStore.logout();
-    if (!authStore.isLoggedIn) {
-      return logoutnavigate("/");
-    }
-  };
+  
+ 
+    const handleLogout = async () => {
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+  
+      // Remove the token and expiration date from localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('expiresAt');
+  
+      try {
+        // Send a POST request to the backend to log out the user using the stored token
+        await SC.postCall('/logout', {
+          token: token,
+        });
+  
+        // Redirect to the login page after successful logout
+        logoutnavigate('/login');
+      } catch (error) {
+        console.error('Logout error:', error);
+        // Handle any logout error, such as failed backend request
+      }
+    };
+
 const handleAdmin =()=>{
    return adminNavigate ('admin');
 }
@@ -38,7 +56,7 @@ const handleAdmin =()=>{
         <div className={`header-right ${isDashboardPage ? 'dashboard-header-right' : ''}`}>
           <span id="header-icon"><FaBell /></span>
           <span id="header-icon" onClick={handleAdmin}><FaUserCircle /></span>
-          <button id='logout-btn' onClick={handeLogout}>Logout <span className="material-icons-outlined"><FaSignOutAlt /></span></button>
+          <button id='logout-btn' onClick={handleLogout}>Logout <span className="material-icons-outlined"><FaSignOutAlt /></span></button>
         </div>
       </header>
     </>

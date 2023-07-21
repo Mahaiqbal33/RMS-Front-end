@@ -11,8 +11,7 @@ class FormStore {
   };
   subjectList=subjectformStore.subjectList;
   errors = {
-    subject_id: '',
-    subject:"",
+    subject: '',
     name: '',
     totalMarks: '',
     className: '',
@@ -50,7 +49,7 @@ class FormStore {
 
   clearErrors() {
     this.errors = {
-      subject_id: '',
+      subject: '',
       name: '',
       totalMarks: '',
       className: '',

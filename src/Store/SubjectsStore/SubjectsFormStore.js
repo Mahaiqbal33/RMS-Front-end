@@ -15,8 +15,6 @@ class SubjectFormStore {
   errors = {
     username: '',
     subject: '',
-    student_id: '',
-    subject_id: '',
   };
   showSubjectsCombinationForm = true;
 
@@ -121,8 +119,6 @@ async  filtersubject_id() {
     this.errors = {
       username: '',
       subject: '',
-      student_id: '',
-      subject_id: '',
     };
   }
 

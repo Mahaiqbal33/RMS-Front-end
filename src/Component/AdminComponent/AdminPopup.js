@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { observer } from 'mobx-react-lite';
 import { adminFormStore } from '../../Store/AdminStore/AdminForm';
 import '../Style/PopupStyle.css'
@@ -11,12 +11,23 @@ import { toJS } from 'mobx';
 import { adminStore } from '../../Store/AdminStore/AdminStore';
 const AdminPopup = observer(({ onSubmit, adminId }) => {
   const { formData, errors } = adminFormStore;
-
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     adminFormStore.setFormData({ ...formData, [name]: value });
   };
-
+  useEffect(() => {
+    if (adminId) {
+      const admin = adminStore.getAdminById(adminId);
+      console.log(admin.gender);
+      adminFormStore.setFormData({
+        username: admin.username,
+        password: admin.password,
+      });
+    } else {
+      adminFormStore.resetFormData(); 
+    }
+  }, [adminId]);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     // ... form validation and other code
@@ -39,7 +50,7 @@ const AdminPopup = observer(({ onSubmit, adminId }) => {
           })
           .catch((error) => {
             sweetAlertConfig.errorAlert(error);
-            console.error(error);
+            console.error(error.message);
           });
       } else {
         await SC.postCall('/create', payload)
@@ -50,7 +61,7 @@ const AdminPopup = observer(({ onSubmit, adminId }) => {
             adminStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error);
+            sweetAlertConfig.errorAlert(error.message);
             console.error(error);
           });
       }
@@ -103,6 +114,7 @@ const AdminPopup = observer(({ onSubmit, adminId }) => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                autoComplete='password'
                 required
               />
               {errors.password && <div className="error-message">{toJS(errors).password}</div>}

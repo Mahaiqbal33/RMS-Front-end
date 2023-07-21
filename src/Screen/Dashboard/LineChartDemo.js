@@ -65,7 +65,7 @@ const LineChartDemo = () => {
 
       <div className="row">
         <div className="mixed-chart">
-          <Chart options={options} series={series} type="line" width={900} height={350} />
+          <Chart options={options} series={series} type="line"  height={350} />
         </div>
       </div>
     </div>

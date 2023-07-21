@@ -66,7 +66,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
             subjectsStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
+            sweetAlertConfig.errorAlert(error.message)
             console.error(error);
           });
       } else {
@@ -78,7 +78,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
             subjectsStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
+            sweetAlertConfig.errorAlert(error.message)
             console.error(error);
           });
       }
@@ -156,12 +156,6 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
                     {subjectformStore.errors.subject && (
                       <div className="error-message">{toJS(subjectformStore.errors).subject}</div>
                     )}
-                     {subjectformStore.errors.student_id && (
-                    <div className="error-message">{toJS(subjectformStore.errors).student_id}</div>
-                  )}
-                   {subjectformStore.errors.subject_id && (
-                    <div className="error-message">{toJS(subjectformStore.errors).subject_id}</div>
-                  )}
                   </label>
                 </div>
                 <div className="popup-btn-section">

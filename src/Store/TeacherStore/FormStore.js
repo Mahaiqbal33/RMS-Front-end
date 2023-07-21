@@ -5,7 +5,6 @@ class FormStore {
   formData = {
     fullName: '',
     username: '',
-    role: 'teacher',
     gender: '',
     password: '',
     subject: '',
@@ -16,7 +15,6 @@ class FormStore {
   errors = {
     fullName: '',
     username: '',
-    role: 'teacher',
     gender: '',
     password: '',
     subject: '',
@@ -103,7 +101,6 @@ class FormStore {
     this.errors = {
       fullName: '',
       username: '',
-      role: '',
       gender: '',
       password: '',
       subject: '',

@@ -34,7 +34,6 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
       FormStore.setFormData({
         name: student.name,
         username: student.username,
-        role: student.role,
         gender: student.gender,
         password: student.password,
         phone_number: student.phone_number,
@@ -52,7 +51,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
     console.log(csvFile)
     console.log("validatore",validateStudentForm())
     if (validateStudentForm()) {
-      const { name, username, role, gender, password, phone_number, class_name, batch } = formData;
+      const { name, username, gender, password, phone_number, class_name, batch } = formData;
 
       let payload;
       if (toJS(csvFile)) {
@@ -65,7 +64,6 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
         payload = {
           name,
           username,
-          role,
           gender,
           password,
           phone_number,
@@ -84,7 +82,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
               StudentStore.setPopupOpen(false);
             })
             .catch((error) => {
-              sweetAlertConfig.errorAlert(error)
+              sweetAlertConfig.errorAlert(error.message)
               console.error(error);
               console.log(studentId)
             });
@@ -99,7 +97,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
               StudentStore.setPopupOpen(false);
             })
             .catch((error) => {
-              sweetAlertConfig.errorAlert(error)
+              sweetAlertConfig.errorAlert(error.message)
               console.error(error);
             });
       }

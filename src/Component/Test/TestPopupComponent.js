@@ -9,6 +9,7 @@ import { SC } from '../../Services/serverCall';
 import '../Style/PopupStyle.css';
 import { toJS } from 'mobx';
 import sweetAlertConfig from '../Alerts/alertConfig';
+import { FormTestValidator } from '../../helper.js/FormTestValidator';
 
 const TestPopupComponent = observer(({ onSubmit, testId }) => {
   const { formData } = formStore;
@@ -36,8 +37,8 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await  formStore.filtersubject_id()
-    let arr = true;
-    if (arr) {
+    
+    if (FormTestValidator()) {
       const { subject_id, name, totalMarks, className } = formData;
 
       const payload = {
@@ -56,7 +57,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             testStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
+            sweetAlertConfig.errorAlert(error.message)
             console.error(error);
           });
       } else {
@@ -68,7 +69,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             testStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
+            sweetAlertConfig.errorAlert(error.message)
             console.error(error);
           });
       }
