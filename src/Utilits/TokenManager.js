@@ -30,8 +30,7 @@ const TokenManager =  () => {
         }
       }
     } catch (error) {
-      alert(error)
-      // setTokenExpired(false); // Invalid token format, consider it as expired
+      setTokenExpired(false); // Invalid token format, consider it as expired
     }
   }
   ;

@@ -20,10 +20,8 @@ import SubjectsList from './Screen/Subjects/SubjectsList';
 import AddResult from './Screen/Result/AddResult';
 import ResultList from './Screen/Result/ResultList';
 import Admin from './Screen/Admin/Admin';
-import { authHeader } from './Services/authHeader';
 import TokenManager from './Utilits/TokenManager';
 function App() {
-  authHeader();
   return (
     <div>
       <TokenManager />
