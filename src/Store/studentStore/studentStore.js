@@ -35,7 +35,7 @@ class studentStore {
   
   async fetchStudents(page, pageSize) {
     try {
-      const response = await SC.getCall(`/student?page=${page}&limit=${pageSize}`);
+      const response = await SC.getCall(`/students?page=${page}&limit=${pageSize}`);
       this.getStudent = response.data.data;
       console.log('API Response:', response.data.data); // Log the entire response to check its format
       this.pageCount = Math.ceil(response.data.meta.total / pageSize);
@@ -57,7 +57,7 @@ class studentStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-      SC.deleteCall(`/student/${studentId}`) // Replace with your actual API endpoint
+      SC.deleteCall(`/students/${studentId}`) // Replace with your actual API endpoint
       .then(() => {
         console.log(studentId)
         // Remove the deleted teacher from the local array

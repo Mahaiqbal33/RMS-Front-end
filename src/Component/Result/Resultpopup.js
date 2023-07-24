@@ -101,12 +101,13 @@ const Resultpopup = observer(({ resultId }) => {
           <h1>Add result</h1>
           <form onSubmit={handleFormSubmit}>
             <div className="form-row">
-              <label className="form-label">
+              <label className="form-label" htmlFor='username'>
                 Username<span className="required-field">*</span>
                 <InputMask
                   mask="9999-FAST-9999"
                   maskChar=" "
                   type="text"
+                  id='username'
                   name="username"
                   value={formData.username}
                   onChange={handleInputChange}
@@ -116,11 +117,12 @@ const Resultpopup = observer(({ resultId }) => {
                   <div className="error-message">{toJS(resultformStore.errors).username}</div>
                 )}
               </label>
-              <label className="form-label">
+              <label className="form-label" htmlFor='testname'>
                 Test Name<span className="required-field">*</span>
                  <InputMask
                   mask="99-aaaa-T9"
                   maskChar="_"
+                  id='testname'
                   name="testname"
                   value={formData.testname}
                   onChange={handleInputChange}
@@ -129,11 +131,12 @@ const Resultpopup = observer(({ resultId }) => {
                   <div className="error-message">{toJS(resultformStore.errors).testname}</div>
                 )}
               </label>
-              <label className="form-label">
+              <label className="form-label" htmlFor='obtainMarks'>
                 Obtain Marks<span className="required-field">*</span>
                 <input
                   type="text"
                   name="obtainMarks"
+                  id='obtainMarks'
                   value={formData.obtainMarks}
                   onChange={handleInputChange}
                   required

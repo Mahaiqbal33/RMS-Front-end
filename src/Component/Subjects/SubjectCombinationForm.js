@@ -53,26 +53,30 @@ const SubjectCombination = observer(() => {
 
     <form onSubmit={handleFormSubmit}>
       <div className="form-row">
-        <label className="form-label">
+        <label className="form-label" htmlFor='name'>
           Subject<span className="required-field">*</span>
           <input
             type="text"
             name="name"
+            id='name'
             value={formData.name}
             onChange={handleInputChange}
+            autoComplete='on'
             required
           />
           {subjectCombinationStore.errors.name && (
             <div className="error-message">{toJS(subjectCombinationStore.errors).name}</div>
           )}
         </label>
-        <label className="form-label">
+        <label className="form-label" htmlFor='course_code'>
           Course Code<span className="required-field">*</span>
           <input
             type="text"
             name="course_code"
+            id='course_code'
             value={formData.course_code }
             onChange={handleInputChange}
+            autoComplete='on'
             required
           />
           {subjectCombinationStore.errors.course_code  && (

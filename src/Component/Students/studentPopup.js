@@ -74,31 +74,29 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
 
       if (studentId) {
         await
-          SC.putCall(`/student/${studentId}`, payload)
+          SC.putCall(`/students/${studentId}`, payload)
             .then((response) => {
               console.log(response.data.data);
               onSubmit();
               sweetAlertConfig.successAlert("Submit Successfully Form data")
               StudentStore.setPopupOpen(false);
             })
-            .catch((error) => {
-              sweetAlertConfig.errorAlert(error.message)
-              console.error(error);
+            .catch((errors) => {
+              sweetAlertConfig.errorAlert(errors.message)
               console.log(studentId)
             });
 
       } else {
         await
-          SC.postCall('/student', payload)
+          SC.postCall('/students', payload)
             .then((response) => {
               console.log("response.data");
               onSubmit();
               sweetAlertConfig.successAlert("Submit Successfully Form data")
               StudentStore.setPopupOpen(false);
             })
-            .catch((error) => {
-              sweetAlertConfig.errorAlert(error.message)
-              console.error(error);
+            .catch((errors) => {
+              sweetAlertConfig.errorAlert(errors.message)
             });
       }
       FormStore.resetCSVFile();
@@ -163,27 +161,31 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
             FormStore.showManuallyForm ? (<form onSubmit={handleFormSubmit} >
 
               <div className="form-row">
-                <label className="form-label">
+                <label className="form-label" htmlFor='name'>
                   Full Name<span className="required-field">*</span>
                   <input type="text"
                     name="name"
                     value={formData.name}
+                    id='name'
                     onChange={handleInputChange}
+                    autoComplete='on'
                     required />
                   {FormStore.errors.name && (
                     <div className="error-message">{toJS(FormStore.errors).name}</div>
                   )}
 
                 </label>
-                <label className="form-label">
+                <label className="form-label" htmlFor='username'>
                   Username<span className="required-field">*</span>
                   <InputMask
                     mask="9999-FAST-9999"
                     maskChar=" "
                     type="text"
                     name="username"
+                    id='username'
                     value={formData.username}
                     onChange={handleInputChange}
+                    autoComplete='on'
                     required
                   />
                   {FormStore.errors.username && (
@@ -193,14 +195,14 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
               </div>
               <div className="form-row">
-                  <label className="form-label">
+                  <label className="form-label" htmlFor='password'>
                     Password<span className="required-field">*</span>
                     <input
                       type="password"
                       name="password"
+                      id='password'
                       value={formData.password}
                       onChange={handleInputChange}
-                      autoComplete="password"
                       required
                     />
                     {FormStore.errors.password && (
@@ -209,13 +211,14 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                       </div>
                     )}
                   </label>
-                <label className="form-label">
+                <label className="form-label" htmlFor='phone_number'>
                   Phone<span className="required-field">*</span>
                   <InputMask
                     mask="+929999999999"
                     maskChar=" "
                     type="tel"
                     name="phone_number"
+                    id='phone_number'
                     value={formData.phone_number}
                     onChange={handleInputChange}
                     placeholder="Enter phone number"
@@ -228,9 +231,9 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
               </div>
               <div className="form-row">
-                <label className="form-label">
+                <label className="form-label" htmlFor='gender'>
                   Gender<span className="required-field">*</span>
-                  <select name="gender" className="form-input" value={formData.gender} onChange={handleInputChange}>
+                  <select name="gender" id='gender' className="form-input" value={formData.gender} onChange={handleInputChange}>
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -240,9 +243,9 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                   )}
 
                 </label>
-                <label className="form-label">
+                <label className="form-label" htmlFor='class_name'>
                   Class<span className="required-field">*</span>
-                  <select name="class_name" value={formData.class_name} onChange={handleInputChange} required className='select-input'>
+                  <select name="class_name" id='class_name' value={formData.class_name} onChange={handleInputChange} required className='select-input'>
                     <option value="">Select Class</option>
                     <option value="1st-Year">1st-Year</option>
                     <option value="2nd-Year">2nd-Year</option>
@@ -253,11 +256,12 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
               </div>
               <div className="form-row">
-                <label className="form-label">
+                <label className="form-label" htmlFor='batch'>
                   Batch<span className="required-field">*</span>
                   <input type="text"
                     name="batch"
                     value={formData.batch}
+                    id='batch'
                     onChange={handleInputChange}
                     maxLength={4} // Limit input to 4 characters
                     pattern="\d{4}" // Enforce 4-digit format
@@ -281,13 +285,14 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
             </form>) : (
               <form onSubmit={handleFormSubmit}>
 
-                <label className="form-file-label">
+                <label className="form-file-label" htmlFor='csvFile'>
                   <div>Upload CSV <span className="required-field">*</span></div>
-                  <div className='hhh'>
+                  <div>
                     <div className="custom-file-input">
                       <input
                         type="file"
                         name="csvFile"
+                        id='csvFile'
                         accept=".csv"
                         className="file-input"
                         onChange={handleFileInputChange}

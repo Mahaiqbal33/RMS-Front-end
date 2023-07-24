@@ -103,10 +103,11 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
 
           <form onSubmit={handleFormSubmit}>
             <div className="form-row">
-              <label className="form-label">
+              <label className="form-label" htmlFor='subject'>
                 Subject Name<span className="required-field">*</span>
                 <select
                   name="subject"
+                  id='subject'
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
@@ -123,7 +124,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
                   <div className="error-message">{toJS(formStore.errors).subject}</div>
                 )}
               </label>
-              <label className="form-label">
+              <label className="form-label" htmlFor='name'>
                 Test name<span className="required-field">*</span>
 
                 <InputMask
@@ -131,6 +132,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
                   maskChar="_"
                   type="text"
                   name="name"
+                  id='name'
                   value={formData.name}
                   onChange={handleInputChange}
                 />
@@ -140,11 +142,12 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             </label>
         </div>
         <div className="form-row">
-          <label className="form-label">
+          <label className="form-label" htmlFor='totalMarks'>
             Total Marks<span className="required-field">*</span>
             <input
               type="text"
               name="totalMarks"
+              id='totalMarks'
               value={formData.totalMarks}
               onChange={handleInputChange}
               required
@@ -153,9 +156,9 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
               <div className="error-message">{toJS(formStore.errors).totalMarks}</div>
             )}
           </label>
-          <label className="form-label">
+          <label className="form-label" htmlFor='className'>
             Class Name<span className="required-field">*</span>
-            <select name="className" value={formData.className} onChange={handleInputChange} required className='select-input'>
+            <select name="className" id='className' value={formData.className} onChange={handleInputChange} required className='select-input'>
               <option value="">Select Class</option>
               <option value="1st-Year">1st-Year</option>
               <option value="2nd-Year">2nd-Year</option>

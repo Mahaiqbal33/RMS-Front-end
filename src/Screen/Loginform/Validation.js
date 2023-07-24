@@ -15,7 +15,7 @@ export const validateForm = () => {
     authStore.setError('password', 'Please fill in all fields');
     return false;
   } else if (password.length < 8) {
-    authStore.setError('password', 'Password should be at least 6 characters');
+    authStore.setError('password', 'Password should be at least 8 characters');
     return false;
   }
 

@@ -7,11 +7,12 @@ import passwordicon from '../../assets/Forgotpassword.png';
 import { authStore } from '../../Store/LoginStore/AuthStore';
 import './logindesign.css'
 import { validateForm } from './Validation'
-import InputMask from 'react-input-mask';
 import sweetAlertConfig from '../../Component/Alerts/alertConfig'
 import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
 import { SC } from '../../Services/serverCall';
 import { toJS } from 'mobx';
+import { setToken } from '../../Utilits/SetToken';
+
 
 const LoginForm = observer(() => {
   const navigate = useNavigate();
@@ -27,18 +28,15 @@ const LoginForm = observer(() => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await SC.postCall('/create', {
+        const response = await SC.postCall('/login', {
           username:formFields.username,
           password:formFields.password,
           role:formFields.role
         });
 
         if (response.data) {
-          const token = response.data.token;
-          const expiresAt = response.data.expires_at;
           // Store the token and expiration date in localStorage
-          localStorage.setItem('token', token);
-          localStorage.setItem('expiresAt', expiresAt);
+          setToken(response.data.token,response.data.expires_at,response.data.role);
           privateRoutes.token = true;
           navigate('/sidebar');
         }
@@ -65,11 +63,10 @@ const LoginForm = observer(() => {
               <label htmlFor="username" className="input-lebal">Username</label>
               <div className="input-box">
                 <img src={user} className="iconff" alt='' />
-                 <InputMask
-                    mask="9999-FAST-9999"
+                 <input
                     placeholder="Enter your username"
-                    maskChar=" "
                     type="text"
+                    id="username"
                     name="username"
                     autoComplete="username"
                     value={formFields.username}
@@ -103,15 +100,14 @@ const LoginForm = observer(() => {
                   name="role"
                   onChange={handleInputChange}
                   value={formFields.role}
-                  autoComplete='role'
                   required
                 >
                   <option value="" disabled>
                     Select Role
                   </option>
-                  <option value="student">Student</option>
-                  <option value="admin">Admin</option>
-                  <option value="teacher">Teacher</option>
+                  <option value="student">student</option>
+                  <option value="admin">admin</option>
+                  <option value="teacher">teacher</option>
                 </select>
               </div>
               {authStore.errors.role && <p className='errorStyle'>{toJS(authStore.errors).role}</p>}

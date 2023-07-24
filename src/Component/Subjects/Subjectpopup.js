@@ -120,27 +120,31 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
             subjectformStore.showSubjectsCombinationForm ? (<SubjectCombination />) : (
               <form onSubmit={handleFormSubmit}>
                 <div className="form-row">
-                  <label className="form-label">
+                  <label className="form-label" htmlFor='username'>
                     Username<span className="required-field">*</span>
                      <InputMask
                     mask="9999-FAST-9999"
                     maskChar=" "
                     type="text"
+                    id='username'
                     name="username"
                     value={formData.username}
                     onChange={handleInputChange}
+                    autoComplete='on'
                     required
                   />
                     {subjectformStore.errors.username && (
                       <div className="error-message">{toJS(subjectformStore.errors).username}</div>
                     )}
                   </label>
-                  <label className="form-label">
+                  <label className="form-label" htmlFor='subject'>
                     Subject<span className="required-field">*</span>
                     <select
                       name="subject"
+                      id='subject'
                       value={formData.subject}
                       onChange={handleInputChange}
+                      autoComplete='on'
                       required
                       className="select-input"
                     >

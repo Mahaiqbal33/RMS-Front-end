@@ -1,6 +1,8 @@
 import React, { useEffect, lazy, Suspense, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
+import DeleteIcon from '../../Component/Actions/DeleteIcon';
+import EditIcon from '../../Component/Actions/EditIcon';
 import { subjectsStore } from '../../Store/SubjectsStore/SubjectsStore';
 import { toJS } from 'mobx';
 import '../Style/TableStyle.css'
@@ -89,12 +91,8 @@ const SubjectsList = observer(() => {
                   <td>{subject.enrollment}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="edit-button" onClick={() => handleEdit(subject.id)}>
-                        <FaEdit />
-                      </button>
-                      <button onClick={() => handleDelete(subject.id)} className="delete-button">
-                        <FaTrash />
-                      </button>
+                    <EditIcon onClick={() => handleEdit(subject.id)} />
+                      <DeleteIcon onClick={() => handleDelete(subject.id)} />
                     </div>
                   </td>
                 </tr>

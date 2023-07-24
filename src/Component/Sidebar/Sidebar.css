@@ -102,8 +102,8 @@ body {
   background-color: #071026;
   color: #ffffff;
   overflow-y: scroll;
-  transition: all 0.5s;
   -webkit-transition: all 0.5s;
+  transition: all 0.5s;
   box-shadow: 10px 6px 7px -4px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }

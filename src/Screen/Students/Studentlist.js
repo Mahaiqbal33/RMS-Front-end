@@ -1,6 +1,8 @@
 import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { observer } from 'mobx-react-lite';
-import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
+import {  FaSearch } from 'react-icons/fa';
+import DeleteIcon from '../../Component/Actions/DeleteIcon';
+import EditIcon from '../../Component/Actions/EditIcon';
 import { StudentStore } from '../../Store/studentStore/studentStore';
 import '../Style/TableStyle.css'
 import loading from '../../assets/loading.png';
@@ -150,12 +152,8 @@ const StudentList = observer(() => {
                   <td>{student.phone_number}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="edit-button" onClick={() => handleEdit(student.id)}>
-                        <FaEdit />
-                      </button>
-                      <button className="delete-button" onClick={() => handleDelete(student.id)}>
-                        <FaTrash />
-                      </button>
+                    <EditIcon onClick={() => handleEdit(student.id)} />
+                      <DeleteIcon onClick={() => handleDelete(student.id)} />
                     </div>
                   </td>
                 </tr>

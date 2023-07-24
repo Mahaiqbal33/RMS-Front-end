@@ -1,6 +1,6 @@
 import './App.css';
-import React,{useEffect} from 'react';
-import {  Route, Routes, useLocation } from 'react-router-dom';
+import React from 'react';
+import {  Route, Routes } from 'react-router-dom';
 import './App.css'; // Create a CSS file for custom styles
 import Dashboard from './Screen/Dashboard/Dashboard'
 import Sidebar from './Component/Sidebar/Sidebar.js';
@@ -20,17 +20,13 @@ import SubjectsList from './Screen/Subjects/SubjectsList';
 import AddResult from './Screen/Result/AddResult';
 import ResultList from './Screen/Result/ResultList';
 import Admin from './Screen/Admin/Admin';
-import { isTokenExpired , showSessionTimeoutAlert } from './Utilits/sessionUtils';
+import { authHeader } from './Services/authHeader';
+import TokenManager from './Utilits/TokenManager';
 function App() {
-  const location = useLocation();
-  // useEffect(() => {
-  //   // Check for session timeout on each route change
-  //   if (isTokenExpired()) {
-  //     showSessionTimeoutAlert();
-  //   }
-  // }, [location]);
+  authHeader();
   return (
     <div>
+      <TokenManager />
      <Routes>
     <Route element= {<PrivateRoutes/>}>
     <Route path='sidebar' element={<Sidebar />}>

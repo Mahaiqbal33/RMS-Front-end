@@ -27,7 +27,7 @@
   z-index: 1;
 }
 
-.header-right #header-icon{
+.header-right .header-icon{
   margin: 0 3px ;
   color:var(--color-dark);
   cursor: pointer;
@@ -36,7 +36,7 @@
  .menu-icon {
   display: none;
 }
-.header-right #logout-btn{
+.header-right .logout-btn{
  background-color: transparent;
  color:var(--color-dark) ;
  border: none;
@@ -45,13 +45,13 @@
  padding: 0;
 }
 
-.dashboard-header-right #header-icon{
+.dashboard-header-right .header-icon{
   margin: 0 3px ;
   color:var(--color-highlight) ;
   cursor: pointer;
 }
 
-.dashboard-header-right #logout-btn{
+.dashboard-header-right .logout-btn{
  background-color: transparent;
  color:var(--color-highlight) ;
  border: none;
@@ -62,7 +62,7 @@
 
 
 /* ---------- Searchbar ---------- */
-#animated-icon input[type=text] {
+.animated-icon input[type=text] {
   width: 220px;
   box-sizing: border-box;
   border: 1px solid #c8c8c8;
@@ -71,7 +71,7 @@
   background-color: white;
   padding: 8px 18px 8px 35px;
 }
-  #animated-icon .search-icon {
+  .animated-icon .search-icon {
   position: relative;
   left: 30px;
 }

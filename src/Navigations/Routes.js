@@ -1,4 +1,4 @@
-import{FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaChartBar, FaCog, FaColumns ,FaCalendarAlt} from 'react-icons/fa'
+import{FaChalkboardTeacher, FaUserGraduate,FaCheckCircle,  FaClipboardCheck, FaLayerGroup, FaChartBar, FaCog, FaColumns ,FaCalendarAlt} from 'react-icons/fa'
 export const menuItem = [
     {
       path: ".",
@@ -41,7 +41,7 @@ export const menuItem = [
     {
       path: "test",
       name: "Test",
-      icon: <FaCalendarAlt />,
+      icon:  < FaClipboardCheck/>,
       subitems:[
         {
           path: "testlist",
@@ -52,7 +52,7 @@ export const menuItem = [
     {
       path: "Result",
       name: "Result",
-      icon: <FaCalendarAlt />,
+      icon: <FaCheckCircle />,
       subitems:[
         {
           path: "ResultList",

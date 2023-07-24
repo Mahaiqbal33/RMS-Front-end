@@ -1,6 +1,8 @@
 import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { observer } from 'mobx-react-lite';
-import { FaTrash, FaEdit, FaSearch } from 'react-icons/fa';
+import {  FaSearch } from 'react-icons/fa';
+import DeleteIcon from '../../Component/Actions/DeleteIcon';
+import EditIcon from '../../Component/Actions/EditIcon';
 import { testStore } from '../../Store/TestStore/TestStore';
 import '../Style/TableStyle.css'
 import loading from '../../assets/loading.png';
@@ -135,12 +137,8 @@ const TestList = observer(() => {
                   <td>{test.marks}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="edit-button" onClick={() => handleEdit(test.id)}>
-                        <FaEdit />
-                      </button>
-                      <button onClick={() => handleDelete(test.id)} className="delete-button">
-                        <FaTrash />
-                      </button>
+                    <EditIcon onClick={() => handleEdit(test.id)} />
+                      <DeleteIcon onClick={() => handleDelete(test.id)} />
                     </div>
                   </td>
                 </tr>

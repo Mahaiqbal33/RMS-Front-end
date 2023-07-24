@@ -46,3 +46,18 @@ body{
   --color-dark: #4F4F4F;
 }
 
+/* Custom CSS to decrease the height and width of the SweetAlert modal, icon, and text */
+.swal2-popup {
+  width: 400px !important; /* Adjust the width as per your needs */
+  height: auto !important; /* Set the height as "auto" to adjust based on content */
+  max-height: 80vh !important; /* Set a maximum height if you want to limit it */
+}
+
+.swal2-title {
+  font-size: 20px !important; /* Adjust the font size of the title */
+}
+
+.swal2-content {
+  font-size: 16px !important; /* Adjust the font size of the content */
+}
+

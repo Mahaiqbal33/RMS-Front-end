@@ -2,11 +2,12 @@
 export function authHeader() {
     // return authorization header with jwt token
     let AdminUser = JSON.parse(localStorage.getItem("userToken"));
+    console.log("admin...",AdminUser)
     if (AdminUser && AdminUser.accessToken) {
       var allowedOrigins = "*";
       var allow_headers = "Referer,Accept,Origin,User-Agent,Content-Type";
       return {
-        Authorization: "Bearer " + AdminUser.accessToken,
+        Authorization: "bearer " + AdminUser.accessToken + AdminUser.role,
         "Content-Type": "application/json, multipart/form-data",
         "Access-Control-Allow-Origin": allowedOrigins,
         "Access-Control-Allow-Methods": "PUT,GET,POST,DELETE,OPTIONS",
