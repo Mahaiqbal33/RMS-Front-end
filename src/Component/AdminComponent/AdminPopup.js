@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { adminFormStore } from '../../Store/AdminStore/AdminForm';
 import '../Style/PopupStyle.css'
 import { RiAddCircleLine } from 'react-icons/ri';
-import InputMask from 'react-input-mask';
 import { SC } from '../../Services/serverCall';
 import sweetAlertConfig from '../Alerts/alertConfig';
 import { validateAdminForm } from '../../helper.js/FormAdminValidator';
@@ -41,7 +40,7 @@ const AdminPopup = observer(({ onSubmit, adminId }) => {
       };
   
       if (adminId) {
-        await SC.putCall(`/api/admins/${adminId}`, payload)
+        await SC.putCall(`/admins/${adminId}`, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -53,7 +52,7 @@ const AdminPopup = observer(({ onSubmit, adminId }) => {
             console.error(error.message);
           });
       } else {
-        await SC.postCall('/create', payload)
+        await SC.postCall('/admins', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -94,11 +93,10 @@ const AdminPopup = observer(({ onSubmit, adminId }) => {
           <h1>Add Admin</h1>
         <form onSubmit={handleFormSubmit}>
           <div className="form-row">
-            <label className="form-label">
+            <label className="form-label" >
               Username<span className="required-field">*</span>
-              <InputMask
-                mask="9999-FAST-9999"
-                maskChar=" "
+              <input
+                id='username'
                 type="text"
                 name="username"
                 value={formData.username}

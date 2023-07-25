@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import AdminPopup from '../../Component/AdminComponent/AdminPopup';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { adminStore } from '../../Store/AdminStore/AdminStore';
 import '../Style/ScreenStyle.css'; // Import the CSS file for styling
-import '../Style/TableStyle.css'
+import '../Style/TableStyle.css';
 
 const Admin = observer(() => {
-  const { isPopupOpen, setPopupOpen, fetchAdmins, getAdmin, deleteAdmin } = adminStore;
+  const { isPopupOpen, setPopupOpen, fetchAdmins, getAdmin, deleteAdmin, setCurrentAdminId } = adminStore;
 
   const handleAddAdmin = () => {
     setPopupOpen(true);
@@ -17,7 +17,7 @@ const Admin = observer(() => {
     setPopupOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Fetch admin data when the component mounts
     fetchAdmins();
   }, [fetchAdmins]);
@@ -25,9 +25,16 @@ const Admin = observer(() => {
   const handleDelete = (adminId) => {
     deleteAdmin(adminId);
   };
- const handleEdit=(adminId)=>{
 
- }
+  const handleEdit = (adminId) => {
+    setCurrentAdminId(adminId); // Set the current admin ID in the store
+    setPopupOpen(true); // Open the edit popup
+  };
+
+  const formatDate = (timestamp) => {
+    // ... (rest of the date formatting function remains the same) ...
+  };
+
   return (
     <div className="new-container">
       <div className="new-content-section">
@@ -45,11 +52,8 @@ const Admin = observer(() => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Subject</th>
-              <th>Class</th>
-              <th>Username</th>
-              <th>Gender</th>
-              <th>Actions</th>
+              <th>Create_at</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -57,13 +61,10 @@ const Admin = observer(() => {
               <tr key={index} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
                 <td>
                   <div className="table-info">
-                    {admin.name}
+                    {admin.username}
                   </div>
                 </td>
-                <td>{admin.subject}</td>
-                <td>{admin.class_name}</td>
-                <td>{admin.user_name}</td>
-                <td>{admin.gender}</td>
+                <td>{formatDate(admin.Create_at)}</td>
                 <td>
                   <div className="action-buttons">
                     <button className="edit-button" onClick={() => handleEdit(admin.id)}>

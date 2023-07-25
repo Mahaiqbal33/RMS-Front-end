@@ -39,7 +39,7 @@ class SubjectFormStore {
 
   async fetchSubjectList() {
     try {
-      const response = await SC.getCall('/subject');
+      const response = await SC.getCall('/subjects');
       console.log('API Response:', response.data); // Log the entire response to check its format
       this.subjectList = response.data;
     } catch (error) {
@@ -50,9 +50,9 @@ class SubjectFormStore {
   
   async fetchStudents() {
     try {
-      const response = await SC.getCall('/student');
-      console.log('API Response:', response.data.data); // Log the entire response to check its format
-      this.studentList = response.data.data;
+      const response = await SC.getCall('/students');
+      console.log('API Response:', response.data); // Log the entire response to check its format
+      this.studentList = response.data;
     } catch (error) {
       console.error('Failed to fetch student list:', error);
     }
@@ -63,7 +63,7 @@ class SubjectFormStore {
     console.log("Student List Array:", toJS(this.studentList));
     console.log("Search for Username:", this.formData.username);
 
-    const filteredStudent = this.studentList.find((student) => student.username === this.formData.username);
+    const filteredStudent = this.studentList?.find((student) => student.username === this.formData.username);
     console.log("Filtered Student:", toJS(filteredStudent));
 
     if (filteredStudent && filteredStudent.id) {
@@ -75,16 +75,12 @@ class SubjectFormStore {
     }
   }
   
- 
-  
-
-  
 async  filtersubject_id() {
     const subjectListArray = await Array.from(this.subjectList);
     console.log("Subject List Array:", subjectListArray);
     console.log("Search for Subject:", this.formData.subject);
   
-    const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
+    const filteredSubject = subjectListArray?.find((subject) => subject.name === this.formData.subject);
     console.log("Filtered Subject:", filteredSubject); 
     if (filteredSubject) {
       const subjectData = toJS(filteredSubject);

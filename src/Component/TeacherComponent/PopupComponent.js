@@ -50,16 +50,19 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
     e.preventDefault();
     await  formStore.filtersubject_id()
     console.log("Form validtions",validateTeacherForm())
-    if (validateTeacherForm()) {
+    if (validateTeacherForm(teacherId)) {
       const { fullName, username, gender, password, phoneNumber, subject_id} = formData;
-
+       let endpoint;
       let payload;
       if (toJS(csvFile)) {
         // Send CSV file as payload
+         // Send CSV file as payload
+        endpoint = "/teachers/bulk-updates";
         payload = csvFile;
         console.log(payload)
       } else {
         // Send form data as payload
+        endpoint = "/teachers";
         payload = {
           name:fullName,
           gender:gender,
@@ -68,11 +71,14 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
           phone_number:phoneNumber,
           subject_id:subject_id,
         };
+        if(!teacherId){
+         payload.password=password
+        }
       }
 
       if (teacherId) {
         await axios
-          .put(`/api/teachers/${teacherId}`, payload)
+          .put(`/teachers/${teacherId}`, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -84,7 +90,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             console.error(error);
           });
       } else {
-        await SC.postCall('/teacher', payload)
+        await SC.postCall(endpoint, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -192,7 +198,8 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
                 </label>
               </div>
               <div className="form-row" htmlFor="password">
-                <label className="form-label">
+                {!teacherId&&
+                  <label className="form-label">
                   Password<span className="required-field">*</span>
                   <input
                     type="password"
@@ -208,10 +215,11 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
                   )}
 
                 </label>
+                }
                 <label className="form-label" htmlFor='phoneNumber'>
                   Phone<span className="required-field">*</span>
                   <InputMask
-                    mask="+92 999-9999999"
+                    mask="+929999999999"
                     maskChar=" "
                     type="tel"
                     id='phoneNumber'

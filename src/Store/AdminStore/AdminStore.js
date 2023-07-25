@@ -16,7 +16,7 @@ class AdminStore {
       currentAdminId: observable,
       currentAdminData: observable,
       setPopupOpen: action,
-      fetchAdmins: action,
+     fetchAdmins: action,
       deleteAdmin: action,
       setCurrentAdminId: action,
       setCurrentAdminData: action,
@@ -28,15 +28,17 @@ class AdminStore {
     this.isPopupOpen = value;
   };
   
-  async fetchAdmins() {
+  fetchAdmins = action(async () => {
     try {
-      const response = await SC.getCall('/admin');
-      this.getAdmin = response.data.data;
-      console.log('API Response:', response.data.data);
+      if (this.getAdmin.length === 0) {
+        const response = await SC.getCall('/admins');
+        this.getAdmin = response.data;
+        console.log('API Response:', response.data);
+      }
     } catch (error) {
       console.error('Error:', error);
     }
-  }
+  });
   
   deleteAdmin(adminId) {
     Swal.fire({
@@ -50,7 +52,7 @@ class AdminStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        SC.deleteCall(`/admin/${adminId}`)
+        SC.deleteCall(`/admins/${adminId}`)
         .then(() => {
           this.getAdmin = this.getAdmin.filter((admin) => admin.id !== adminId);
           sweetAlertConfig.successAlert("Admin is deleted successfully!")

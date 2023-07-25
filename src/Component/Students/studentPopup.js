@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { StudentStore } from '../../Store/studentStore/studentStore';
@@ -47,29 +46,31 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("hello")
-    console.log(csvFile)
     console.log("validatore",validateStudentForm())
-    if (validateStudentForm()) {
+    if (validateStudentForm(studentId)) {
       const { name, username, gender, password, phone_number, class_name, batch } = formData;
-
+      let endpoint;
       let payload;
       if (toJS(csvFile)) {
         // Send CSV file as payload
+        endpoint = "/students/bulk-updates";
         payload = csvFile;
         console.log(payload)
       } else {
         // Send form data as payload
-       
+        endpoint = "/students";
         payload = {
           name,
           username,
           gender,
-          password,
           phone_number,
           class_name,
           batch
         };
+        // Include password in the payload only if studentId is not available
+      if (!studentId) {
+        payload.password = password;
+      }
       }
 
       if (studentId) {
@@ -88,7 +89,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
 
       } else {
         await
-          SC.postCall('/students', payload)
+          SC.postCall(endpoint, payload)
             .then((response) => {
               console.log("response.data");
               onSubmit();
@@ -195,7 +196,8 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                 </label>
               </div>
               <div className="form-row">
-                  <label className="form-label" htmlFor='password'>
+                  {
+                    !studentId&&<label className="form-label" htmlFor='password'>
                     Password<span className="required-field">*</span>
                     <input
                       type="password"
@@ -211,6 +213,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
                       </div>
                     )}
                   </label>
+                  }
                 <label className="form-label" htmlFor='phone_number'>
                   Phone<span className="required-field">*</span>
                   <InputMask

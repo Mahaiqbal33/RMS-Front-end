@@ -58,7 +58,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
 
       if (subjectId) {
         await axios
-          .put(`/api/subjects/${subjectId}`, payload)
+          .put(`/student-subjects${subjectId}`, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -70,7 +70,7 @@ const Subjectpopup = observer(({ onSubmit, subjectId }) => {
             console.error(error);
           });
       } else {
-        await SC.postCall('/student/subjects', payload)
+        await SC.postCall('/student-subjects', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();

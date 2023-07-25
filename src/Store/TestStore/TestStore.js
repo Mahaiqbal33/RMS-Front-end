@@ -8,45 +8,39 @@ class TestStore {
   getTest = [];
   searchTerm = '';
   filterType = '';
-   currentTestId = null;
+  currentTestId = null;
   currenttestData = {};
 
   constructor() {
     makeObservable(this, {
       isPopupOpen: observable,
-      getTest: observable,
+      getTest: observable, // Mark getTest as observable
       searchTerm: observable,
       filterType: observable,
       currentTestId: observable,
       currenttestData: observable,
       setPopupOpen: action.bound,
-      filteredtests: computed,
       fetchtests: action,
       deletetest: action,
-      setFilter: action,
-      setSearchTerm: action,
-       setCurrenttestId: action,
+      setCurrenttestId: action,
       setCurrenttestData: action, // New action to set current test data
       gettestById: computed,
     });
   }
+
   setPopupOpen = (value) => {
     this.isPopupOpen = value;
   };
 
-  async fetchtests(page, pageSize) {
+  async fetchtests() {
     try {
-      const response = await SC.getCall(`/attempt?page=${page}&limit=${pageSize}`);
-      this.getTest = response.data.data;
-      this.pageCount = Math.ceil(response.data.meta.total / pageSize);
-      this.currentPage = page;
+      const response = await SC.getCall('/attempts'); // Fetch all the data at once without pagination
+      this.getTest = await response.data;
+      console.log("hello",this.getTest);
     } catch (error) {
       console.error('Error:', error);
     }
   }
-  
-
-
 
   deletetest(testId) {
     Swal.fire({
@@ -60,54 +54,22 @@ class TestStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-       SC.deleteCall(`/attempt/${testId}`) // Replace with your actual API endpoint
-      .then(() => {
-        console.log(testId)
-        // Remove the deleted test from the local array
-        this.getTest = this.getTest.filter((test) => test.id !== testId);
-        sweetAlertConfig.successAlert("test is deleted successfully!")
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        sweetAlertConfig.errorAlert("An error occurred while deleting the test.")
-      });
-    }
-  })
-}
-
-  
-
-  setFilter(filter) {
-    this.filterType = filter;
-  }
-
-  setSearchTerm(term) {
-    this.searchTerm = term;
-  }
-
-  
-  get filteredtests() {
-    const { filterType, searchTerm, getTest } = this;
-  
-    return getTest.filter((test) => {
-      if (!test) {
-        return false; // Skip null/undefined test objects
+        SC.deleteCall(`/attempts/${testId}`) // Replace with your actual API endpoint
+          .then(() => {
+            console.log(testId);
+            // Remove the deleted test from the local array
+            this.getTest = this.getTest.filter((test) => test.id !== testId);
+            sweetAlertConfig.successAlert("test is deleted successfully!")
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            sweetAlertConfig.errorAlert("An error occurred while deleting the test.")
+          });
       }
-  
-      if (!filterType || filterType === 'All') {
-        return (
-          (test.name && test.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (test.subject && test.subject.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (test.class && test.class.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
-      }
-  
-      return (test[filterType] && test[filterType].toLowerCase().includes(searchTerm.toLowerCase()));
     });
   }
-  
 
-   setCurrenttestId(testId) {
+  setCurrenttestId(testId) {
     this.currentTestId = testId;
     this.setCurrenttestData(testId); // Update current test data
   }
@@ -115,6 +77,7 @@ class TestStore {
   get gettestById() {
     return (id) => this.getTest.find((test) => test.id === id);
   }
+
   setCurrenttestData(testId) {
     this.currenttestData = this.getTest.find((test) => test.id === testId) || {};
   }

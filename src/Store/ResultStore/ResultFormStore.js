@@ -37,7 +37,7 @@ class ResultFormStore {
   
   async fetchtests() {
     try {
-      const response = await SC.getCall(`/attempt`);
+      const response = await SC.getCall(`/attempts`);
       this.getTest = response.data.data;
     } catch (error) {
       console.error('Error:', error);

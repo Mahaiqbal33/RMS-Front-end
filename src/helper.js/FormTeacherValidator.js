@@ -1,6 +1,6 @@
 import { toJS } from 'mobx';
 import { formStore } from '../Store/TeacherStore/FormStore';
-export const validateTeacherForm = () => {
+export const validateTeacherForm = (teacherId) => {
   const { fullName, username, gender, password, phoneNumber, subject } = formStore.formData;
   
   // Reset errors
@@ -24,18 +24,23 @@ export const validateTeacherForm = () => {
       return false;
     }
 
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    const isValidPassword = passwordRegex.test(password);
+    if(!teacherId){
 
-    if (!isValidPassword) {
-      formStore.setError('password', 'Password should have the first letter capitalized, one special character, and one digit.');
-      return false;
-    }
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+      const isValidPassword = passwordRegex.test(password);
+  
+      if (!isValidPassword) {
+        formStore.setError('password', 'Password should have the first letter capitalized, one special character, and one digit.');
+        return false;
+      }
+  
+      if (password.trim().length < 8) {
+        formStore.setError('password', 'Password must be at least 8 characters long');
+        return false;
+      }
 
-    if (password.trim().length < 8) {
-      formStore.setError('password', 'Password must be at least 8 characters long');
-      return false;
     }
+   
 
     if (phoneNumber.trim() === '') {
       formStore.setError('phoneNumber', 'Phone Number is required');

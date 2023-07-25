@@ -1,6 +1,6 @@
 import { toJS } from 'mobx';
 import { FormStore } from '../Store/studentStore/formStore';
-export const validateStudentForm = () => {
+export const validateStudentForm = (studentId) => {
   const { name, username, gender, password, phone_number,class_name,batch} = FormStore.formData;
   
   // Reset errors
@@ -24,6 +24,8 @@ export const validateStudentForm = () => {
       return false;
     }
 
+  // Include password validation only if the studentId is not provided
+  if (!studentId) {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const isValidPassword = passwordRegex.test(password);
 
@@ -36,15 +38,19 @@ export const validateStudentForm = () => {
       FormStore.setError('password', 'Password must be at least 8 characters long');
       return false;
     }
+  }
+
 
     if (phone_number.trim() === '') {
       FormStore.setError('phoneNumber', 'Phone Number is required');
       return false;
     }
+
     if (class_name.trim() === '') {
       FormStore.setError('class', 'Class is required');
       return false;
     }
+    
     if (batch.trim() === '') {
       FormStore.setError('batch', 'Batch is required');
       return false;

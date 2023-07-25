@@ -49,7 +49,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
       };
 
       if (testId) {
-        await SC.putCall(`/attempt/${testId}`, payload)
+        await SC.putCall(`/attempts/${testId}`, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -61,7 +61,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
             console.error(error);
           });
       } else {
-        await SC.postCall('/attempt', payload)
+        await SC.postCall('/attempts', payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -75,8 +75,6 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
       }
       formStore.resetFormData();
       formStore.clearErrors();
-    } else {
-      formStore.setError('Please fix the following errors:');
     }
   };
 
@@ -98,7 +96,7 @@ const TestPopupComponent = observer(({ onSubmit, testId }) => {
         <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <div className="test-popup-form">
+        <div className="popup-form">
           <h1>Add Test</h1>
 
           <form onSubmit={handleFormSubmit}>

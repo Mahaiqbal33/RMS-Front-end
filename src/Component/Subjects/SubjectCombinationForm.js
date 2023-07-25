@@ -30,7 +30,7 @@ const SubjectCombination = observer(() => {
       };
 
       try {
-        await SC.postCall('/subject', payload);
+        await SC.postCall('/subjects', payload);
         sweetAlertConfig.successAlert("Successfully submitted the form data");
         subjectsStore.setPopupOpen(false);
       } catch (error) {

@@ -32,8 +32,6 @@ const Resultpopup = observer(({ resultId }) => {
     }
   }, [resultId]);
 
-
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await resultformStore.filterstudent_id();
@@ -51,7 +49,7 @@ const Resultpopup = observer(({ resultId }) => {
 
       if (resultId) {
         await axios
-          .put(`/api/results/${resultId}`, payload)
+          .put(`/assessments/${resultId}`, payload)
           .then((response) => {
             console.log(response.data);
             sweetAlertConfig.successAlert("Submit Successfully Form data")
@@ -62,7 +60,7 @@ const Resultpopup = observer(({ resultId }) => {
             console.error(error);
           });
       } else {
-        await SC.postCall('/assessment', payload)
+        await SC.postCall('/assessments', payload)
           .then((response) => {
             console.log(response.data);
             sweetAlertConfig.successAlert("Submit Successfully Form data")

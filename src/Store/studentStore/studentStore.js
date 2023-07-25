@@ -36,14 +36,15 @@ class studentStore {
   async fetchStudents(page, pageSize) {
     try {
       const response = await SC.getCall(`/students?page=${page}&limit=${pageSize}`);
-      this.getStudent = response.data.data;
-      console.log('API Response:', response.data.data); // Log the entire response to check its format
+      this.getStudent = response.data;
+      console.log('Fetched Data:', this.getStudent); // Add this line to log the fetched data
       this.pageCount = Math.ceil(response.data.meta.total / pageSize);
       this.currentPage = page;
     } catch (error) {
       console.error('Error:', error);
-    }
-  }
+    }
+  }
+  
   
   deleteStudent(studentId) {
     Swal.fire({
