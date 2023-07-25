@@ -54,8 +54,8 @@ export const validateTeacherForm = (teacherId) => {
   } else {
     // CSV file validation
 
-    const csvFile = formStore.csvFile;
-    if (csvFile) {
+    const file = formStore.file;
+    if (file) {
       return true;
     }
     else{

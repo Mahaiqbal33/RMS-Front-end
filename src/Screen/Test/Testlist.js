@@ -21,14 +21,14 @@ const TestList = observer(() => {
     fetchTestData();
   }, []);
 
-  const handleDelete = (testId) => {
-    testStore.deletetest(testId);
-  };
+  // const handleDelete = (testId) => {
+  //   testStore.deletetest(testId);
+  // };
 
-  const handleEdit = (testId) => {
-    testStore.setCurrenttestId(testId);
-    testStore.setPopupOpen(true);
-  };
+  // const handleEdit = (testId) => {
+  //   testStore.setCurrenttestId(testId);
+  //   testStore.setPopupOpen(true);
+  // };
 
   return (
     <div className="list-container">
@@ -69,7 +69,7 @@ const TestList = observer(() => {
               </tr>
             </thead>
             <tbody>
-              {testStore.getTest.map((test, index) => (
+              {/* {testStore.getTest.map((test, index) => (
                 <tr key={test.id} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
                   <td>
                     <div className="table-info">{test.name}</div>
@@ -84,7 +84,7 @@ const TestList = observer(() => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </React.Fragment>

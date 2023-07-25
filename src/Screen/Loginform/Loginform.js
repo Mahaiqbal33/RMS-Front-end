@@ -19,6 +19,7 @@ const LoginForm = observer(() => {
   const {formFields} = authStore;
   //HandleChange function
   const handleInputChange = (e) => {
+    console.log("event..>",e)
     const { name, value } = e.target;
     authStore.setFormField(name, value);
   };

@@ -23,14 +23,14 @@ class FormStore {
     subject_id:"",
   };
   showManuallyForm= true;
-  csvFile = null;
+  file = null;
   showCSVForm = false;
 
   constructor() {
     makeObservable(this, {
       formData: observable,
       errors: observable,
-      csvFile: observable,
+      file: observable,
       showCSVForm: observable,
       subjectList:observable,
       setFormData: action,
@@ -39,8 +39,8 @@ class FormStore {
       clearErrors: action,
       showManuallyForm:observable,
       setShowManuallyForm:action,
-      setCSVFile: action,
-      resetCSVFile: action,
+      setfile: action,
+      resetfile: action,
       setShowCSVForm: action,
       filtersubject_id:action,
     });
@@ -110,14 +110,14 @@ class FormStore {
   }
 
   
-  setCSVFile(file) {
-    this.csvFile = file;
+  setfile(file) {
+    this.file = file;
   
   }
 
-  resetCSVFile() {
-    this.csvFile = null;
-    console.log(this.csvFile)
+  resetfile() {
+    this.file = null;
+    console.log(this.file)
   }
 
   setShowCSVForm(value) {

@@ -54,7 +54,9 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
       if (toJS(csvFile)) {
         // Send CSV file as payload
         endpoint = "/students/bulk-updates";
-        payload = csvFile;
+        payload ={
+          file:csvFile
+         } 
         console.log(payload)
       } else {
         // Send form data as payload

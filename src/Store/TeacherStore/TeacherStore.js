@@ -2,11 +2,14 @@
 
 import { makeObservable, observable, action, computed } from 'mobx';
 import Swal from 'sweetalert2';
+import { SC } from '../../Services/serverCall';
+import {toJS } from 'mobx'
 import axios from 'axios';
 
 class TeacherStore {
   isPopupOpen = false;
   getTeacher = [];
+  filterType="";
   searchTerm = '';
   currentTeacherId = null;
   currentTeacherData = {};
@@ -18,6 +21,7 @@ class TeacherStore {
     makeObservable(this, {
       isPopupOpen: observable,
       getTeacher: observable,
+      filterType:observable,
       searchTerm: observable,
       currentTeacherId: observable,
       currentTeacherData: observable,
@@ -25,6 +29,7 @@ class TeacherStore {
       entriesPerPage: observable,
       totalPages: observable,
       setPopupOpen: action,
+      setFilter:action,
       fetchTeachers: action,
       deleteTeacher: action,
       setSearchTerm: action,
@@ -40,7 +45,7 @@ class TeacherStore {
 
   async fetchTeachers() {
     try {
-      const response = await axios.post('/api/posts', {
+      const response = await SC.postCall('/teachers/pagination', {
         page: this.currentPage + 1,
         page_size: this.entriesPerPage,
         sort: {
@@ -56,12 +61,17 @@ class TeacherStore {
         ],
       });
 
-      this.getTeacher = response.data.data;
-      this.totalPages = response.data.meta.last_page;
-      this.currentPage = response.data.meta.current_page - 1;
+      this.getTeacher = response.data.teachers.data;
+       console.log("this.getTeacher",toJS(this.getTeacher))
+      this.totalPages = response.data.teachers.meta.total;
+      this.currentPage = response.data.teachers.meta.current_page - 1;
     } catch (error) {
       console.error('Error:', error);
     }
+  }
+
+  setFilter(filter) {
+    this.filterType = filter;
   }
 
   deleteTeacher(teacherId) {

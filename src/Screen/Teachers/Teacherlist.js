@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
-import { FaSearch } from 'react-icons/fa';
-import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
-import DeleteIcon from '../../Component/Actions/DeleteIcon';
-import EditIcon from '../../Component/Actions/EditIcon';
-import { toJS } from 'mobx';
-import Skeleton from 'react-loading-skeleton';
-import '../Style/TableStyle.css';
-import maleImage from '../../assets/male.png';
-import femaleImage from '../../assets/female.png';
-import PopupComponent from '../../Component/TeacherComponent/PopupComponent';
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { FaSearch } from "react-icons/fa";
+import { teacherStore } from "../../Store/TeacherStore/TeacherStore";
+import DeleteIcon from "../../Component/Actions/DeleteIcon";
+import EditIcon from "../../Component/Actions/EditIcon";
+import Skeleton from "react-loading-skeleton";
+import "../Style/TableStyle.css";
+import maleImage from "../../assets/male.png";
+import femaleImage from "../../assets/female.png";
+import PopupComponent from "../../Component/TeacherComponent/PopupComponent";
 
 const TeacherList = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const entriesPerPage = 10;
+  const entriesPerPage = 4;
 
   useEffect(() => {
     const fetchTeacherData = async () => {
@@ -22,7 +21,7 @@ const TeacherList = observer(() => {
         await teacherStore.fetchTeachers();
         setIsLoading(false);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         setIsLoading(false);
       }
     };
@@ -35,13 +34,13 @@ const TeacherList = observer(() => {
   };
 
   const getGenderImage = (gender) => {
-    return gender === 'male' ? maleImage : femaleImage;
+    return gender === "male" ? maleImage : femaleImage;
   };
 
-  const currentTeachers = teacherStore.filteredTeachers ? toJS(teacherStore.filteredTeachers).slice(
+  const currentTeachers = teacherStore.getTeacher.slice(
     currentPage * entriesPerPage,
     (currentPage + 1) * entriesPerPage
-  ) : [];
+  );
 
   const handleEdit = (teacherId) => {
     teacherStore.setCurrentTeacherId(teacherId);
@@ -56,10 +55,14 @@ const TeacherList = observer(() => {
     teacherStore.setSearchTerm(e.target.value);
   };
 
-  const pageCount = teacherStore.filteredTeachers ? Math.ceil(toJS(teacherStore.filteredTeachers).length / entriesPerPage) : 0;
+  const pageCount = Math.ceil(teacherStore.totalPages / entriesPerPage);
 
   const goToPage = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+  const handleSearch = () => {
+    setCurrentPage(0); // Reset to the first page when performing a new search
+    teacherStore.fetchTeachers(); // Fetch teachers based on the filter and search term
   };
 
   return (
@@ -71,10 +74,10 @@ const TeacherList = observer(() => {
             onChange={handleFilterTypeChange}
           >
             <option value="All">All</option>
-            <option value="firstName">Name</option>
+            <option value="name">Name</option>
             <option value="subject">Subject</option>
             <option value="class">Class</option>
-            <option value="email">Username</option>
+            <option value="username">Username</option>
             <option value="gender">Gender</option>
           </select>
         </div>
@@ -82,10 +85,11 @@ const TeacherList = observer(() => {
           <FaSearch className="search-icon" />
           <input
             type="text"
-            placeholder="Search for a student by name or email....."
+            placeholder="Search for a teacher by name or email..."
             value={teacherStore.searchTerm}
             onChange={handleSearchTermChange}
           />
+          <button onClick={handleSearch}>Search</button>
         </div>
       </div>
       <table className="content-table">
@@ -93,7 +97,6 @@ const TeacherList = observer(() => {
           <tr>
             <th>Name</th>
             <th>Subject</th>
-            <th>Class</th>
             <th>Username</th>
             <th>Gender</th>
             <th>Actions</th>
@@ -103,32 +106,41 @@ const TeacherList = observer(() => {
           {isLoading ? (
             // Show Skeleton while loading
             Array.from({ length: entriesPerPage }).map((_, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
+              <tr
+                key={index}
+                className={index % 2 === 0 ? "white-row" : "blue-row"}
+              >
                 <td colSpan="6">
                   <Skeleton height={30} />
                 </td>
               </tr>
             ))
-          ) : teacherStore.filteredTeachers && teacherStore.filteredTeachers.length === 0 ? (
+          ) : teacherStore.getTeacher.length === 0 ? ( // Add a check for undefined
             // Show a message when there are no teachers
             <tr>
-              <td colSpan="6" style={{ textAlign: 'center' }}>
+              <td colSpan="6" style={{ textAlign: "center" }}>
                 No teachers found.
               </td>
             </tr>
           ) : (
             // Render actual data
             currentTeachers.map((teacher, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'white-row' : 'blue-row'}>
+              <tr
+                key={index}
+                className={index % 2 === 0 ? "white-row" : "blue-row"}
+              >
                 <td>
                   <div className="table-info">
-                    <img src={getGenderImage(teacher.gender)} alt={teacher.gender} className="gender-image" />
-                    {teacher.firstName}
+                    <img
+                      src={getGenderImage(teacher.gender)}
+                      alt={teacher.gender}
+                      className="gender-image"
+                    />
+                    {teacher.name}
                   </div>
                 </td>
                 <td>{teacher.subject}</td>
-                <td>{teacher.class}</td>
-                <td>{teacher.email}</td>
+                <td>{teacher.username}</td>
                 <td>{teacher.gender}</td>
                 <td>
                   <div className="action-buttons">
@@ -143,12 +155,31 @@ const TeacherList = observer(() => {
       </table>
       <div className="pagination-container">
         <div className="pagination">
-          {/* Pagination buttons */}
+          {/* Previous Button */}
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 0}
+          >
+            Prev
+          </button>
+          {/* Numbered Buttons */}
           {Array.from({ length: pageCount }).map((_, index) => (
-            <button key={index} onClick={() => goToPage(index)} className={currentPage === index ? 'active' : ''}>
+            <button
+              key={index}
+              onClick={() => goToPage(index)}
+              className={currentPage === index ? "active" : ""}
+            >
               {index + 1}
             </button>
           ))}
+
+          {/* Next Button */}
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === pageCount - 1}
+          >
+            Next
+          </button>
         </div>
       </div>
       {teacherStore.isPopupOpen && (

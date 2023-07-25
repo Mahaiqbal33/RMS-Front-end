@@ -14,7 +14,7 @@ import { SC } from '../../Services/serverCall';
 
 
 const PopupComponent = observer(({ onSubmit, teacherId }) => {
-  const { formData, csvFile, showCSVForm } = formStore;
+  const { formData, file, showCSVForm } = formStore;
 
 
   const handleManuallyFormClick = () => {
@@ -54,12 +54,15 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       const { fullName, username, gender, password, phoneNumber, subject_id} = formData;
        let endpoint;
       let payload;
-      if (toJS(csvFile)) {
+      if (file) {
         // Send CSV file as payload
          // Send CSV file as payload
         endpoint = "/teachers/bulk-updates";
-        payload = csvFile;
-        console.log(payload)
+        console.log("upload file",file)
+        payload ={
+         file:file
+        } 
+        console.log("file data",payload)
       } else {
         // Send form data as payload
         endpoint = "/teachers";
@@ -102,7 +105,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             console.error(error);
           });
       }
-      formStore.resetCSVFile();
+      formStore.resetfile();
       formStore.resetFormData();
       formStore.clearErrors();
     } else {
@@ -126,7 +129,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       // Perform further processing or upload the file
       // You can access the file using `file` variable
       console.log('File uploaded:', file);
-      formStore.setCSVFile(file);
+      formStore.setfile(file);
     }
   };
 
@@ -134,14 +137,14 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
     formStore.setShowManuallyForm(true);
     formStore.resetFormData();
     formStore.clearErrors();
-    formStore.resetCSVFile();
+    formStore.resetfile();
     teacherStore.setPopupOpen(false);
   };
 
   const handleAnotherTeacher = () => {
     formStore.resetFormData();
     formStore.clearErrors();
-    formStore.resetCSVFile();
+    formStore.resetfile();
   };
   return (
     <div className="popup-container">
@@ -284,23 +287,23 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             </form>) : (
               <form onSubmit={handleFormSubmit}>
                 
-                <label className="form-file-label" htmlFor='csvFile'>
+                <label className="form-file-label" htmlFor='file'>
                  <div>Upload CSV <span className="required-field">*</span></div> 
                  <div>
                  <div className="custom-file-input">
                     <input
                       type="file"
-                      name="csvFile"
+                      name="file"
                       accept=".csv"
-                      id='csvFile'
+                      id='file'
                       className="file-input"
                       onChange={handleFileInputChange}
-                      required={showCSVForm}
+                      required=""
                       autoComplete='off'
                     />
                     Upload file...
                   </div>
-                  <span className="file-name">{csvFile ? csvFile.name : 'No file selected'}</span>
+                  <span className="file-name">{file ? file.name : 'No file selected'}</span>
                  </div>
                   
                   {formStore.errors.file && (
