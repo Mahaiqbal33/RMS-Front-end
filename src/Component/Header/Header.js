@@ -1,11 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { FaBars, FaBell, FaUserCircle, FaSignOutAlt, FaSearch } from "react-icons/fa";
+import { FaBars, FaBell, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sidebarStore } from '../../Store/Sidebarstore/SideStore';
 import '../Header/Header.css'
 import { SC } from '../../Services/serverCall';
 import sweetAlertConfig from '../../Component/Alerts/alertConfig';
+import { privateRoutes } from '../../Store/Sidebarstore/PrivateRoutes';
 
 const Header = observer(() => {
   const location = useLocation();
@@ -21,11 +22,12 @@ const Header = observer(() => {
     try {
       // Send a POST request to the backend to log out the user using the stored token
       await SC.postCall('/logout', {
-        token: userToken,
+        token: userToken.accessToken ,
       });
   
       // Redirect to the login page after successful logout
-      logoutNavigate('/');
+      privateRoutes.token = false;
+       logoutNavigate('/');
   
       // Remove userToken from local storage after successful logout
       localStorage.removeItem('userToken');
@@ -47,10 +49,10 @@ const handleAdmin =()=>{
           </div>
       
         <div className="header-left">
-          <form className="animated-icon">
+          {/* <form className="animated-icon">
             <FaSearch className="search-icon" />
             <input type="text" name="search" placeholder="Search.." />
-          </form>
+          </form> */}
         </div>
         <div className={`header-right ${isDashboardPage ? 'dashboard-header-right' : ''}`}>
           <span className="header-icon"><FaBell /></span>

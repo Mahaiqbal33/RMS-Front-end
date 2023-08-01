@@ -1,30 +1,39 @@
 import { makeObservable, observable, action, computed } from 'mobx';
-import sweetAlertConfig from '../../Component/Alerts/alertConfig';
 import Swal from 'sweetalert2';
 import { SC } from '../../Services/serverCall';
+import sweetAlertConfig from '../../Component/Alerts/alertConfig';
 
 class TestStore {
   isPopupOpen = false;
   getTest = [];
+  filterType = "";
   searchTerm = '';
-  filterType = '';
   currentTestId = null;
-  currenttestData = {};
+  currentTestData = {};
+  currentPage = 0;
+  entriesPerPage = 4;
+  totalPages = 0;
 
   constructor() {
     makeObservable(this, {
       isPopupOpen: observable,
-      getTest: observable, // Mark getTest as observable
-      searchTerm: observable,
+      getTest: observable,
       filterType: observable,
+      searchTerm: observable,
       currentTestId: observable,
-      currenttestData: observable,
-      setPopupOpen: action.bound,
-      fetchtests: action,
-      deletetest: action,
-      setCurrenttestId: action,
-      setCurrenttestData: action, // New action to set current test data
-      gettestById: computed,
+      currentTestData: observable,
+      currentPage: observable,
+      entriesPerPage: observable,
+      totalPages: observable,
+      setPopupOpen: action,
+      setFilter: action,
+      fetchTests: action,
+      deleteTest: action,
+      setCurrentPage: action,
+      setSearchTerm: action,
+      setCurrentTestId: action,
+      setCurrentTestData: action,
+      getTestById: computed,
     });
   }
 
@@ -32,17 +41,38 @@ class TestStore {
     this.isPopupOpen = value;
   };
 
-  async fetchtests() {
+  async fetchTests() {
     try {
-      const response = await SC.getCall('/attempts'); // Fetch all the data at once without pagination
-      this.getTest = await response.data;
-      console.log("hello",this.getTest);
+      const response = await SC.postCall('/attempts/pagination', {
+        page: this.currentPage + 1,
+        page_size: this.entriesPerPage,
+        sort: {
+          column: 'created_at',
+          order: 'desc',
+        },
+        filter: [
+          {
+            columns: [this.filterType],
+            operation: 'like',
+            value: this.searchTerm,
+          },
+        ],
+      });
+      this.filterType='';
+      this.searchTerm="";
+      this.getTest = response.data.paginatedData.data || [];
+      this.totalPages = response.data.paginatedData.meta.total;
+      this.currentPage = response.data.paginatedData.meta.current_page - 1;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.messages);
     }
   }
 
-  deletetest(testId) {
+  setFilter(filter) {
+    this.filterType = filter;
+  }
+
+  deleteTest(testId) {
     Swal.fire({
       title: 'Confirmation',
       text: 'Are you sure you want to delete this record?',
@@ -54,11 +84,9 @@ class TestStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        SC.deleteCall(`/attempts/${testId}`) // Replace with your actual API endpoint
+        SC.deleteCall(`/tests/${testId}`) // Replace with your actual API endpoint
           .then(() => {
-            console.log(testId);
-            // Remove the deleted test from the local array
-            this.getTest = this.getTest.filter((test) => test.id !== testId);
+            this.getTest = this.getTest.filter((Test) => Test.id !== testId);
             sweetAlertConfig.successAlert("test is deleted successfully!")
           })
           .catch((error) => {
@@ -68,18 +96,26 @@ class TestStore {
       }
     });
   }
-
-  setCurrenttestId(testId) {
-    this.currentTestId = testId;
-    this.setCurrenttestData(testId); // Update current test data
+  
+  setCurrentPage(pageNumber) {
+    this.currentPage = pageNumber;
   }
 
-  get gettestById() {
-    return (id) => this.getTest.find((test) => test.id === id);
+  setSearchTerm(term) {
+    this.searchTerm = term;
   }
 
-  setCurrenttestData(testId) {
-    this.currenttestData = this.getTest.find((test) => test.id === testId) || {};
+  setCurrentTestId(TestId) {
+    this.currentTestId = TestId;
+    this.setCurrentTestData(TestId);
+  }
+
+  setCurrentTestData(TestId) {
+    this.currentTestData = this.getTest.find((Test) => Test.id === TestId) || {};
+  }
+
+  get getTestById() {
+    return (id) => this.getTest.find((Test) => Test.id === id);
   }
 }
 

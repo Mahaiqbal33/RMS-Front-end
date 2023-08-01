@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect} from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import user from "../../assets/User.png";
@@ -17,6 +17,20 @@ import { setToken } from '../../Utilits/SetToken';
 const LoginForm = observer(() => {
   const navigate = useNavigate();
   const {formFields} = authStore;
+  // Add useEffect hook to check token and role and navigate to "/sidebar" if conditions are met
+  useEffect(() => {
+    const tokenData = JSON.parse(localStorage.getItem('userToken'));
+    if (tokenData) {
+      const { expirationTime, role } = tokenData;
+      const currentTime = new Date();
+      const expirationTimeDate = new Date(expirationTime);
+
+      if (currentTime < expirationTimeDate && role === 'admin') {
+        // Navigate to "/sidebar" if the token is valid and the role is "admin"
+        navigate('/sidebar');
+      }
+    }
+  }, [navigate]);
   //HandleChange function
   const handleInputChange = (e) => {
     console.log("event..>",e)

@@ -1,27 +1,24 @@
-// TeacherStore.js
-
 import { makeObservable, observable, action, computed } from 'mobx';
 import Swal from 'sweetalert2';
 import { SC } from '../../Services/serverCall';
-import {toJS } from 'mobx'
-import axios from 'axios';
+import sweetAlertConfig from '../../Component/Alerts/alertConfig';
 
 class TeacherStore {
   isPopupOpen = false;
   getTeacher = [];
-  filterType="";
+  filterType = "";
   searchTerm = '';
   currentTeacherId = null;
   currentTeacherData = {};
   currentPage = 0;
-  entriesPerPage = 10;
+  entriesPerPage = 4;
   totalPages = 0;
 
   constructor() {
     makeObservable(this, {
       isPopupOpen: observable,
       getTeacher: observable,
-      filterType:observable,
+      filterType: observable,
       searchTerm: observable,
       currentTeacherId: observable,
       currentTeacherData: observable,
@@ -29,9 +26,10 @@ class TeacherStore {
       entriesPerPage: observable,
       totalPages: observable,
       setPopupOpen: action,
-      setFilter:action,
+      setFilter: action,
       fetchTeachers: action,
       deleteTeacher: action,
+      setCurrentPage: action,
       setSearchTerm: action,
       setCurrentTeacherId: action,
       setCurrentTeacherData: action,
@@ -60,13 +58,13 @@ class TeacherStore {
           },
         ],
       });
-
-      this.getTeacher = response.data.teachers.data;
-       console.log("this.getTeacher",toJS(this.getTeacher))
-      this.totalPages = response.data.teachers.meta.total;
-      this.currentPage = response.data.teachers.meta.current_page - 1;
+      this.filterType='';
+      this.searchTerm="";
+      this.getTeacher = response.data.paginatedData.data || [];
+      this.totalPages = response.data.paginatedData.meta.total;
+      this.currentPage = response.data.paginatedData.meta.current_page - 1;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.messages);
     }
   }
 
@@ -86,16 +84,21 @@ class TeacherStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`https://dummyjson.com/users/${teacherId}`) // Replace with your actual API endpoint
+        SC.deleteCall(`/teachers/${teacherId}`) // Replace with your actual API endpoint
           .then(() => {
             this.getTeacher = this.getTeacher.filter((teacher) => teacher.id !== teacherId);
+            sweetAlertConfig.successAlert("test is deleted successfully!")
           })
           .catch((error) => {
             console.error('Error:', error);
+            sweetAlertConfig.errorAlert("An error occurred while deleting the test.")
           });
       }
     });
+  }
+  
+  setCurrentPage(pageNumber) {
+    this.currentPage = pageNumber;
   }
 
   setSearchTerm(term) {

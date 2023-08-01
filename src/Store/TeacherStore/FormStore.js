@@ -74,16 +74,12 @@ class FormStore {
       await subjectformStore.fetchSubjectList();
   
       const subjectListArray = Array.from(subjectformStore.subjectList);
-      console.log("Subject List Array:", subjectListArray);
-      console.log("Search for Subject:", this.formData.subject);
   
       const filteredSubject = subjectListArray.find((subject) => subject.name === this.formData.subject);
-      console.log("Filtered Subject:", filteredSubject);
   
       if (filteredSubject) {
         const subjectData = toJS(filteredSubject);
         if (subjectData.id) {
-          console.log("hello id", subjectData.id);
           this.formData.subject_id = subjectData.id;
         }
       } else {
@@ -117,7 +113,6 @@ class FormStore {
 
   resetfile() {
     this.file = null;
-    console.log(this.file)
   }
 
   setShowCSVForm(value) {

@@ -35,10 +35,10 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       const teacher = teacherStore.getTeacherById(teacherId);
       formStore.setFormData({
         fullName: teacher.name,
-        username: teacher.email,
+        username: teacher.username,
         gender: teacher.gender,
         password: teacher.password,
-        phoneNumber: teacher.phoneNumber,
+        phoneNumber: teacher.phone_number,
         subject: teacher.subject,
       });
     } else {
@@ -80,8 +80,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
       }
 
       if (teacherId) {
-        await axios
-          .put(`/teachers/${teacherId}`, payload)
+        await SC.putCall(`/teachers/${teacherId}`, payload)
           .then((response) => {
             console.log(response.data);
             onSubmit();
@@ -89,8 +88,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             teacherStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error)
-            console.error(error);
+            sweetAlertConfig.errorAlert(error.message)
           });
       } else {
         await SC.postCall(endpoint, payload)
@@ -101,7 +99,7 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
             teacherStore.setPopupOpen(false);
           })
           .catch((error) => {
-            sweetAlertConfig.errorAlert(error.message)
+            sweetAlertConfig.errorAlert(error.messages)
             console.error(error);
           });
       }

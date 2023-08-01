@@ -59,7 +59,10 @@ const TeacherList = observer(() => {
 
   const goToPage = (pageNumber) => {
     setCurrentPage(pageNumber);
+    teacherStore.setCurrentPage(pageNumber); // Update the current page in the store
+    teacherStore.fetchTeachers(); // Call the fetchTeachers() action in the store
   };
+
   const handleSearch = () => {
     setCurrentPage(0); // Reset to the first page when performing a new search
     teacherStore.fetchTeachers(); // Fetch teachers based on the filter and search term
@@ -76,8 +79,8 @@ const TeacherList = observer(() => {
             <option value="All">All</option>
             <option value="name">Name</option>
             <option value="subject">Subject</option>
-            <option value="class">Class</option>
             <option value="username">Username</option>
+            <option value="phone_number">phone_number</option>
             <option value="gender">Gender</option>
           </select>
         </div>
@@ -99,6 +102,7 @@ const TeacherList = observer(() => {
             <th>Subject</th>
             <th>Username</th>
             <th>Gender</th>
+            <th>phone_number</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -124,7 +128,7 @@ const TeacherList = observer(() => {
             </tr>
           ) : (
             // Render actual data
-            currentTeachers.map((teacher, index) => (
+            teacherStore.getTeacher.map((teacher, index) => (
               <tr
                 key={index}
                 className={index % 2 === 0 ? "white-row" : "blue-row"}
@@ -142,6 +146,7 @@ const TeacherList = observer(() => {
                 <td>{teacher.subject}</td>
                 <td>{teacher.username}</td>
                 <td>{teacher.gender}</td>
+                <td>{teacher.phone_number}</td>
                 <td>
                   <div className="action-buttons">
                     <EditIcon onClick={() => handleEdit(teacher.id)} />
@@ -154,7 +159,7 @@ const TeacherList = observer(() => {
         </tbody>
       </table>
       <div className="pagination-container">
-        <div className="pagination">
+      <div className="pagination">
           {/* Previous Button */}
           <button
             onClick={() => goToPage(currentPage - 1)}

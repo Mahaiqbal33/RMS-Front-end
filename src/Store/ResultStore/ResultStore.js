@@ -1,52 +1,80 @@
 import { makeObservable, observable, action, computed } from 'mobx';
 import Swal from 'sweetalert2';
-import axios from 'axios';
 import { SC } from '../../Services/serverCall';
+import { toJS } from 'mobx';
+import sweetAlertConfig from '../../Component/Alerts/alertConfig';
 
 class ResultStore {
   isPopupOpen = false;
-  result = [];
+  getResult = [];
+  filterType = "";
   searchTerm = '';
-  filterType = '';
-  currentresultId = null;
-  currentresultData = {};
+  currentResultId = null;
+  currentResultData = {};
+  currentPage = 0;
+  entriesPerPage = 4;
+  totalPages = 0;
 
   constructor() {
     makeObservable(this, {
       isPopupOpen: observable,
-      result: observable,
-      searchTerm: observable,
+      getResult: observable,
       filterType: observable,
-      currentresultId: observable,
-      currentresultData: observable,
-      setPopupOpen: action.bound,
-      filteredresult: computed,
-      fetchresult: action,
-      deleteresult: action,
+      searchTerm: observable,
+      currentResultId: observable,
+      currentResultData: observable,
+      currentPage: observable,
+      entriesPerPage: observable,
+      totalPages: observable,
+      setPopupOpen: action,
       setFilter: action,
+      fetchResults: action,
+      deleteResult: action,
+      setCurrentPage: action,
       setSearchTerm: action,
-      setCurrentresultId: action,
-      setCurrentresultData: action,
-      getresultById: computed,
+      setCurrentResultId: action,
+      setCurrentResultData: action,
+      getResultById: computed,
     });
   }
 
-  setPopupOpen(value) {
+  setPopupOpen = (value) => {
     this.isPopupOpen = value;
-  }
+  };
 
-  async fetchresult(page,pageSize) {
+  async fetchResults() {
     try {
-      const response = await SC.getCall(`/assessment?page=${page}&limit=${pageSize}`);
-      this.result = response.data.data;
-      this.pageCount = Math.ceil(response.data.meta.total / pageSize);
-      this.currentPage = page;
+      const response = await SC.postCall('/assessments/pagination', {
+        page: this.currentPage + 1,
+        page_size: this.entriesPerPage,
+        sort: {
+          column: 'created_at',
+          order: 'desc',
+        },
+        filter: [
+          {
+            columns: [this.filterType],
+            operation: 'like',
+            value: this.searchTerm,
+          },
+        ],
+      });
+      this.filterType='';
+      this.searchTerm="";
+      this.getResult = response.data.paginatedData.data || [];
+      console.log("this.getResult", toJS(this.getResult))
+      this.totalPages = response.data.paginatedData.meta.total;
+      this.currentPage = response.data.paginatedData.meta.current_page - 1;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.messages);
     }
   }
 
-  deleteresult(resultId) {
+  setFilter(filter) {
+    this.filterType = filter;
+  }
+
+  deleteResult(resultId) {
     Swal.fire({
       title: 'Confirmation',
       text: 'Are you sure you want to delete this record?',
@@ -58,59 +86,39 @@ class ResultStore {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`https://dummyjson.com/users/${resultId}`)
+        SC.deleteCall(`/assessments/${resultId}`) // Replace with your actual API endpoint
           .then(() => {
-            this.result = this.result.filter((result) => result.id !== resultId);
-            Swal.fire('Deleted!', 'The record has been deleted.', 'success');
+            this.getResult = this.getResult.filter((Result) => Result.id !== resultId);
+            sweetAlertConfig.successAlert("test is deleted successfully!")
           })
           .catch((error) => {
             console.error('Error:', error);
-            Swal.fire('Error!', 'An error occurred while deleting the record.', 'error');
+            sweetAlertConfig.errorAlert("An error occurred while deleting the test.")
           });
       }
     });
   }
-
-  setFilter(filter) {
-    this.filterType = filter;
+  
+  setCurrentPage(pageNumber) {
+    this.currentPage = pageNumber;
   }
 
   setSearchTerm(term) {
     this.searchTerm = term;
   }
 
-  get filteredresult() {
-    const { filterType, searchTerm, result } = this;
+  setCurrentResultId(ResultId) {
+    this.currentResultId = ResultId;
+    this.setCurrentResultData(ResultId);
+  }
+  
 
-    return result.filter((result) => {
-      if (!result) {
-        return false; // Skip null/undefined result objects
-      }
-
-      if (!filterType || filterType === 'All') {
-        return (
-          (result.username && result.username.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (result.result && result.result.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (result.enrollment && result.enrollment.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
-      }
-
-      return result[filterType] && result[filterType].toLowerCase().includes(searchTerm.toLowerCase());
-    });
+  setCurrentResultData(ResultId) {
+    this.currentResultData = this.getResult.find((Result) => Result.id === ResultId) || {};
   }
 
-  setCurrentresultId(resultId) {
-    this.currentresultId = resultId;
-    this.setCurrentresultData(resultId);
-  }
-
-  get getresultById() {
-    return (id) => this.result.find((result) => result.id === id);
-  }
-
-  setCurrentresultData(resultId) {
-    this.currentresultData = this.result.find((result) => result.id === resultId) || {};
+  get getResultById() {
+    return (id) => this.getResult.find((Result) => Result.id === id);
   }
 }
 

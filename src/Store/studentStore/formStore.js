@@ -84,7 +84,6 @@ class formStore {
 
   resetCSVFile() {
     this.csvFile = null;
-    console.log(this.csvFile)
   }
 
   setShowCSVForm(value) {

@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React,{useEffect}  from 'react';
 import {  Route, Routes } from 'react-router-dom';
 import './App.css'; // Create a CSS file for custom styles
 import Dashboard from './Screen/Dashboard/Dashboard'
@@ -20,11 +20,37 @@ import SubjectsList from './Screen/Subjects/SubjectsList';
 import AddResult from './Screen/Result/AddResult';
 import ResultList from './Screen/Result/ResultList';
 import Admin from './Screen/Admin/Admin';
-import TokenManager from './Utilits/TokenManager';
+import { useNavigate } from 'react-router-dom';
+import checkTokenExpiration from './Utilits/checkTokenExpiration'; // Adjust the import path if needed
+
 function App() {
+  const navigate = useNavigate(); // Get the 'navigate' function from react-router-dom
+
+ 
+  useEffect(() => {
+    const tokenData = JSON.parse(localStorage.getItem('userToken'));
+    if (tokenData) {
+      const { expirationTime } = tokenData;
+      const currentTime = new Date();
+      const expirationTimeDate = new Date(expirationTime);
+      const timeDifference = expirationTimeDate.getTime() - currentTime.getTime();
+
+      if (timeDifference > 0) {
+        // Set a timeout to call checkTokenExpiration when the token expires
+        const timeoutId = setTimeout(() => {
+          checkTokenExpiration(navigate);
+        }, timeDifference);
+
+        // Clear the timeout when the component unmounts
+        return () => {
+          clearTimeout(timeoutId);
+        };
+      }
+    }
+  }, [navigate]);
+
   return (
     <div>
-      <TokenManager />
      <Routes>
     <Route element= {<PrivateRoutes/>}>
     <Route path='sidebar' element={<Sidebar />}>

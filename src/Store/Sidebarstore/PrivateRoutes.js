@@ -9,11 +9,23 @@ class PrivateRoutes {
       token: observable,
       renderProtectedRoutes: action.bound,
     });
+
+    // Check for the token in local storage during construction
+    const storedToken = localStorage.getItem('userToken');
+    if (storedToken) {
+      this.token = true;
+    }
+  }
+
+  setToken(tokenValue) {
+    this.token = tokenValue;
+    // Store the token in local storage
+    localStorage.setItem('token', tokenValue ? 'true' : 'false');
   }
 
   renderProtectedRoutes() {
     // return this.token ? <Outlet /> : <Navigate to="/" />;
-    return this.token ? <Outlet /> :<Outlet />;
+    return this.token ? <Outlet /> : <Navigate to="/" />;
   }
 }
 

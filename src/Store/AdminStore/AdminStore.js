@@ -33,7 +33,6 @@ class AdminStore {
       if (this.getAdmin.length === 0) {
         const response = await SC.getCall('/admins');
         this.getAdmin = response.data;
-        console.log('API Response:', response.data);
       }
     } catch (error) {
       console.error('Error:', error);

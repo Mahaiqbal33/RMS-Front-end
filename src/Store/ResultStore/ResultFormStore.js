@@ -11,7 +11,7 @@ class ResultFormStore {
     attempt_id: '',
   };
   getTest=[]
-  studentList = subjectformStore.studentList;
+  studentList = [];
   errors = {
     username: '',
     testname: '',
@@ -25,6 +25,7 @@ class ResultFormStore {
       errors: observable,
       studentList: observable,
       fetchtests:action,
+      fetchStudents:action,
       setFormData: action,
       resetFormData: action,
       setError: action,
@@ -41,6 +42,16 @@ class ResultFormStore {
       this.getTest = response.data.data;
     } catch (error) {
       console.error('Error:', error);
+    }
+  }
+
+  async fetchStudents() {
+    try {
+      const response = await SC.getCall('/students');
+      console.log('API Response:', response.data); // Log the entire response to check its format
+      this.studentList = response.data;
+    } catch (error) {
+      console.error('Failed to fetch student list:', error);
     }
   }
 
@@ -62,7 +73,7 @@ async  filtertest_id() {
 
 
   async filterstudent_id() {
-    await subjectformStore.fetchStudents();
+    await this.fetchStudents();
     console.log("Student List Array:", toJS(this.studentList));
     console.log("Search for Username:", this.formData.username);
 

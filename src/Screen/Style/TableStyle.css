@@ -122,20 +122,20 @@
     height: 80%;
   }
   
-  @media (max-width: 690px) {
+
+  @media (max-width: 600px) {
     .filter-input {
       flex: none;
-      width: 60%;
+      width: 70%;
     }
     .filter-select{
       flex: none;
-      width: 20%;
+      width: 15%;
     }
     .filter-section{
-      width: 80%;
+        width: 100%;
     }
-  }
-  
+}
 
 /* ... (your existing styles) */
 
@@ -172,18 +172,3 @@
   /* style Pagination at backend functionality */
   
   
-  
-  
-  @media (max-width: 500px) {
-    .filter-input {
-      flex: none;
-      width: 60%;
-    }
-    .filter-select{
-      flex: none;
-      width: 25%;
-    }
-    .filter-section{
-        width: 100%;
-    }
-}

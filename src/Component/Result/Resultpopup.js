@@ -20,12 +20,14 @@ const Resultpopup = observer(({ resultId }) => {
   };
 
   useEffect(() => {
+    console.log("....>id",resultId)
     if (resultId) {
-      const result = resultStore.getresultById(resultId);
+      const result = resultStore.getResultById(resultId);
+     
       resultformStore.setFormData({
         username: result.username,
-        testname: result.testname,
-        obtainMarks: result.obtainMarks,
+        testname: result.testName,
+        obtainMarks: result.obtMarks,
       });
     } else {
       resultformStore.resetFormData();
@@ -36,9 +38,7 @@ const Resultpopup = observer(({ resultId }) => {
     e.preventDefault();
     await resultformStore.filterstudent_id();
     await resultformStore.filtertest_id();
-
-     let arr=true
-    if (arr) {
+    if (FormResultValidator()) {
       const { student_id, attempt_id, obtainMarks } = formData;
 
       const payload = {
