@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import { formStore } from '../../Store/TeacherStore/FormStore';
 import { teacherStore } from '../../Store/TeacherStore/TeacherStore';
 import { RiAddCircleLine } from 'react-icons/ri';
-import axios from 'axios';
 import InputMask from 'react-input-mask';
 import '../Style/PopupStyle.css';
 import { validateTeacherForm } from '../../helper.js/FormTeacherValidator';
@@ -14,7 +13,7 @@ import { SC } from '../../Services/serverCall';
 
 
 const PopupComponent = observer(({ onSubmit, teacherId }) => {
-  const { formData, file, showCSVForm } = formStore;
+  const { formData, file } = formStore;
 
 
   const handleManuallyFormClick = () => {
@@ -49,13 +48,11 @@ const PopupComponent = observer(({ onSubmit, teacherId }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await  formStore.filtersubject_id()
-    console.log("Form validtions",validateTeacherForm())
     if (validateTeacherForm(teacherId)) {
       const { fullName, username, gender, password, phoneNumber, subject_id} = formData;
        let endpoint;
       let payload;
       if (file) {
-        // Send CSV file as payload
          // Send CSV file as payload
         endpoint = "/teachers/bulk-updates";
         console.log("upload file",file)

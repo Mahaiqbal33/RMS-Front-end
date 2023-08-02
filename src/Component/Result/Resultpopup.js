@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { resultStore } from '../../Store/ResultStore/ResultStore';
 import '../Style/PopupStyle.css';
 import { RiAddCircleLine } from 'react-icons/ri';
-import axios from 'axios';
 import { FormResultValidator } from '../../helper.js/FormResultValidators';
 import InputMask from 'react-input-mask';
 import { toJS } from 'mobx';
@@ -20,7 +19,6 @@ const Resultpopup = observer(({ resultId }) => {
   };
 
   useEffect(() => {
-    console.log("....>id",resultId)
     if (resultId) {
       const result = resultStore.getResultById(resultId);
      
@@ -48,8 +46,7 @@ const Resultpopup = observer(({ resultId }) => {
       };
 
       if (resultId) {
-        await axios
-          .put(`/assessments/${resultId}`, payload)
+        await SC.putCall(`/assessments/${resultId}`, payload)
           .then((response) => {
             console.log(response.data);
             sweetAlertConfig.successAlert("Submit Successfully Form data")

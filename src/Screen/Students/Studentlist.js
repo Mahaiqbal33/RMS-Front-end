@@ -37,11 +37,7 @@ const StudentList = observer(() => {
     return gender === "male" ? maleImage : femaleImage;
   };
 
-  const currentStudents =  StudentStore.getStudent.slice(
-    currentPage * entriesPerPage,
-    (currentPage + 1) * entriesPerPage
-  );
-
+  
   const handleEdit = (StudentId) => {
      StudentStore.setCurrentStudentId(StudentId);
      StudentStore.setPopupOpen(true);
@@ -188,12 +184,13 @@ const StudentList = observer(() => {
         </div>
       </div>
       { StudentStore.isPopupOpen && (
-        <StudentPopup
-          onSubmit={() => {
-             StudentStore.fetchStudents();
-          }}
-          StudentId={ StudentStore.currentStudentId}
-        />
+       <StudentPopup
+       onSubmit={() => {
+         StudentStore.fetchStudents();
+       }}
+       studentId={StudentStore.currentStudentId}
+     />
+     
       )}
     </div>
   );

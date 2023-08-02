@@ -27,6 +27,7 @@ const StudentPopup = observer(({ onSubmit, studentId }) => {
   };
   
   useEffect(() => {
+    console.log("..>",studentId)
     if (studentId) {
       const student = StudentStore.getStudentById(studentId);
       console.log(student.gender);
