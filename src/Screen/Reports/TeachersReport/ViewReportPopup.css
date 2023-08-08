@@ -1,0 +1,113 @@
+.report-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 1000;
+}
+
+.report-popup.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-table {
+  background-color: white;
+  padding: 40px;
+  margin-left: 180px;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.report-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.year-buttons .Classes-button {
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.year-buttons .Classes-button:active,.year-buttons .Classes-button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+
+.month-year-select select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.report-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+
+.month-year-select select {
+  font-size: 14px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 150px; /* Adjust width as needed */
+}
+.popup-Close-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.close-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #555;
+  margin-left: auto; /* This pushes the icon to the right */
+}
+
+/* Style for the download button */
+.download-button {
+  margin-top: 20px; /* Adjust spacing as needed */
+  padding: 10px 13px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Hover effect for the download button */
+.download-button:hover {
+  background-color: #0056b3;
+}

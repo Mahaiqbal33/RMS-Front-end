@@ -58,14 +58,17 @@ const TestList = observer(() => {
     testStore.fetchTests(); // Call the fetchTests() action in the store
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     setCurrentPage(0); // Reset to the first page when performing a new search
     testStore.fetchTests(); // Fetch Tests based on the filter and search term
+    testStore.filterType="";
+     testStore.searchTerm="";
   };
 
   return (
     <div className="list-container">
-      <div className="filter-section">
+      <from className="filter-section" onSubmit={handleSearch}>
         <div className="filter-select">
           <select
             value={testStore.filterType}
@@ -86,9 +89,9 @@ const TestList = observer(() => {
             value={testStore.searchTerm}
             onChange={handleSearchTermChange}
           />
-          <button onClick={handleSearch}>Search</button>
+          <button type="submit">Search</button>
         </div>
-      </div>
+      </from>
       <table className="content-table">
         <thead>
           <tr>

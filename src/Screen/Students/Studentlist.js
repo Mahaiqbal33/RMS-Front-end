@@ -59,14 +59,17 @@ const StudentList = observer(() => {
      StudentStore.fetchStudents(); // Call the fetchStudents() action in the store
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     setCurrentPage(0); // Reset to the first page when performing a new search
      StudentStore.fetchStudents(); // Fetch Students based on the filter and search term
+     StudentStore.filterType="";
+     StudentStore.searchTerm="";
   };
 
   return (
     <div className="list-container">
-      <div className="filter-section">
+      <form className="filter-section" onSubmit={handleSearch}>
         <div className="filter-select">
           <select
             value={ StudentStore.filterType}
@@ -88,9 +91,9 @@ const StudentList = observer(() => {
             value={ StudentStore.searchTerm}
             onChange={handleSearchTermChange}
           />
-          <button onClick={handleSearch}>Search</button>
+          <button type="submit">Search</button>
         </div>
-      </div>
+      </form>
       <table className="content-table">
         <thead>
           <tr>

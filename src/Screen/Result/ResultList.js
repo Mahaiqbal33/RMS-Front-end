@@ -32,13 +32,10 @@ const ResultList = observer(() => {
     resultStore.deleteResult(ResultId);
   };
 
-  const currentResults = resultStore.getResult.slice(
-    currentPage * entriesPerPage,
-    (currentPage + 1) * entriesPerPage
-  );
+
 
   const handleEdit = (ResultId) => {
-    resultStore. setCurrentResultId(ResultId);
+    resultStore.setCurrentResultId(ResultId);
     resultStore.setPopupOpen(true);
   };
 

@@ -19,6 +19,7 @@ import Subjects from './Screen/Subjects/Subjects';
 import SubjectsList from './Screen/Subjects/SubjectsList';
 import AddResult from './Screen/Result/AddResult';
 import ResultList from './Screen/Result/ResultList';
+import TeachersReport from './Screen/Reports/TeachersReport/TeachersReport';
 import Admin from './Screen/Admin/Admin';
 import { useNavigate } from 'react-router-dom';
 import checkTokenExpiration from './Utilits/checkTokenExpiration'; // Adjust the import path if needed
@@ -68,6 +69,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="Features" element={<Features />} />
           <Route path="report" element={<Report />} />
+          <Route path="teacherReport" element={<TeachersReport/>}/>
           <Route path='admin'  element={<Admin/>}/>
         </Route>
     </Route>

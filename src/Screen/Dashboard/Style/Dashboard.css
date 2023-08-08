@@ -45,6 +45,17 @@
    align-items: center;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-message {
+  font-size: 24px;
+  color: white;
+}
 
 /* Responsive adjustments */
 @media (max-width: 700px) {

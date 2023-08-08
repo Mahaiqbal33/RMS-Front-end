@@ -69,6 +69,12 @@ export const menuItem = [
       path: "report",
       name: "Report",
       icon: <FaChartBar />,
+      subitems:[
+        {
+          path: "teacherReport",
+          name: "TeachersReport"
+        }
+      ]
     },
     {
       path: "features",

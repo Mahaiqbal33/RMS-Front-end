@@ -37,10 +37,7 @@ const TeacherList = observer(() => {
     return gender === "male" ? maleImage : femaleImage;
   };
 
-  const currentTeachers = teacherStore.getTeacher.slice(
-    currentPage * entriesPerPage,
-    (currentPage + 1) * entriesPerPage
-  );
+  
 
   const handleEdit = (teacherId) => {
     teacherStore.setCurrentTeacherId(teacherId);
@@ -63,14 +60,17 @@ const TeacherList = observer(() => {
     teacherStore.fetchTeachers(); // Call the fetchTeachers() action in the store
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     setCurrentPage(0); // Reset to the first page when performing a new search
     teacherStore.fetchTeachers(); // Fetch teachers based on the filter and search term
+    teacherStore.filterType="";
+     teacherStore.searchTerm="";
   };
 
   return (
     <div className="list-container">
-      <div className="filter-section">
+      <form className="filter-section" onSubmit={handleSearch}>
         <div className="filter-select">
           <select
             value={teacherStore.filterType}
@@ -92,9 +92,9 @@ const TeacherList = observer(() => {
             value={teacherStore.searchTerm}
             onChange={handleSearchTermChange}
           />
-          <button onClick={handleSearch}>Search</button>
+          <button type="submit" >Search</button>
         </div>
-      </div>
+      </form>
       <table className="content-table">
         <thead>
           <tr>

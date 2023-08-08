@@ -104,6 +104,11 @@
     color: #007bff;
   }
   
+  .action-buttons .view-button{
+    color: #007bff;
+    font-family: 900;
+    text-decoration: underline;
+  }
   .action-buttons button.delete-button {
     color: #dc3545;
   }

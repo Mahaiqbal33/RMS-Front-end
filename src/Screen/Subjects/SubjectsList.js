@@ -63,14 +63,17 @@ const SubjectList = observer(() => {
     subjectsStore.fetchSubjects(); // Call the fetchSubjects() action in the store
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     setCurrentPage(0); // Reset to the first page when performing a new search
     subjectsStore.fetchSubjects(); // Fetch Subjects based on the filter and search term
+   subjectsStore.filterType="";
+    subjectsStore.searchTerm="";
   };
 
   return (
     <div className="list-container">
-      <div className="filter-section">
+      <form className="filter-section" onSubmit={handleSearch}>
         <div className="filter-select">
           <select
             value={subjectsStore.filterType}
@@ -92,9 +95,9 @@ const SubjectList = observer(() => {
             value={subjectsStore.searchTerm}
             onChange={handleSearchTermChange}
           />
-          <button onClick={handleSearch}>Search</button>
+          <button type="submit">Search</button>
         </div>
-      </div>
+      </form>
       <table className="content-table">
         <thead>
           <tr>
