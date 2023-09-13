@@ -1,8 +1,8 @@
 import React,{ useState,useEffect} from 'react'
-import { IoIosInformationCircle } from 'react-icons/io'; // Import the icon component from react-icons
+import { IoIosInformationCircle } from 'react-icons/io'; 
 import "./Style/Dashboard.css"
 import {dashboardStore} from "../../Store/DashboardStore/DashboardStore"
-import PieChartDemo from "./PieChartDemo"; // Import the PieChartDemo component
+import PieChartDemo from "./PieChartDemo"; 
 import LineChartDemo from './LineChartDemo';
 import PassFailChart from './PassFailChart';
 
